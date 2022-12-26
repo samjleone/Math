@@ -2,13 +2,13 @@
 <html>
     <head>
         <title>Blog</title>
-        <link rel="stylesheet" href = 'styles.css'>
+        <link rel="stylesheet" href = '../styles.css'>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
   <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
     </head>
     <body>
-        <a href= 'index.html'>Home</a><br><br>
+        <a href= '../index.html'>Home</a><br><br>
         <div class = 'theorem'>
             <div class = 'name'>
                 Binomial Fact 1.
@@ -41,5 +41,47 @@
 
             </div>
         </div>
+        <div class = 'theorem'>
+            <div class = 'name'>
+                Binomial Fact 2. 
+            </div>
+            <div class = 'statement'>
+                The following holds for all \( n \geq 0\),
+                \[ \sum_{k=1}^n \frac{(-1)^k}{k}\binom{n}{k} = \sum_{k=1}^n \frac{1}{k} \]
+            </div>
+            <div class = 'proof'>
+                Proof:<br><br>
+
+                For this proof, we will combine calculus along with the binomial theorem. Consider the following 
+                integral: 
+
+                \[ I = \int_0^1 \frac{1}{y}((1-y)^n - 1)dy \]
+
+                What is the value of \(I\)? Let us first expand the exponential term using the binomial formula: 
+
+                \[ I = \int_0^1 \frac{1}{y}\bigg(\sum_{k=0}^n \binom{n}{k} (-y)^k \bigg - 1)=\int_0^1 \frac{1}{y}  \sum_{k=1}^n  \binom{n}{k} (-y)^k \] 
+                \[ = \int_0^1  \sum_{k=1}^n  \binom{n}{k} (-1) (-y)^{k-1} = - \sum_{k=1}^n \binom{n}{k} \int_0^1 (-y)^{k-1} = \sum_{k=1}^n \binom{n}{k} \frac{1}{k} \bigg((-1)^{k} - (0)^k \bigg) \]
+
+                So all in all, 
+
+                \[ I = \sum_{k=1}^n \binom{n}{k} \frac{(-1)^k}{k} \]
+
+                On the other hand, we can calculate \(I\) through a change of variables. Note, letting \(u = 1-y, du = - dy\)
+
+                \[ I = \int_0^1 \frac{1}{y}((1-y)^n - 1)dy = \int_0^1 \frac{1- u^n}{1-u}du \]
+
+                This can be recognized as a finitee geometric series. Swapping the integral with the sum, 
+                evaluating, and reindexing, we find:
+
+                \[ = \int_0^1 \sum_{k=0}^{n-1} u^k du = \sum_{k=0}^{n-1} \int_0^1 u^k du  = \sum_{k=0}^{n-1} \frac{1}{k+1} =  \sum_{k=1}^n \frac{1}{k} \]
+
+                And thus, 
+
+                \[ \sum_{k=1}^n \frac{1}{k} = I = \sum_{k=1}^n \binom{n}{k} \frac{(-1)^k}{k}  \]
+
+                Which concludes the proof!
+            </div>
+        </div>
+
     </body>
 </html>
