@@ -1,0 +1,155 @@
+\documentclass{report}
+\usepackage{amsmath,amssymb,amsfonts, amsthm}
+\usepackage{comment}
+\usepackage{graphicx}
+\usepackage{textcomp}
+\usepackage{xcolor}
+\usepackage{float}
+\usepackage{booktabs}
+
+\newcommand{\F}{\mathcal F}
+\newcommand{\E}{\mathcal E}
+\newcommand{\Power}{\mathcal P}
+
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{proposition}{Proposition}[proposition]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}{Definition}
+
+\title{Introduction to Measure Theoretic Probability}
+\author{Sam Leone}
+\begin{document}
+\maketitle
+\chapter{Motivation \& Preliminaries}
+
+Why study probability theory? If you're anything like me, you know the basics: dice rolls, taking expectations, and
+some basic distributions. But along the way, you had a few lingering questions: Why is the law of large numbers true?
+The central limit theorem? What the heck is a probability density, really? What does it even mean to condition on
+something with probability 0? There are also the existence of conditioning paradoxes. Perhaps you've heard about
+stochastic processes and the different limit theorems which show that random processes converge to an equilibrium.
+How the heck can you show that? We address these through a fundamental shift in perspective: remove the randomness from the study of probability. 
+Rather than studying the "probability" of an event, study its size. The simple idea to use tools from measure theory
+has far reaching consequences. The added trouble may make you think — why are we doing this? But after a few headaches,
+the applications will be well worth it. \\
+
+We will assume a very basic knowledge of real analysis.
+
+\section{Events, Sizes \& The Universe}
+
+Let's begin our study of probability with a classic example: the roll of a fair die. 
+We all know that \emph{each side of a die occurs with probability 1/6}. But what do we even 
+mean by this? Some people think of it from a frequentist perspective — if you roll the die 
+600 billion billion times, it will come up 2 about 100 billion billion times (assuming it doesn't break). 
+In a way, this is silly and circular: we're defining probabilities by the Law of Large Numbers? 
+What could we possibly extend this to densities? If we throw a dart 100 billion billion times, 
+it will most likely hit a given spot 0 times. \\ 
+
+The more prudent \& careful approach is to think about the universe of possible events, and assign
+sizes to suitable subsets of those events. Formally, the universe is given by $\Omega$. In the case of the dice 
+roll, you could think of $\Omega$ as describing every outcome in every instantiation of this dice roll in the 
+multiverse. The amount of information captured by $\Omega$ could be aribtrary - it could contain the outcome of the 
+dice roll, the weather, and what you get for Christmas. But for our game of Monopoly, we don't really care 
+about \emph{everything}. Hence we consider a family of subsets of interest $\F$. For example, $\F$ might consist of 
+the event a 1 is rolled, a 2 is rolled, and all combinations of these. Even if the set of possibilities where a 1 is rolled 
+can be further split up by weather, we essentially turn a blind eye to these distinctions. In our case, 
+$\F$ is called a $\sigma$-algebra ("sigma algebra") and has the sensible closure properties. 
+
+\begin{definition}[$\sigma$-algebra] \label{def:sigma algebra} A family of subsets $\F$ of $\Omega$ is called a $\sigma$ algebra if,
+\begin{itemize}
+    \item $\emptyset \in \F, \Omega \in \F$
+    \item Closure under complement: For all $A \in \F$, $A^c \in \F$ as well
+    \item Closure under countable union: If $\{A_i\}_{i \in I}$ is a countable set such that $A_i \in \F$ for all $i \in I$, then 
+        $\cup_{i \in I}A_i \in \F$ as well
+\end{itemize}
+\end{definition}
+
+One can verify that these properties imply $\sigma$-algebras are also closed under countable union. These 
+requirements are quite natural when considering the operations we normally do in probability.\\
+
+Finally, we need a 
+machine which computes sizes. This is done through a so-called \emph{measure} $\mu$. 
+So in the dice roll, $\{\text{roll a 6}\} \in \F$, and $\mu(\{\text{roll a 6}\}) = 1/6$.
+Formally, $\mu$ can be 
+regarded as a set $\mu : \F \to \mathbb R^+$. Note that, in the probabilistic case, 
+$\mu(\Omega) = 1$ (tee size of everything is $1$), but this need not be true in general. In fact, we 
+will consider a notable exception: the Lebesgue measure. The necessary properties of 
+$\mu$ pair nicely with the definition of a $\sigma$-algebra. In short, we require nonnegative 
+sizes, the size of nothing to be $0$, and that the sizes of non-overlapping things adds.
+
+\begin{definition}[Measure] A measure on $\F$ is a function $\mu : \F \to \mathbb R$ such that, 
+    \begin{itemize}
+        \item For all $A \in \F, \mu(A) \geq 0$
+        \item $\mu(\emptyset) = \emptyset$
+        \item If $\{A_i\}_i$ are countable in $\F$ and pairwise disjoint, then $\mu(\cup_{i \in I}A_i ) = \sum_{i \in I}\mu(A_i)$
+    \end{itemize}
+\end{definition}
+
+In particular, if $\mu(\Omega) = 1$, $\mu$ is a \emph{probability measure}.
+Hopefully, the first two conditions are clear and well-motivated. For the last one, we are simply requiring something like 
+$\mu(\{\text{roll a 1} \cup \{\text{roll a 2}\}\}) = \mu(\{\text{roll a 1}\}) + \mu(\{\text{roll a 2}\})$. There are a few 
+special cases worth familiarizing ourselves with: probability measures $\subseteq$ finite measures $\subseteq$ $\sigma$-finite measures: 
+
+\begin{definition}
+    If $\mu(\Omega) < \infty$, then $\mu$ is finite.
+\end{definition}
+
+\begin{definition}
+    If $\mu(\Omega) < \infty$, then $\mu$ is a probability measure.
+\end{definition}
+
+\begin{definition}
+    If $\Omega = \cup_{i \in I}A_i$, such that $I$ is countable and each $A_i \in \F$ but 
+    $\mu(A_i) < \infty$, then $\mu$ is $\sigma$-finite
+\end{definition}
+
+\begin{definition}[Measure Space] \label{def:measure space} A measure space is  a triple $(\Omega, \F, \mu)$ where 
+    $\F$ is a $\sigma$-algebra of subsets of $\Omega$, and $\mu$ is a measure on $\F$
+\end{definition}
+
+\section{$\sigma$-algebras and Generating Sets}
+
+Suppose $\E$ is a family of subsets of $\Omega$ (now, we make no assumptions on the 
+nature of $\E$). We say the $\sigma$-algebra generated by $\E$, denoted $\sigma(\E)$ is 
+the smallest $\sigma$-algebra containing $\E$: 
+
+\[ \sigma(\E) = \bigcap_{\text{$\sigma$-algebras } \F s.t. \E \subseteq \F}\F \]
+
+In this sense, $\E$ can be thought of as the atoms of $\Omega$ from which we build 
+molecules in $\mathcal F$. As we will see, these atoms need not be unique. For example, if 
+$\Omega = \{1,2,3,4,5,6\}$, if $\E = \{\{1\},\{2\},\{3\}...\{6\}\}$, then $\sigma(\E) = \Power(\Omega)$, the 
+full power set. However, if $\E = \{\{1,2,3\}, \{4,5,6\}\}$, then the resulting structure has a ``lower resolution:''
+ $\sigma(\E) = \{\emptyset, \{1,2,3\},\{4,5,6\}, \Omega\}$. Note that the following 
+ intuitive properties hold: 
+
+ \begin{lemma}
+    Let $\E \subseteq \Power(\Omega)$. Then, 
+    \begin{itemize}
+        \item If $\E_1$ is a $\sigma$-algebra, then $\sigma(\E) = \E$ 
+        \item If $\E \subseteq \E'$, then $\sigma(\E) \subseteq \sigma(\E')$
+    \end{itemize}
+\end{lemma}
+
+\begin{proof}
+    Clearly, as $\E$ is a $\sigma$-algebra containing $\E$, 
+
+    \[ \sigma(\E) = \E \cap \bigcap_{\text{$\sigma$-algebras } \F s.t. \E \subseteq \F}\F \subseteq \E \]
+
+    Also, $\sigma(\E) \supseteq \E$ by definition. We conclude $\sigma(\E) = \E$. For the latter claim, 
+    we prove $\sigma(\E) \subseteq \sigma(\E')$ by considering arbitrary elements of 
+    $\sigma(\E)$. Suppose $A \in \sigma(\E)$. By definition, for all $\F$ containing $\E$, $A \in \F$. 
+    Note also that for all $\F'$ containing $\E'$, $\F'$ contains $\E$ as well, so $A \in \F'$. 
+    As a consequence $A \in \sigma(\E')$. Since $A$ was generic, $\sigma(\E) \subseteq \sigma(\E')$.
+
+
+\end{proof}
+
+
+\subsection{The Borel $\sigma$-algebra}
+
+It would be no overstatement to say the most often studied $\sigma$-algebra is the 
+Borel $\sigma$-algebra. In this case, $\Omega = \mathbb R$. 
+
+
+
+\end{document}
