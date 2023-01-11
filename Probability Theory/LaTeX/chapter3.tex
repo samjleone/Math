@@ -1,0 +1,374 @@
+
+\chapter{Measurable Functions and Integrating Functions}
+
+We will now devote ourselves to the study of functions acting on measure spaces. 
+First, we define what it means for a function to be measurable. Then, we build up 
+our study of how to integrate functions. Throughout the chapter, we let 
+$(\Omega, \F, \mu)$ be a fixed measure space.
+
+\section{Measurable Functions}
+
+\subsection{Intuition}
+
+Let us return to chapter 1. There, we said that $\Omega$ could be an incredibly rich 
+universe of possible events, but $\F$ is a subset of interest. For example, in a dice roll,
+$\Omega$ could differentiate the outcomes of the dice roll, the weather tomorrow, and 
+what you eat for lunch tomorrow. But we may let $\F = \sigma(\cup_{i=1}^6\{ \omega : \text{dice roll at $\omega$ is $i$}\})$ 
+be the $\sigma$-algebra which captures enough richness for our purposes. We think of measurable 
+functions as those which compose well with the set of events we care about. This is a sort of necessary 
+but sufficient condition for our study of probability.
+
+\begin{example}
+    Let $\Omega = \{1,2,3,4,5,6\}, \mathcal F = \sigma(\{\{1,2\},\{3,4\}, \{5,6\}\})$ and 
+    $\mu(\{1,2\}) = \mu(\{3,4\}) = \mu(\{5,6\}) = 1/3$. Finally, let $X(\omega) = 2\omega$.
+\end{example}
+
+In this example, $X$ is not measurable in some sense. Think about it. What is the probability that 
+$X = 2$? Our measure is underspecified! Just because we know $\mu(X \in \{2,4\}) = 1/3$ doesn't mean we can 
+determine $\mu(\{X \in 2\}) = \mu(\{1\})$. It could be that we have a biased die in which
+$\mu(\{1\}) = 3/24, \mu(\{2\}) = 1/24$. So what is the expected value of $X$? There really isn't 
+enough information! On the other hand, if $X = 1$ if $\omega \in \{1,2,3,4\}$ and is $0$ otherwise, 
+we can determine the expected value of $X$, because $X^{-1}(\{1\}) = \{1,2,3,4\} \in \F$; likewise, 
+$X^{-1}(\{0\}) = \{5,6\} \in \F$. 
+
+\subsection{Definition of Measurability}
+
+Suppose $(\Omega, \F, \mu)$ is a measure space and 
+    $(\mathcal X, \mathcal A)$ is a family of sets equipped with 
+    a $\sigma$-algebra.
+
+\begin{definition}\label{def:measurable}
+    A function $X : \Omega \to \mathcal X$ is said to be 
+    $\F / \mathcal A$ measurable, or simply measurable, if for all 
+    $A \in \mathcal A$, $X^{-1}(A) \in \mathcal F$. One may write 
+    $X : (\Omega, \F) \to (\mathcal X, \mathcal A)$.
+\end{definition}
+
+\begin{definition}
+    If $\mathcal X = \mathbb R, \mathcal A = \Borel$, the set of all $\F / \Borel$ measurable functions is 
+    denoted $\mathcal M(\Omega, \Borel)$. The set of all such nonnegative functions is 
+    $\mathcal M^+(\Omega, \Borel)$.
+\end{definition}
+
+\subsection{Determining Measurability}
+
+Certainly, we could check ~\ref{def:measurable} by simply taking 
+arbitrary elements of $\mathcal A$ and checking $X^{-1}(\mathcal A) \in \F$. 
+This may prove to be a difficult task, however. For example, recall from our previous study
+of the Lebesgue measure that $\Borel$ is complicated! We will show that 
+it suffices to check a generating class.
+
+\begin{theorem}\label{thm:measurable_sufficiency}
+    If $\mathcal A = \sigma(\E)$ and for all $E \in \E$, 
+    $X^{-1}(E) \in \F$, then $X$ is $\F / \mathcal A$ measurable.
+\end{theorem}
+
+\begin{proof}
+    We proceed via a generating class argument. Let, 
+
+    \[ \mathcal D = \{ A \in \mathcal A : X^{-1}(A) \in \F \} \]
+
+    We shall show that $\mathcal D$ is a $\sigma$ algebra. First, observe that 
+    $X^{-1}(\emptyset) = \emptyset \in \mathcal D$. Furthermore, if $A \in \mathcal D$, as 
+    $X^{-1}(A^c) = X^{-1}(A)^c$, $X^{-1}(A) \in \F$, and $\F$ is closed under complement, 
+    $A^c \in \mathcal D$. Thus $\mathcal D$ is closed under complement. Finally, suppose
+    $A_1, A_2... \in \mathcal D$. One can check that $X^{-1}\big( \cup_{i=1}^\infty A_i \big) = \cup_{i=1}^\infty X^{-1}(A_i)$.
+    And as each $X^{-1}(A_i) \in \F$, the whole countable union is as well. Thus, $\cup_{i=1}^\infty 
+    A_i \in \mathcal D$. We conclude that $\mathcal D$ has the desirable closure properties of a 
+    $\sigma$ algebra. \\ 
+
+    By assumption, $\mathcal E \subseteq \mathcal D$. Therefore, 
+    $\mathcal A = \sigma(\mathcal E) \subseteq \sigma(\mathcal D) = \mathcal D$. 
+    Also, $\mathcal D \subseteq \mathcal A$ by definition, so $\mathcal A = \mathcal D$. 
+    We conclude that $X$ is measurable.
+\end{proof}
+
+\subsection{Examples}
+
+If $\F = \mathcal B(\mathbb R^{n}), \mathcal A = \Boreld$ and $X$ is continuous, 
+then $X$ is measurable. It is a standard fact that continuous functions map open sets 
+to open sets, and the preimage of an open set is open. Thus, let $\mathcal G_n$ be the open sets of $\R^n$ and 
+$\mathcal G_d$ be the open sets of $\R^d$. Clearly, by this fact, for each 
+$E \in \mathcal G_d, X^{-1}(E) \in \mathcal G_n$. And since $\mathcal G_d$ generates 
+$\Boreld$, by theorem ~\ref{thm:measurable_sufficiency}, $X$ is measurable.
+
+\subsection{Properties}
+
+\begin{theorem}
+If $X : (\Omega, \F) \to (\mathcal X, \mathcal A)$ and $Y : (\mathcal X, \mathcal A)\to (\mathcal Y, \mathcal B)$, then 
+$Y \circ X : \Omega \to \mathcal Y$ is $\F / \mathcal B$ measurable.
+\end{theorem}
+
+\begin{proof}
+    This is perfectly straightforward to check using the definitions.
+\end{proof}
+
+\begin{theorem}
+    If $X, Y  \in \mathcal M(\Omega, \F)$ are both bounded and measurable, then 
+    so is $X + Y$ and $XY$
+\end{theorem}
+
+\begin{proof}
+    First, define $T = X + Y$. First, observe for any interval $(a,b)$,
+
+    \[ T^{-1}(a,b) = \{\omega : X(\omega) + Y(\omega) > a\} \cap \{\omega : X(\omega) + Y(\omega) < b\}  \]
+
+    Note that, 
+
+    \[ \{\omega : X(\omega) + Y(\omega) > a\} = \bigcup_{q \in \mathbb Q}\{\omega : X(\omega) > q\} \cap \{\omega : Y(\omega) > a - q\}\]
+    \[ = \bigcup_{q \in \mathbb Q} X^{-1}(q, \infty) \cap Y^{-1}(a-q,\infty)\]
+
+    Note that $X^{-1}(q, \infty) \in \F, Y^{-1}(a-q,\infty) \in F$ by measurability. 
+    And by closure properties of $\sigma$ algebras, the above is in $\F$. Likewise, 
+    $  \{\omega : X(\omega) + Y(\omega) < b\} \in \F$. Again, by closure under intersection, 
+    $T^{-1}(a,b) \in \F$. Since the open intervals generate $\Borel$, this is sufficient for measurability 
+    by theorem ~\ref{thm:measurable_sufficiency}.\\ 
+
+    Now, we show $XY$ is measurable in a somewhat similar fashion. We proceed like so: 
+    \begin{itemize}
+        \item Consider the map $T(\omega) = (X(\omega), Y(\omega))$ and 
+            $\psi(u,v) = uv$. Note $XY = \psi \circ T$.
+        \item As $\{ A \times B : A \in \Borel, B \in \Borel \}$ generates 
+                $\mathcal B(\R^2)$, and $X$ and $Y$ are measurable, $T$ is measurable. 
+                Why? Because, for $A,B \in \Borel$,
+
+                \[ T^{-1}(A \times B) = \underbrace{X^{-1}(A)}_{\in \F} \cap \underbrace{Y^{-1}(B)}_{\in \F} \in \F  \]
+
+                So by theorem ~\ref{thm:measurable_sufficiency}, this is sufficient to say that $T$ is measurable.
+
+        \item As $\psi : \R^2 \to \R$ is continuous, it is measurable
+        \item Thus, $XY$ can be regarded as the composition of measurable functions, so it is measurable.
+    \end{itemize}
+\end{proof}
+
+\begin{theorem}
+    If $X_1,X_2..$ is a sequence of measurable functions, then 
+    $X = \sup_i X_i$ is measurable.
+\end{theorem}
+
+\begin{proof}
+    Note intervals of the form $(a,\infty)$ generate $\Borel$. Furthermore, 
+
+    \[ X^{-1}(a,\infty) = \{ \omega : X(\omega) > a \}  = \bigcup_{i=1}^n X_i^{-1}(a,\infty) \]
+
+    Thus, $X^{-1}(a,\infty) \in \F$. Since these generate $\Borel$, we are done.
+\end{proof}
+
+\begin{theorem}
+    If $X_1,X_2..$ is a sequence of measurable functions, then 
+    $X = \inf_i X_i$ is measurable.
+\end{theorem}
+
+\begin{proof}
+    The proof is analogous.
+\end{proof}
+
+\begin{Proposition}
+    The $\lim\sup$ and $\lim\inf$ of measurable functions is measurable. 
+\end{Proposition}
+
+\begin{proof}
+    We will show the proof for the $\lim\sup$ case as the $\lim\inf$ case is analogous. 
+    Recall if $X_1,X_2...$ are measurable functions, then if $X = \lim\sup_i X_i$,
+
+    \[ X(\omega) = \inf_n \sup_{m \geq n} X_i(\omega) \]
+
+    As $\sup_{m \geq n} X_i(\omega)$ is measurable for each $n$, and the infimum of 
+    measurable functions is measurable, $X$ is measurable.
+\end{proof}
+
+\section{The Integral}
+
+We will now develop the notion of integrals of functions, from the ground up. 
+First, we begin with a measure space $(\Omega, \F, \mu)$. Think of integrals as functionals: 
+maps from the space of measurable functions to $\R$. While notation varies, we will 
+adopt two ways of denoting the integral of a function $X$ with respect to a measure 
+$\mu$:
+
+\[ \int X d\mu \hspace{1cm} \text{and} \hspace{1cm} \mu(X) \]
+
+While the $d\mu$ does relate to the $dx$ from Riemannian integration, ignore this for now. 
+Think of the $d\mu$ merely as a symbol which says we are integrating with respect to 
+$\mu$, rather than some other measure. 
+
+\subsection{Simple Functions}
+
+A simple function will be of the form, 
+
+\[ X(\omega) = \sum_{i=1}^n \alpha_i \Ind\{A_i\} \]
+
+Where each $\alpha_i \geq 0$ and $A_i \in \F$. For such an $X$, we will 
+define its integral like so:
+
+\[ \int X d\mu = \sum_{i=1}^n \alpha_i \mu(A_i) \]
+
+If $\mu(A_i) = \infty, \alpha_i = 0$, adopt the convention that 
+$\alpha_i \mu(A_i) = 0$ — this is the natural thing to do, as we don't want 
+our integral to depend on sets which don't contribute to our function. It remains to verify consistency.
+
+\begin{Proposition} 
+    Suppose that $X$ can be written as $X = \sum_{j=1}^m \beta_j \Ind\{B_j\} =  \sum_{i=1}^n \alpha_i \Ind\{A_i\}$. 
+Then, $\sum_{i=1}^n \alpha_i \mu(A_i) = \sum_{j=1}^m \beta_j \mu(B_j)$.
+And so, the integral of a simple function is a well-defined object.
+\end{Proposition}
+
+\begin{proof}
+
+Assume without loss of generality that $\cup_{j=1}^m B_j = \cup_{i=1}^n = A_i$. 
+Otherwise, we could simply consider $\sum_{i=1}^n \alpha_i \Ind\{A_i\} + 0 \cdot \Ind\{\Omega - \cup_{i=1}^n A_i \}$ 
+without changing $X$ or its integral. Furthermore, assume without loss of generality that the 
+$A_i$'s are disjoint, as are the $B_j$'s. Let $\gamma_{i,j} = X(\omega)$ for $\omega \in A_i \cap B_j$.First, note that $X$ can be written as: 
+
+\[ X = \sum_{i=1}^n \sum_{j=1}^m \alpha_i \Ind\{A_i \cap B_j\} =  \sum_{j=1}^m  \sum_{i=1}^n \beta_j \Ind\{B_j \cap A_i \} = \sum_{i=1}^n \sum_{j=1}^m \gamma_{i,j} \Ind\{A_i \cap B_j\}\]
+
+Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \beta_j$. And so,
+
+\[ \sum_{i=1}^n \alpha_i \mu(A_i) = \sum_{i=1}^n \sum_{j=1}^m \alpha_i \mu(A_i \cap B_j) \]
+\[ = \sum_{i=1}^n \sum_{j=1}^m \gamma_{i,j} \mu(A_i \cap B_j) =  \sum_{j=1}^m \sum_{i=1}^n\gamma_{i,j} \mu(A_i \cap B_j) \]
+\[ = \sum_{j=1}^m \sum_{i=1}^n\beta_j \mu(A_i \cap B_j) = \sum_{j=1}^m \beta_j \mu(B_j) \]
+
+\end{proof}
+
+\subsection{Properties of Integrals of Simple Functions}
+
+\begin{Proposition} 
+    $\int \alpha X + \beta Y d\mu = \alpha \int X d\mu + \beta \int Y d\mu$. Thus, the 
+    integral is a linear functional.
+\end{Proposition}
+
+\begin{proof}
+    Let, 
+
+    \[ X = \sum_{i=1}^n \alpha_i \Ind\{A_i\}, Y = \sum_{j=1}^m \beta_j \Ind\{B_j\} \]
+
+    Again, assume without loss of generality that the $A_i$'s are pairwise disjoint and 
+    span $\Omega$. Then, 
+
+    \[ \alpha X + \beta Y = \sum_{i=1}^n\sum_{j=1}^m (\alpha \alpha_i + \beta \beta_j)\Ind\{A_i \cap B_j\} \]
+
+    Thus,
+
+    \[ \int \alpha X + \beta Y d\mu  = \sum_{i=1}^n \sum_{j=1}^m (\alpha \alpha_i + \beta \beta_j)\mu(A_i \cap B_j)\]
+    \[ =  \sum_{i=1}^n \sum_{j=1}^m\alpha \alpha_i \mu(A_i \cap B_j) + \sum_{j=1}^m \sum_{i=1}^n \beta\beta_j \mu(A_i \cap B_j)  \]
+    \[ = \alpha \sum_{i=1}^n \alpha_i \mu(A_i) + \beta \sum_{j=1}^m \beta_j \mu(B_j) = \alpha \int X d\mu + \beta \int Y d\mu \] 
+\end{proof}
+
+    \subsection{Extension to All Measurable Functions}
+
+    For a general measurable function $X \in \Mfp$, we define its integral to be the highest among those 
+    simple functions which are less than $X$:
+
+    \[ \int X d\mu = \sup_{s_n \leq X \text{ simple}}  \int s_n d\mu \]
+
+    \begin{theorem}[This Integral is Nice]\label{thm:integral_properties}
+        Suppose $X$ and $Y$ are measurable functions. Then, 
+        \begin{enumerate}
+            \item $\int \alpha X + \beta Y d\mu = \alpha \int X d\mu + \beta \int Y d\mu$
+            \item If $X = Y$ almost everywhere, then $\int X d\mu = \int Y d\mu$.
+            \item If $X \leq Y$ almost everywhere, then $\int X d\mu \leq \int Y d\mu$
+        \end{enumerate}
+    \end{theorem}
+        \begin{proof}
+            \textbf{Proof of 1}:  Let $x_n, y_n$ be simple functions 
+            such that $\int X d\mu < \int x_n d\mu + 1/(2\alpha n)$, $\int Yd\mu < \int y_n d\mu + 1/(2\beta n)$. 
+            Then, note $\alpha X + \beta Y \geq \alpha x_n + \beta y_n$. So, 
+
+            \[ \int \alpha X + \beta Y d\mu \leq \int \alpha x_n + \beta y_nd\mu = \alpha \int x_n d\mu + \beta \int y_n d\mu \]
+            \[ \leq \alpha \bigg(\int Xd\mu + 1/(2\alpha n)\bigg) +  \beta \bigg(\int Y d\mu + 1/(2\beta n)\bigg)  \]
+            \[ = \alpha \int Xd\mu + \beta \int Y d\mu + 1/n \]
+
+            Taking $n \to \infty$, we have $\int \alpha X + \beta Y d\mu \leq\alpha \int Xd\mu + \beta \int Y d\mu$. For 
+            the reverse inequality, 
+
+            \[  \int \alpha X + \beta Y d\mu = \sup_n \bigg\{ \int z_n d\mu : z_n \leq \alpha X + \beta Y \bigg\} \]
+            \[ \geq \sup_n \bigg\{ \int \alpha x_n + \beta y_n d\mu : x_n \leq X, y_n \leq Y \bigg\}\]
+            Since $x_n, y_n$ can vary freely,
+            \[ =  \alpha \sup_n \bigg\{ \int x_n  d\mu : x_n \leq X \bigg\} + \beta \sup_n \bigg\{ \int  y_n  d\mu : y_n \leq Y \bigg\}  \]
+            \[ = \alpha \int X d\mu + \beta \int Y d\mu \]
+            Which gives the other side of the inequality. So we are done.\\
+
+            \textbf{Proof of 2:} Let $N = \{\omega : X(\omega) \neq Y(\omega)\}$. By assumption, 
+            $\mu(N) = 0$, so $N$ is negligible. Let $\tilde{X} = X\Ind\{N^c\}$. We show that 
+            $\int X d\mu = \int \tilde{X} d\mu$. It then follows from symmetry and the fact that 
+            $\tilde{Y} = \tilde{X}$ that the desired result is true. Note for any simple function $x = \sum_{i=1}^n \alpha_i \Ind\{A_i\}$, 
+
+            \[ \int x d\mu = \sum_{i=1}^n \alpha_i \mu(A_i) =  \sum_{i=1}^n \alpha_i \mu(A_i \cap N^c) = \int x\Ind\{N^c\} d\mu  \]
+
+            Thus, taking supremums, 
+
+            \[ \int Xd\mu = \sup\bigg\{\int xd\mu : x \leq X \bigg\} = \sup\bigg\{\int x \Ind\{N^c\}d\mu : x \leq X \bigg\} \] 
+            \[ = \sup\bigg\{\int x d\mu : x \leq X\Ind\{N^c\} \bigg\} = \int \tilde{Xd\mu} \]
+
+            And thus, 
+
+            \[ \int X d\mu = \int \tilde{X}d\mu = \int \tilde{Y}d\mu = \int Y d\mu \]
+
+            \textbf{Proof of 3:} First, suppose $X \leq Y$ everywhere. The property will hold by definition of supremum. Note since $X \leq Y$, 
+
+            \[ \int X d\mu = \sup\bigg\{ \int x : x \leq X\bigg\} \leq \sup\bigg\{ \int x : x \leq Y \bigg\} = \int Y d\mu \]
+
+            Now, if $X > Y$ on a negligible set $N$. Consider, $\tilde{X} = X\Ind\{N^c\}$. Then 
+            $\int \tilde{X}d\mu = \int X d\mu$ by property 2. And $\int \tilde{X}d\mu \leq \int Y d\mu$ by our earlier work, 
+            so we are done!
+        \end{proof}
+
+
+    \begin{definition}[Convergence Definitions]
+        We use the following conventions from here on: 
+        \begin{itemize}
+            \item Numbers: Say $a_1,a_2... \uparrow a$ if $a_1 \leq a_2...$ and $\lim_{n\to \infty}a_n = a$
+            \item Sets: Say $A_1, A_2 \uparrow A$ if $A_1 \subseteq A_2 \subseteq A_3$... and $\cup_{i=1}^\infty A_i  = A$
+            \item Sets: Say $A_1, A_2 \downarrow A$ if $A_1 \supseteq A_2 \supseteq A_3$... and $\cap_{i=1}^\infty A_i  = A$
+            \item Functions: Say $X_n \uparrow X$ if $X_n \leq X_{n+1}$ for all $n$ and $X_n \to X$ pointwise
+        \end{itemize}
+    \end{definition}
+
+    \begin{theorem}[The Monotone Convergence Theorem]
+        If $X_n \uparrow X$ pointwise almost everywhere, then $X$ is measurable and $\int X_n d\mu \uparrow \int X d\mu$
+    \end{theorem}
+
+    The monotone convergence theorem is a fundamental result in the theory of integration. 
+    To prove it, we will use the so called continuity of a measure: 
+
+    \begin{theorem}
+        If $A_n \downarrow \emptyset$, then $\mu(A_n) \downarrow 0$
+    \end{theorem}
+
+    \begin{proof}
+
+    \end{proof}
+
+    \begin{proof}
+        $X$ is the supremum of measurable functions, so it is measurable. Note that it suffices to prove this theorem if $X_n \uparrow X$ everywhere by Theorem ~\ref{thm:integral_properties}. 
+        First, for any finite $n$, $X_n \leq X$, so $\int X_n d\mu \leq \int X d\mu$. Taking the limit, we find, 
+        
+        \[ \lim_{n \to \infty}\int X_n d\mu \leq \int X d\mu \] 
+
+        So it remains to show the opposite inequality. Let $B_{n,m} = \{\omega : X_n \geq X \frac{m-1}{m}\}$. Note that, 
+
+        \[ \int X_n d\mu  = \int X_n B_{n,m} + \int X_n B_{n,m}^c \geq \frac{m-1}{m} \int X d\mu + \int X_n B_{n,m}^c  \]
+
+        \begin{Proposition} 
+            For all $m$, $\int X_n B_{n,m}^c \to 0$ as $n \to \infty$
+        \end{Proposition}
+
+        \begin{proof}
+           Obviously, this integral is decreasing in $n$. Thus, it simply remains to 
+           show that it can't get "stuck" above some $\epsilon$. First, observe that, 
+
+           \[ \mu(B_{n,m}^c) \to 0 \text{ as } n \to \infty \]
+
+           Since $B_{n,m}^c \to \emptyset$. 
+        \end{proof}
+
+        Thus, with the above, take $n \to \infty$: 
+
+        \[ \int X_n d\mu \geq \frac{m-1}{m} \int X d\mu + 0 \]
+
+        Now take $m \to \infty$: 
+
+        \[ \int X_n d\mu \geq \int X d\mu \]
+
+        And we are done.
+
+    \end{proof}

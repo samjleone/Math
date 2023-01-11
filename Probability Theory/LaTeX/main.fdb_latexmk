@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1673403011 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1673403013
-  "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" 1673375129 849 d457814c2677fbd92cd16a7d52405395 ""
+["pdflatex"] 1673461969 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1673461972
+  "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" 1673453275 1004 72c612c0e1bf13639f8ea8b241d7c2f7 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -54,6 +54,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb" 1248133631 37944 359e864bd06cde3b1cf57bb20757fb06 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb" 1248133631 35309 940e81a5b9e04201a07e8b33a3ae6e64 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb" 1215737283 138258 6525c253f16cededa14c7fd0da7f67b2 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha10.pfb" 1295482684 90043 a01ee69dbd537ea8a0835a2b4841a64e ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha5.pfb" 1295482684 96302 e91b1c31d3582d16775d0bf165963e92 ""
@@ -93,10 +94,11 @@
   "/usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1647878959 4410336 7d30a02e9fa9a16d7d1f8d037ba69641 ""
   "/usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt" 1659474690 2826428 b117f715816f488aa589d48c939d66fa ""
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
-  "chapter1.tex" 1673317761 9273 ad3434924aefc482ffe61fa09e7bf971 ""
-  "chapter2.tex" 1673403011 35690 f49b9fd37c7403e77852280dac8048a1 ""
-  "main.aux" 1673403013 2661 e425178c03e772875c2edf244f1cb048 "pdflatex"
-  "main.tex" 1673375129 849 d457814c2677fbd92cd16a7d52405395 ""
+  "chapter1.tex" 1673452688 9985 86a2557343377a3d8470f6bd2410c642 ""
+  "chapter2.tex" 1673403376 35690 f49b9fd37c7403e77852280dac8048a1 ""
+  "chapter3.tex" 1673461969 17775 5f5607702c9fb9191e93a4d535a0a5c6 ""
+  "main.aux" 1673461972 4314 f1b1605baa86fa27ffc1bfa65f9fbd76 "pdflatex"
+  "main.tex" 1673453275 1004 72c612c0e1bf13639f8ea8b241d7c2f7 ""
   (generated)
   "main.aux"
   "main.log"
