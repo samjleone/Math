@@ -1,6 +1,6 @@
 # Fdb version 3
-["pdflatex"] 1673461969 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1673461972
-  "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" 1673453275 1004 72c612c0e1bf13639f8ea8b241d7c2f7 ""
+["pdflatex"] 1673565603 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1673565606
+  "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" 1673534677 1063 faa850c1040dd9ab242cdbf8f41a367f ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -26,6 +26,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmsy6.tfm" 1136768653 1116 933a60c408fc0a863a92debe84b2d294 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmsy8.tfm" 1136768653 1120 8b7d695260f3cff42e636090a8002094 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmti10.tfm" 1136768653 1480 aa8e34af0eb6a2941b776984cf1dfdc4 ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/cm/cmti7.tfm" 1136768653 1492 86331993fe614793f5e7e755835c31c5 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/mathabx/matha10.tfm" 1221438877 1372 84a1ef28ab0d13263326e8d7d854aaa0 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/mathabx/matha12.tfm" 1221438877 1380 ceb7b5923e3abb0aafa2e35608b22d77 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/tfm/public/mathabx/matha5.tfm" 1221438877 1376 3c8e757aef7f6d15ffd501faa8bb2960 ""
@@ -45,6 +46,7 @@
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb" 1248133631 36741 fa121aac0049305630cf160b86157ee4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb" 1248133631 37912 77d683123f92148345f3fc36a38d9ab1 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb" 1248133631 36281 c355509802a035cadc5f15869451dcee ""
+  "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb" 1248133631 35469 70d41d2b9ea31d5d813066df7c99281c ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb" 1248133631 35752 024fb6c41858982481f6968b5fc26508 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb" 1248133631 32722 d7379af29a190c3f453aba36302ff5a9 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb" 1248133631 32362 179c33bbf43f19adbb3825bb4e36e57a ""
@@ -96,9 +98,9 @@
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "chapter1.tex" 1673452688 9985 86a2557343377a3d8470f6bd2410c642 ""
   "chapter2.tex" 1673403376 35690 f49b9fd37c7403e77852280dac8048a1 ""
-  "chapter3.tex" 1673461969 17775 5f5607702c9fb9191e93a4d535a0a5c6 ""
-  "main.aux" 1673461972 4314 f1b1605baa86fa27ffc1bfa65f9fbd76 "pdflatex"
-  "main.tex" 1673453275 1004 72c612c0e1bf13639f8ea8b241d7c2f7 ""
+  "chapter3.tex" 1673565602 42862 5113af6858e24cc0c59105463c53214e ""
+  "main.aux" 1673565606 6021 e19e86ca0d7e720eb22e889dfabb39ed "pdflatex"
+  "main.tex" 1673534677 1063 faa850c1040dd9ab242cdbf8f41a367f ""
   (generated)
   "main.aux"
   "main.log"

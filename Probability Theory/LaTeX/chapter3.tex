@@ -323,52 +323,539 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
         \end{itemize}
     \end{definition}
 
-    \begin{theorem}[The Monotone Convergence Theorem]
-        If $X_n \uparrow X$ pointwise almost everywhere, then $X$ is measurable and $\int X_n d\mu \uparrow \int X d\mu$
-    \end{theorem}
-
     The monotone convergence theorem is a fundamental result in the theory of integration. 
     To prove it, we will use the so called continuity of a measure: 
 
     \begin{theorem}
-        If $A_n \downarrow \emptyset$, then $\mu(A_n) \downarrow 0$
+        If $A_n \downarrow \emptyset$ with at least one $\mu(A_i) < \infty$, then $\mu(A_n) \downarrow 0$. 
+        Also, if $A_n \uparrow A$, then $\mu(A_n) \uparrow \mu(A)$.
     \end{theorem}
 
     \begin{proof}
+        Assume WLOG that $\mu(A_1) < \infty$. Let $B_1 = A_1 \setminus A_2, B_2 = A_2 \setminus A_3$, and so on: $B_i = A_{i-1} \setminus A_i$. 
+        It's clear that $\cup_i B_i = A_1$. Thus, by countable additivity,
+        
+        \[ \mu(A_1) = \sum_{i=1}^\infty \mu(B_i) \]
+
+        On the other hand, 
+
+        \[ \mu(A_1) = \sum_{i=1}^n \mu(B_i) + \sum_{i=n+1}^\infty \mu(B_i) = \sum_{i=1}^n \mu(B_i) + \mu(A_n) \]
+
+        Taking $n \to \infty$, it must be that $\sum_{i=1}^n \mu(B_i) \to \mu(A_1)$. And thus, for equality to hold, 
+        $\mu(A_n) \downarrow 0$. The proof of the second statement works in much the same way.
+    \end{proof}
+
+    \begin{theorem}[The Monotone Convergence Theorem]
+        If $X_n \uparrow X$ pointwise almost everywhere, then $X$ is measurable and $\int X_n d\mu \uparrow \int X d\mu$
+    \end{theorem}
+
+    \begin{proof}
+        
+        First, assume without loss of generality that $X_n \uparrow X$ everywhere, as theorem ~\ref{thm:integral_properties} would readily 
+        imply the desired result. Also, the measurability of $X$ has already been proven, as it is the $\sup$ of measurable 
+        functions. Furthemore, for any $n$, $\int X_n d\mu \leq \int X d\mu$ as $X_n \leq X$. So taking 
+        $n \to \infty$, we find $\lim_n \int X_n d\mu \leq \int X d\mu$. It remains to show that 
+        $\lim_n \int X_n d\mu \geq \int X d\mu$. Indeed, let $X_m$ be a sequence of simple 
+        functions such that $\int X_m d\mu > \int X - 1/m$. Now define $X_{n,m} = X_m (1-\frac{1}{m})\Ind\{X_n \geq (1-\frac{1}{m}X_m)\}$.
+        Note that $X_{n,m}$ is simple, and $X_{n,m} \leq X_n$. And thus, 
+        \[ \int X_{n,m} d\mu \leq \int X_n d\mu \]
+        Now assume that $X_m = \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m}\}$ so that $X_{n,m} = (1-\frac{1}{m}) \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m) \} \}$.
+        Thus, 
+        \[ \int X_n d\mu \geq (1-\frac{1}{m}) \sum_{i=1}^{n_m}\alpha_{i,m} \mu(\{A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m) \} \}) \] 
+        Taking $n \to \infty$, the continuity of measures implies that $A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m)\} \uparrow A_{i,m}$. Thus, 
+
+        \[ \lim_{n \to \infty} \int X_n d\mu \geq (1-\frac{1}{m}) \int X_m d\mu \geq (1 - \frac{1}{m}) \bigg( \int X d\mu - \frac{1}{m} \bigg)\] 
+
+        Taking $m \to \infty$, we are done!
 
     \end{proof}
 
+    \subsection{Integrals of More General Functions}
+
+    Our last iteration of building the integral is that for possibly negative functions. 
+    For $X \in \Mf$, let $X^+ = X\Ind\{X \geq 0\}$ and $X^- = |X|\Ind\{X \leq 0\}$. It follows that 
+    $X = X^+ - X^-$. If at least one of $\int X^+d\mu, \int X^- d\mu$ is finite, we define $\int X d\mu
+     = \int X^+ d\mu - \int X^- d\mu$. Otherwise, the integral is not defined. If the quantity is finite, the 
+     function is said to be integrable.
+      One can easily verify the 
+    same niceness properties as before by splitting arbitrary functions into their positive and negative parts. 
+
+    \section{Limit Theorems}
+
+    \subsection{Fatou's Lemma}
+
+    Fatou's Lemma is a relatively simple theorem to prove which will allow us 
+    to prove many limit results down the road. 
+
+    \begin{lemma}[Fatou's Lemma]
+        For $\{X_n\}_n \in \Mfp$, $\int \lim\inf_n X_n d\mu \leq \lim\inf \int X_n d\mu$. 
+    \end{lemma}
+
     \begin{proof}
-        $X$ is the supremum of measurable functions, so it is measurable. Note that it suffices to prove this theorem if $X_n \uparrow X$ everywhere by Theorem ~\ref{thm:integral_properties}. 
-        First, for any finite $n$, $X_n \leq X$, so $\int X_n d\mu \leq \int X d\mu$. Taking the limit, we find, 
+        First, to remember this inequality, think of the $\lim\inf$ of a function 
+        as containing many more degrees of freedom than the $\lim\inf$ of the integral, 
+        and thus we are lower. Note first that, for all $n$, $\inf_n X_n \leq X_n$. 
+        Define $Y_m = \inf_{n \geq m} X_n$. The monotone convergence theorem implies, 
+
+        \[ \lim_{m \to \infty} \int Y_m = \int \sup Y_m \]
+
+        And thus, substituting our definitions, 
+
+        \[  \lim_{m \to \infty}  \int \inf_{n \geq m} X_n d\mu = \int \sup_m \inf_{n \geq m} X_n  = \int \lim\inf_n X_n d\mu \]
+
+        Note also that for all $m$, $Y_m \leq X_m$. Thus, 
+
+        \[  \lim\inf_m \int Y_m d\mu \leq \lim\inf_m \int X_m d\mu \]
+
+        But when a limit exists, it is equal to the $\lim\inf$, so,
+
+        \[\int \lim\inf_n X_n d\mu  =  \lim\inf_m \int Y_m d\mu \leq \lim\inf_m \int X_m d\mu \]
+
+        And we're done!
+
+    \end{proof}
+
+
+    \subsection{The Dominated Convergence Theorem}
+
+    Next comes one of the most important results yet! It comes up time and time again and is 
+    arguably the most general tool or interchanging limits. 
+
+    \begin{theorem}[The Dominated Convergence Theorem]
+        Let $X_n$ converge pointwise to a function $X$ almost everywhere. 
+        Assume $|X_n| \leq Y$ for some integrable function $Y$. Then 
+        $\lim_n \int X_n d\mu = \int X d\mu$.
+    \end{theorem}
+
+    \begin{proof}
+        As $Y$ is integrable, each $X_n$ is integrable. Furthermore, 
+        $Y - X_n, Y + X_n$ are integrable and nonnegative, by the tringle inequality. Therefore, 
+
+        \[  \int \lim\inf_n(Y - X_n) d\mu \leq \lim\inf_n\int(Y - X_n) d\mu \]
+        \[  \int \lim\inf_n(Y + X_n) d\mu \leq \lim\inf_n \int(Y + X_n) d\mu \]
+
+        By linearity of the integral and the $\lim\inf$, this implies,
+
+        \[ \int \lim\inf_n (-X_n) d\mu \leq  \lim\inf_n \bigg(-\int X_nd\mu\bigg) \]
+        \[ \int \lim\inf_n X_n  d\mu \leq \lim\inf_n \int X_n d\mu \ \]
+
+        Note the first line is equivalent to, 
+
+        \[ \int \lim\sup_n X_n d\mu \geq \lim\sup_n \int X_n d\mu  \]
+
+        But we assumed that $X_n$ converges, so $\lim\inf_n X_n = \lim\sup_n X_n = X$. Combining, 
+        we obtain, 
+
+        \[ \lim\sup_n \int_n X_n d\mu \leq \int X d\mu \leq \lim\inf_n \int X_n d\mu \]
+
+        But obviously, $\lim\sup_n \int_n X_n \geq \lim\inf_n \int_n X_n$. This forces their 
+        equality, and thus the assertion follows as claimed.
+
+        \subsection{Application: Differentiation Under the Integral}
+
+        Oftentimes, you will see something of the essence of: 
+
+        \[ \frac{\partial}{\partial t} \int f(x,t)dx =\int \frac{\partial}{\partial t}  f(x,t)dx \]
+
+        How could this be true? It could be easily understood as an application of the dominated convergence theorem. 
+        Indeed, consider for some $n$, 
+
+        \[ X_{n,t}(x) = n(f(x,t + 1/n) - f(x,t)) \]
+
+        It is clear to see that, for fixed $x$, $\lim_{n \to \infty}X_n(x,t) = \frac{\partial}{\partial t}f(x,t)$. 
+        Thus, the tempting interchange of limits is:
+
+        \[ \int \frac{\partial}{\partial t}f(x,t) dx = \int \lim_n X_{n,t} dx = \lim_n \int X_{n,t} dx = \lim_n \int X_{n,t} dx \]
+        \[ = \lim_n n \bigg(\int f(x,t+1/n)dx - \int f(x,t)dx\bigg) = \frac{\partial}{\partial t} \int f(x,t)dx \]
+
+        How do we make this rigorous? Well first obesrve that, in a way, this is a claim about 
+        differentiation at each $t$. So fix $t$. For dominated convergence, we require that
+        $X_{n,t}$ be dominated by an integrable function $Y_t(x)$, where this function is allowed to depend on 
+        $t$, (but not on $n$ — so there is some dependence on $t$). If $f$ is continuously differentiable with respect to 
+        $t$, it suffices to bound $\frac{\partial}{\partial t}f(x,t)$ at $t$, since then this can be extended to a more 
+        local bound. Of course, nothing is stopping us from collecting our bounding functions into 
+        a function of two variables. Summarizing our analysis into a theorem, we have: 
+
+        \begin{theorem}
+            Let $f(x,t) : \R^2 \to \R$ be a function which is continuous differentiable in an open set with respect to 
+            $t$. Suppose there exists a function $F(x,t)$ which is integrable for fixed $x$ and 
+            $|\frac{\partial}{\partial t}f(x,t)| \leq F(x,t)$. Then, $\frac{\partial}{\partial t} \int f(x,t)dx =\int \frac{\partial}{\partial t}  f(x,t)dx$ 
+            for all $t$.
+        \end{theorem}
+
+    \end{proof}
+
+    \section{The Borel Cantelli Lemma}
+
+    This is a bit of an aside about a probabilistic technique that will come up often. It works very simply. 
+
+    \begin{definition} 
+        As a matter of notation, for a countable family of sets $A_1,A_2...$, define, 
+
+        \[ \{A_n \: i.o. \} = \bigcap_{n=1}^\infty \bigcup_{m=n}^\infty A_m = \{ \omega : \omega \text{ in infinitely many } A_n \} \]
+
+        This set can be understood as those events which occur ``infinitely" often in the sequence $A_1,A_2..$
+    \end{definition}
+    \begin{lemma}[The Borel Cantelli Lemma (Part 1)]
+        Let $(\Omega, \F, \mathbb P)$ be a probability space. Then if 
+        $\sum_{n=1}^\infty \mathbb P(A_n) < \infty$, $\mathbb P(\{A_n \: i.o.\}) = 0$.
+    \end{lemma}
+
+    \begin{proof}
+        Note if $\sum_n \mathbb P(A_n) < \infty$, then $\mathbb P(A_n) \to 0$. Additionally, 
+        $\lim_n \sum_{m=n}^\infty \mathbb P(A_m) \to 0$. And thus, for any $n$,
+        \[ \mathbb P\{A_n \: i.o.\} \leq \mathbb P\{\bigcup_{m=n}^\infty A_m\} \leq \sum_{m = n}^\infty \mathbb P(A_m) \]
+        Taking $n \to \infty$, the right hand side becomes $0$. This proves part 1 of the lemma. We will 
+        be able to prove a converse in a Part 2 once we introduce notions of independence.
+    \end{proof}
+
+    \section{Special Case: Expectations}
+
+    When $\mu = \mathbb P$ is a probability measure, the corresponding integral corresponds to an expectation. 
+    In this, we write, 
+
+    \[ \int X d\Prob = \mathbb E[X] \]
+
+    We will typically adopt the latter when the measure is unambiguous. 
+
+    \section{Convexity}
+
+    \subsection{Convex Combinations}
+
+    Recall that a convex function $f : U \to V$, where $U,V \subseteq \mathbb R$, has the property that for all 
+    $x,y \in U, \lambda \in [0,1]$,
+
+    \[ f(\lambda x + (1-\lambda) y) \leq \lambda f(x) + (1-\lambda) f(y) \]
+
+    Note that $\lambda$ and $1-\lambda$ provide a so called \emph{convex combination} of numbers. 
+    In general, $a_1, a_2...a_n$ is called a convex combination if $a_i > 0$ for all $i$ and 
+    $\sum_{i=1}^n a_i = 1$. One can easily verify that the above relation holds for more 
+    general convex combinations: 
+
+    \begin{lemma}
+        Let $a_1..a_n$ be a convex combination with $x_1,x_2...x_n \in U$. Then, 
+        $f(\sum_{i=1}^n a_i x_i) \leq \sum_{i=1}^n a_i f(x_i)$.
+    \end{lemma}
+    
+    \begin{proof}
+        We proceed by induction. The $n=2$ case is the direct definition of convexity. 
+        Now suppose the $n-1$ case is true. First, suppose $0 < a_n < 1$; otherwise, the 
+        inductive step is trivial. We have,
+
+        \[ f(\sum_{i=1}^n a_i x_i) = f(\sum_{i=1}^{n-1} a_i x_i + a_n x_n) \]
+        \[ = f((1-a_n)\sum_{i=1}^{n-1} \frac{a_i}{1-a_n} x_i + a_n x_n) \]
+        We recognize $a_n$ and $1-a_n$ as a convex combination, and so, 
+        \[ \leq a_n f(x_n) + (1-a_n) f(\sum_{i=1}^{n-1} \frac{a_i}{1-a_n} x_i) \] 
+        We now recognize $\frac{a_1}{1-a_n}... \frac{a_{n-1}}{1-a_n}$ as a convex 
+        combination. And so, 
+        \[ \leq a_n f(x_n) + (1-a_n)\sum_{i=1}^{n-1} \frac{a_i}{1-a_n}f(x_i) = \sum_{i=1}^n a_i f(x_i) \]
+        This proves the lemma.
+
+    \end{proof}
+
+    \begin{corollary}\label{cor:cool_log_property}
+        If $a_1..a_n$ is a convex combination and $x_1...x_n > 0$, then, 
+        \[ \log(a_1x_1 + .. a_nx_n) \geq a_1\log(x_1) + ... + a_n\log(x_n) \]
+    \end{corollary}
+    \begin{proof}
+        This follows from the convexity of $-\log$.
+    \end{proof}
+
+    Another fact about convex functions, which we will not prove, is that they are continuous.
+
+    \subsection{Jensen's Inequality}
+
+    Note that there is some sense in which a probability distribution provides a sort of 
+    generalized convex combination. From the above, it follows that if $X$ is a discrete random variable with 
+    state space $\Omega = \{x_1...x_n\}$, then: 
+
+    \[ \mathbb E[f(X)] = \sum_{i=1}^n f(x_i) \mathbb P\{X = x_i\} \]
+    \[ f(\mathbb E(X)) = f\bigg(\sum_{i=1}^n x_i \mathbb P\{X = x_i\} \bigg) \]
+
+    Note that we recognize $\mathbb P\{X = x_1\}... \mathbb P\{X=x_n\}$ as a convex combination. 
+    And thus, 
+
+    \[ f(\mathbb E[X]) \leq \mathbb E[f(X)]  \]
+
+    The same is true more generally. 
+
+
+    \begin{theorem}[Jensen's Inequality]
+        Let $(\R, \Borel, \mathbb P)$ be a probability space and 
+        $f$ be a convex function. Then, $f(\mathbb E[X]) \leq \mathbb E[f(X)]$. 
+    \end{theorem}
+
+    \begin{proof}
         
-        \[ \lim_{n \to \infty}\int X_n d\mu \leq \int X d\mu \] 
+        Bear in mind the finite case provided earlier. Intuiviely, you might imagine that 
+        the more general case is true by continuity. But to offer a reasonably concise proof, 
+        we will use another property of convex functions. A convex function $f$ has, at each $x$, 
+        a support line $\ell_x$ such that $\ell_x(x) = f(x)$, and $\ell_x \leq f$ everywhere. 
+        So let $x_0 = \mathbb E[X]$ and let $\ell$ be the support line at $x_0$. If we let 
+        $\ell(x) = ax + b$, it's clear that $\mathbb E[\ell(X)] = a \mathbb E[X] + b = \ell(x_0)$. 
+        But by the decreasing property, $\mathbb E[\ell(X)] \leq \mathbb E[f(X)]$. Putting this all 
+        together, we find,
 
-        So it remains to show the opposite inequality. Let $B_{n,m} = \{\omega : X_n \geq X \frac{m-1}{m}\}$. Note that, 
+        \[ f(\mathbb E[X]) = f(x_0) = \ell(x_0) = \mathbb E[\ell(X)] \leq \mathbb E[f(X)] \]
 
-        \[ \int X_n d\mu  = \int X_n B_{n,m} + \int X_n B_{n,m}^c \geq \frac{m-1}{m} \int X d\mu + \int X_n B_{n,m}^c  \]
+    \end{proof}
+
+    \subsection{Hölder's Inequality}
+
+    Conventional proofs of Hölder's Inequality typically rely 
+    on Young's Inequality. While these are generally faster, I think they 
+    are slightly less intuitive. Let us actually prove a general statement, 
+    from which Hölder's Inequality is a corollary. 
+
+    \begin{theorem}
+        Let $X_1...X_n$ be nonnegative measurable functions and 
+        $a_1...a_n$ be a convex combination. Then, 
+
+        \[ \int\bigg(\prod_{i=1}^n X_i^{a_i}\bigg)d\mu \leq \prod_{i=1}^n \bigg(\int X_i d\mu \bigg)^{a_i}  \]
+    \end{theorem}
+
+    \begin{proof}
+        It is simple to check that if $\bigg(\int X_i d\mu \bigg) = 0$ or $\infty$ for any 
+        $i$, then the corresponding inequality is trivial. Otherwise, assume all relevant integrals 
+        are finite and nonzero. We will first reduce the inequality to something simpler
+
+        \[ \int \prod_{i=1}^n \bigg(\frac{X_i}{\int X_i d\mu} \bigg)^{a_i}d\mu  \leq 1 \]
+
+        So define $Y_i = \frac{X_i}{\int X_i d\mu}$. Clearly, each $Y_i$ integrates 
+        to $1$. It remains to show that $\int \prod_{i=1}^n Y_i^{a_i} d\mu \leq 1$. Indeed, 
+        we can check that, by the Corollary ~\ref{cor:cool_log_property},
+        
+        \[ \prod_{i=1}^n Y_i^{a_i} = \exp\bigg(\log\bigg(\prod_{i=1}^n Y_i^{a_i}\bigg) \bigg)= \exp\bigg( \sum_{i=1}^n a_i \log(Y_i) \bigg) \]
+        \[ \leq \exp\bigg(\log\bigg(\sum_{i=1}^n a_i Y_i \bigg)\bigg) = \sum_{i=1}^n a_i Y_i \]
+
+        The above is only rigorous when $\prod_{i=1}^n Y_i^{a_i} > 0$, but the inequality still 
+        holds trivially when $\prod_{i=1}^n Y_i^{a_i} = 0$. And so, by 
+        monotonicity, 
+
+        \[ \int \prod_{i=1}^n Y_i^{a_i} d\mu \leq \int \sum_{i=1}^n a_i Y_i d\mu = \sum_{i=1}^n a_i \int Y_i d\mu = 1 \]
+
+        Which completes the proof.
+
+    \end{proof}
+
+    \begin{corollary}[Hölder's Inequality]
+        If $p,q > 0$ s.t $1/p + 1/q = 1$, then for all measurable 
+        $f$ and $g$, 
+
+        \[ \int |fg|d\mu \leq \bigg( \int |f|^p  d\mu  \bigg)^{1/p}\bigg( \int |g|^q d\mu  \bigg)^{1/q} \]
+    \end{corollary}
+
+    \begin{proof}
+        Let $X_1 = |f|^{p}$ and $X_2 = |g|^{q}$.
+    \end{proof}
+
+    \begin{corollary}[The Cauchy-Schwarz Inequality]
+        If $f$ and $g$ are measurable, then, 
+
+        \[ \int |fg|d\mu \leq \bigg( \int f^2  d\mu  \bigg)^{1/2}\bigg( \int g^2 d\mu  \bigg)^{1/2} \]
+
+    \end{corollary}
+
+    \begin{proof}
+        Apply Hölder's Inequality with $p = q = 2$.
+    \end{proof}
+
+    \section{Hilbert Spaces and $\El^p$ Spaces}
+
+    The theory of Hilbert Spaces is quite general and far-reaching. A Hilbert space can 
+    be thought of as a generalization of Euclidean space, which includes the vector space 
+    $\mathbb R^n$ and the Euclidean dot product. More generally, a Hilbert Space is a vector 
+    space $\mathcal H$ with an inner product $\langle \cdot , \cdot \rangle$ which induces a 
+    complete metric space. Recall an inner product is a map $\mathcal H \times \mathcal H \to \mathbb C$ which 
+    satisfies, 
+
+    \begin{itemize}
+        \item $\langle f, g \rangle = \overline{\langle g,f \rangle}$
+        \item $\langle af_1 + bf_2, g \rangle = a \langle f_1, g \rangle + b \langle f_2, g \rangle$
+        \item $\langle f, f \rangle \geq 0$
+    \end{itemize}
+
+    Where $\bar{\cdot}$ denotes complex conjugation. For our purposes though, we can ignore 
+    this distinction. If the inner product is a map to $\mathbb R$, we find it is symmetric and linear 
+    in both its arguments. The norm induced by the inner product is: $\|f\| = \sqrt{\langle f,f \rangle}$. 
+
+    \subsection{The $\El^p$ Spaces}
+
+    Recall from our study of 
+    measurable functions that linear combinations of measurable functions 
+    are measurable. It is not hard to see from this that measurable functions constitute 
+    a vector space. In this space, we define the norm,
+
+    \[ \|X\|_p = \bigg(\int X^p d\mu \bigg)^{1/p} \]
+
+    We show that this operation does induce a valid norm, and we construct the corresponding 
+    Hilbert space. We now prove the triangle inequality, which is a crucial step to verifying that 
+    we have a valid norm on our hands. A first step to realize is that, 
+    in the language of norms, Hölder's Inequality states that $|XY| \leq \|X\|_p\|Y\|_q$.
+
+    \begin{theorem}[Minkowski's Inequality]
+        The triangle equality holds in the norm $\|\cdot\|_p$: 
+
+        \[ \|X + Y\|_p < \|X\|_p + \|Y\|_p \] 
+
+    \end{theorem}
+
+    \begin{proof}
+        We proceed in the usual fashion. For now, assume that 
+        $0 < p < \infty$. The other cases are trivial. First, observe that 
+        $f(x) = x^p$ is convex for $x \geq 0$. And thus, for any 
+        $x,y$, $|x + y|^p = |\frac{1}{2}(2x) + \frac{1}{2}(2y)|^p \leq 
+        \frac{1}{2}|2x|^p + \frac{1}{2}|2y|^p = 2^{p-1}(|x| + |y|)$. Note 
+        the same will hold true using $1/p$.
+
+        \[ \|X+Y\|_p = \bigg(\int |X + Y|^p d\mu \bigg)^{1/p} \leq 2^{\frac{p-1}{p}} \bigg( \int|X|^p + |Y|^p d\mu \bigg)^{1/p} \]
+        \[ = 2^{1 - \frac{1}{p}} \bigg( \|X\|_p^p + \|Y\|_p^p \bigg)^{1/p} \leq 2^{1-\frac{1}{p}} \bigg( \frac{1}{2} (2\|X\|_p^p)^{1/p} + \frac{1}{2} (2\|Y\|_p^p)^{1/p} \bigg) \]
+        \[ = 2^{1- \frac{1}{p}} \bigg(2^{\frac{1}{p} - 1}\|X\|_p + 2^{\frac{1}{p} - 1}\|Y\|_p  \bigg) = \|X\|_p + \|Y\|_p \]
+
+        To now address the $p \in \{0,\infty\}$ cases, recall that, 
+
+        \[ \|X\|_0 = \mu(\{|X| \geq 0 \}) \hspace{0.5cm} \|X\|_\infty = \text{ess-}\sup |X| \]
+
+        Where the ess-sup is defined as the smallest supremum of all functions $Y$ equal to $X$ almost everywhere:
+
+        \[ \text{ess-}\sup X = \inf_{Y = X \: a.e.}\sup Y \]
+        
+        So then, by subadditivity,
+
+        \[ \|X + Y\|_0 = \mu(\{|X| \geq 0\} \cup \{|Y| \geq 0 \}) \] 
+        \[ \leq \mu(\{|X| \geq 0\}) + \mu(\{|Y| \geq 0\}) = \|X\|_0 + \|Y\|_0 \]
+
+        Now for $p = \infty$. Intuiviely, the idea is just that 
+        $\max(X + Y) \leq \max(X) + \max(Y)$, but the almost-everywhereness 
+        adds some subtleties. Indeed, note that for any 
+        $X' = X$ a.e. and $Y' = Y$ almost everywhere, $X' + Y' = X + Y$ almost everywhere. 
+        Furthermore, $\sup\{X' + Y'\} \leq \sup\{X'\} + \sup\{Y'\}$. So then, 
+
+        \[ \|X+Y\|_\infty = \inf_{Z = X+Y \: a.e.}\sup |Z| \leq \inf_{X' = X, Y' = Y \: a.e.} |X' + Y'|  \]
+        \[ \leq \inf_{X' = X \: a.e.}\sup |X| + \inf_{Y' = Y a.e.}\sup |Y| = \|X\|_\infty+ \|Y\|_\infty \]
+
+        This proves the claim for all $p$.
+    \end{proof}
+
+    we define the space $\El^p(\Omega, \F, \mu)$ as $\El^p(\Omega, \F, \mu) = \{X \in \Mf : \|X\|_p < \infty\}$. Note it is possible for $\|X - Y\|_p = 0$ but for $X \neq Y$ everywhere. However, 
+    it is necessary and sufficient that $X = Y$ \emph{almost everywhere}. And thus, 
+    we think of $\|\cdot\|_p$ as operating on the equivalence classes of 
+    functions, with equivalence if two functions are equivalent almost everywhere. Thus, 
+    $\|\cdot\|_p$ is not truly a norm (rather it is a pseudonorm) since 
+    $\|X-Y\| = 0$ does not imply $X = Y$. To make it a norm, we let 
+    $L^p$ be the equivalence classes of $\El^p$.
+
+    \begin{theorem}
+        $\|X-Y\|_p = 0$ if and only if $X = Y$ almost everywhere.
+    \end{theorem}
+    \begin{proof}
+        Let $A = \{X \neq Y\}$. Now let $A_0=\{|X-Y| \geq 1/2\}$ and $A_n = \{1/2^n > |X - Y| \geq 1/2^{n-1}\}$. It is clear to see that 
+        $A = \bigcup_{i=0}^n A_n$ and also that all the $A_n$'s are disjoint. It therefore follows 
+        from countable additivity that $\mu(A) = \sum_{i=1}^n \mu(A_n)$. Then if 
+        If $\mu(A) > 0$, then there must be some $n^\star$ for which $\mu(A_{n^\star}) > 0$.
+        Assume for now that $n^\star > 0$. It follows that, 
+
+        \[ \|X-Y\|_p^p = \int_{A_{n^\star}} |X-Y|^pd\mu + \int_{A_{n^\star}^c} |X-Y|^p d\mu \geq \frac{1}{(2^{n^\star - 1})^p}\mu(A_{n^\star})  \]
+
+        (Here, we use the notation that $\int_C Xd\mu = \int X \Ind\{C\}d\mu$). 
+        The above expression is obviously nonzero. If $n^\star = 0$, a similar analysis 
+        holds. Thus, it must be that $\mu(A) = 0$. This shows the ``only if''. For the ``if'', we have,
+
+        \[ \|X-Y\|_p^p = \int |X-Y|^p d\mu =  \int_A |X-Y|^p d\mu + \int_{A^c} |X-Y|^p d\mu\]
+
+        $\int_A |X-Y|^p d\mu = 0$ because $A$ is negligible. $\int_{A^c} |X-Y|^p d\mu = 0$ because 
+        $X=Y$ everywhere in $A^c$. Thus the above is entirely nonzero. 
+    \end{proof}
+
+    From the above, it's clear that $\|\cdot\|_p$ is a valid norm acting on $L^p$. In order to verify that 
+    $L^p$ is a Hilbert space, it is necessary to verify that $\|\cdot\|_p$ induces a complete metric. 
+
+    \begin{theorem}
+        $L^p$ is complete.
+    \end{theorem}
+    \begin{proof}
+        Recall a space is complete if Cauchy sequences converge to a limit function. So let 
+        $X_1, X_2...$ be a Cauchy sequence. Here's a first step. Let 
+        $n_k$ be a sequence of numbers such that for $n,m \geq n_k, \|X_n - X_m\|_p < 1/2^k$. 
+        It then follows that $\{X_{n_k}\}_k$ is a Cauchy sequence and $\sum_{k=1}^\infty \|X_{n_{k+1}} - X_{n_k}\|_p \leq 1$. Now, define $Y_k = \inf_{m\leq k}X_{n_m}$. 
+
 
         \begin{Proposition} 
-            For all $m$, $\int X_n B_{n,m}^c \to 0$ as $n \to \infty$
+            $\lim\inf_k X_{n_k} = \lim\sup_k X_{n_k}$
         \end{Proposition}
-
         \begin{proof}
-           Obviously, this integral is decreasing in $n$. Thus, it simply remains to 
-           show that it can't get "stuck" above some $\epsilon$. First, observe that, 
+            Define $L_{i,j} = \inf_{i \leq k \leq j}X_{n_k}$. First observe that, 
 
-           \[ \mu(B_{n,m}^c) \to 0 \text{ as } n \to \infty \]
+            \[ \|X_{n_i} - L_{i,j}\|_p = \bigg \|(X_{n_i} - Y_{i,j}) \sum_{k=i}^j \Ind\{Y_{i,j} = X_{n_k}\}\bigg \|_p  \]
+            \[ \leq \sum_{m=i}^k \bigg\| (X_{n_i} - Y_{i,j})\Ind\{Y_{i,j} = X_{n_k}\}\bigg\|_p \leq \sum_{m=i}^k \| X_{n_i} - X_{n_k}\|_p < \sum_{k=i}^j \frac{1}{2^i} \leq 2^{i-1}  \]
 
-           Since $B_{n,m}^c \to \emptyset$. 
+            Now, taking $j \to \infty$, we find $Y_{i,j} \to \inf_{k > i} X_{n_k}$ and thus $\|X_{n_i} - \inf_{k > i X_{n_k}}\|_p \leq 2^{i-1}$. 
+            A similar argument yields $\|X_{n_i} - \sup_{k > i X_{n_k}}\|_p \leq \leq \frac{1}{2^{i-1}}$. 
+            It follows that, 
+
+            \[ \|\lim\inf_{k \geq i}X_{n_k} - \lim\sup_{k \geq i}X_{n_k}\|_p \leq \|\inf_{k \geq i}X_{n_k} - \sup_{k \geq i}X_{n_k}\|_p \]
+            \[\leq \|\inf_{k \geq i}X_{n_k} - X_{n_i}\|_p + \|\sup_{k \geq i}X_{n_k} - X_{n_i}\|_p \leq 2\bigg(\frac{1}{2^{i-1}}\bigg)  = \frac{1}{2^{i-2}} \]
+
+            Observe that, for all $i$, $\lim\inf_{k \geq i}X_{n_k} = \lim\inf_{k \geq 1}X_{n_k}$ and likewise for the 
+            $\lim\sup$. It thus follows that $\|\lim\sup_{k}X_{n_k} - \lim\inf_k X_{n_k}\|_p < \frac{1}{2^{i-2}}$ for all $i$, and thus, 
+            $\lim\sup_{k}X_{n_k} = \lim\inf_k X_{n_k}$ almost everywhere.
         \end{proof}
+        
+        It follows that $X_{n_k}$ converges to a limit; call it $X_\infty$. We 
+        will now show that $X_{n} \to X_\infty$ as well. This follows as a simple 
+        consequence of the triangle inequality and the definition of a Cauchy sequence. 
+        Indeed, take $M$ such that $\|X_n - X_m\|_p < \epsilon / 2$ for all $n,m \geq M$. Now let 
+        $K$ be such that $k \geq K$ implies that $\|X_{n_k} - X_\infty\|_p < \epsilon / 2$. Letting 
+        $N = \max(N,n_K)$, it follows that for all $n \geq N$,
 
-        Thus, with the above, take $n \to \infty$: 
+        \[ \|X_n - X_\infty\|_p \leq \|X_n - X_{n_K}\|_p + \|X_{n_K} - X_\infty\|_p \leq \epsilon/2 + \epsilon/2 = \epsilon \]
 
-        \[ \int X_n d\mu \geq \frac{m-1}{m} \int X d\mu + 0 \]
+        Taking $\epsilon \to 0$, we achieve the desired result.
 
-        Now take $m \to \infty$: 
+    \end{proof}
 
-        \[ \int X_n d\mu \geq \int X d\mu \]
+    \section{Convergence Notions}
 
-        And we are done.
+    The last topic in this chapter is what it means, exactly, for one random variable 
+    to converge to another. We have just seen one: convergence in $L^p$. There are two 
+    more we must consider: \emph{convergence in probability} and \emph{almost sure convergence}. 
+
+    \begin{definition}[Convergence in Probability]
+        We say $X_n \to X$ in probability if, for all $\epsilon > 0$, $\mathbb P(\{|X_n - X| > \epsilon\}) \to 0$
+    \end{definition}
+
+    \begin{definition}[Almost Sure Convergence]
+        We say $X_n \to X$ almost surely if $\Prob(\{\lim_n X_n = X\}) = 1$
+    \end{definition}
+
+    \begin{definition}[Convergence in $L^1$]
+        We say $X_n \to X$ in $L^1$ if $\|X_n - X\|_1 \to 0$
+    \end{definition}
+
+    \begin{Proposition} 
+        Almost sure convergence implies convergence in probability
+    \end{Proposition}
+
+    \begin{proof}
+        We first show the statement about convergence in probability. Fix $\epsilon > 0$. 
+        First, we know that $\lim_n X_n$ exists almost surely. Simply write,
+
+        \[ 1 = \mathbb P(\lim_n X_n = X) = \mathbb P(\{\lim_n |X_n - X| = 0\}) \]
+        \[ \leq \mathbb P(\{\lim_n |X_n - X| < \epsilon \}) \leq \mathbb P(\lim_n\{ |X_n - X| < \epsilon \}) \]
+        \[ = \lim_n \Prob(\{|X_n - X| < \epsilon\}) \]
+
+        Where the last line is due to dominated convergence.
+    \end{proof}
+
+    \begin{theorem}
+        Convergence in probability implies convergence in $L^1$.
+    \end{theorem}
+    \begin{proof}
+        Suppose $X_n \to X$ in probability. Fix $\epsilon, \delta > 0$. Let 
+        $N$ be such that $n \geq N \implies \mathbb P(\{|X_n - X| > \epsilon\}) < \delta$. 
+        Now observe that for $n \geq N$,
+
+        \[ \mathbb P(|X_n - X|) = \mathbb P(|X_n - X|\{|X_n - X| > \epsilon \} + |X_n - X|\{|X_n - X| \leq \epsilon \})\]
+        \[ \leq \epsilon + \mathbb P(|X_n - X|\{|X_n - X| > \epsilon \}) \]
 
     \end{proof}

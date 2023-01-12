@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.2)  11 JAN 2023 13:32
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (TeX Live 2022) (preloaded format=pdflatex 2022.8.2)  12 JAN 2023 18:20
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -450,20 +450,20 @@ File: l3backend-pdftex.def 2022-02-07 L3 backend support: PDF output (pdfTeX)
 ) (./main.aux)
 \openout1 = `main.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
-LaTeX Font Info:    Checking defaults for U/mathx/m/n on input line 30.
-LaTeX Font Info:    ... okay on input line 30.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for TS1/cmr/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
+LaTeX Font Info:    Checking defaults for U/mathx/m/n on input line 32.
+LaTeX Font Info:    ... okay on input line 32.
  (/usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
 \scratchcounter=\count288
@@ -483,11 +483,11 @@ Package epstopdf-base Info: Redefining graphics rule for `.eps' on input line 48
  (/usr/local/texlive/2022/texmf-dist/tex/latex/latexconfig/epstopdf-sys.cfg
 File: epstopdf-sys.cfg 2010/07/13 v1.3 Configuration of (r)epstopdf for TeX Live
 ))
-LaTeX Font Info:    Trying to load font information for U+msa on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msa on input line 33.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsa.fd
 File: umsa.fd 2013/01/14 v3.01 AMS symbols A
 )
-LaTeX Font Info:    Trying to load font information for U+msb on input line 31.
+LaTeX Font Info:    Trying to load font information for U+msb on input line 33.
  (/usr/local/texlive/2022/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
@@ -600,20 +600,35 @@ Underfull \hbox (badness 10000) in paragraph at lines 287--289
 
  []
 
-[25] [26]) [27] (./main.aux) ) 
+[25] [26]
+Overfull \hbox (17.96011pt too wide) in paragraph at lines 361--364
+\OT1/cmr/m/n/10 Now as-sume that $\OML/cmm/m/it/10 X[] \U/matha/m/n/10 ^^P [][] \OML/cmm/m/it/10 []\U/msb/m/n/10 I\U/matha/m/n/10 t\OML/cmm/m/it/10 A[]\U/matha/m/n/10 u$ \OT1/cmr/m/n/10 so that $\OML/cmm/m/it/10 X[] \U/matha/m/n/10 ^^P p\OT1/cmr/m/n/10 1 \U/matha/m/n/10 ^^A []q [][] \OML/cmm/m/it/10 []\U/msb/m/n/10 I\U/matha/m/n/10 t\OML/cmm/m/it/10 A[] \U/matha/m/n/10 X
+ []
+
+[27] [28] [29]
+Overfull \hbox (14.32333pt too wide) in paragraph at lines 505--507
+[]\OT1/cmr/m/n/10 Note if $[][] \U/msb/m/n/10 P\U/matha/m/n/10 p\OML/cmm/m/it/10 A[]\U/matha/m/n/10 q   8$\OT1/cmr/m/n/10 , then $\U/msb/m/n/10 P\U/matha/m/n/10 p\OML/cmm/m/it/10 A[]\U/matha/m/n/10 q Ñ \OT1/cmr/m/n/10 0$. Ad-di-tion-ally, $[][] [][] \U/msb/m/n/10 P\U/matha/m/n/10 p\OML/cmm/m/it/10 A[]\U/matha/m/n/10 q Ñ
+ []
+
+[30] [31] [32] [33] [34] [35]
+Overfull \hbox (0.90384pt too wide) in paragraph at lines 792--795
+[]\OT1/cmr/m/n/10 Now, tak-ing $\OML/cmm/m/it/10 j \U/matha/m/n/10 Ñ 8$\OT1/cmr/m/n/10 , we find $\OML/cmm/m/it/10 Y[] \U/matha/m/n/10 Ñ [][] \OML/cmm/m/it/10 X[]$ \OT1/cmr/m/n/10 and thus $\U/matha/m/n/10 }\OML/cmm/m/it/10 X[] \U/matha/m/n/10 ^^A [][] }[] ¤
+ []
+
+[36]) [37] (./main.aux) ) 
 Here is how much of TeX's memory you used:
- 4078 strings out of 478268
- 56785 string characters out of 5846348
- 350785 words of memory out of 5000000
- 22229 multiletter control sequences out of 15000+600000
- 487289 words of font info for 90 fonts, out of 8000000 for 9000
+ 4085 strings out of 478268
+ 56855 string characters out of 5846348
+ 354808 words of memory out of 5000000
+ 22235 multiletter control sequences out of 15000+600000
+ 487987 words of font info for 92 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  55i,9n,62p,328b,255s stack positions out of 10000i,1000n,20000p,200000b,200000s
-{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/mathx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on main.pdf (28 pages, 316744 bytes).
+{/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}</usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha5.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/mathx10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on main.pdf (38 pages, 369139 bytes).
 PDF statistics:
- 201 PDF objects out of 1000 (max. 8388607)
- 127 compressed objects within 2 object streams
+ 240 PDF objects out of 1000 (max. 8388607)
+ 154 compressed objects within 2 object streams
  0 named destinations out of 1000 (max. 500000)
  1 words of extra memory for PDF output out of 10000 (max. 10000000)
 
