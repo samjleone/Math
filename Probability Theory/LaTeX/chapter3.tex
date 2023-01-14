@@ -518,6 +518,34 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
 
     We will typically adopt the latter when the measure is unambiguous. 
 
+    \subsection{Important Inequalities: Markov's Inequality, Chebyshev's Inequality, \& Chernoff Bounds}
+
+    \begin{theorem}[Markov's Inequality]\label{thm:markov_inequality}
+        Let $X$ be nonnegative almost everywhere and integrable. Then, 
+        \[ \Prob(\{X > a\}) \leq \frac{\mathbb E[X]}{a} \]
+    \end{theorem}
+    \begin{proof}
+        The inequality follows from monotonicity and rearranging the following:
+        \[ \mathbb E[X] = \mathbb E[X\Ind\{X \leq a\}] + \mathbb E[X\Ind\{X < a\}] \geq 0 + a \mathbb P(\{X > a\})\]
+    \end{proof}
+
+    Recall that the variance of a random variable is defined as 
+    $\Var(X) = \mathbb E[(X - \mathbb E[X])^2]$.
+
+    \begin{corollary}[Chebyshev's Inequality]
+        Let $X$ have finite variance $\sigma^2$. Then, 
+        \[ \Prob(\{|X - \mathbb E[X]| > k\sigma \}) \leq \frac{1}{k^2} \]
+    \end{corollary}
+    \begin{proof}
+        Define $Z = \frac{(X - \mathbb E[X])^2}{\sigma^2}$. Observe 
+        $\mathbb E[Z] = 1$. By Markov's Inequality, $\Prob(\{|X - \mathbb E[X]| > k\sigma \}) = \Prob(\{ Z > k^2 \}) \leq \frac{\mathbb E[Z]}{k^2}$. 
+    \end{proof}
+
+    Generically, Chernoff bounds can be thought of as applying Markov's Inequality to 
+    $e^{tX}$. Indeed, the generic Chernoff bound simply states that for a nonnegative 
+    random variable $X$, $\Prob(\{X \geq a\}) = \Prob(\{e^{tX} \geq e^{ta}\}) \leq \mathbb E[e^{tX}]/e^{ta}$. 
+    Once we introduce independence, we will show that Chernoff bounds can be used to prove Hoeffding's Inequality.
+
     \section{Convexity}
 
     \subsection{Convex Combinations}
@@ -847,15 +875,20 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
         Where the last line is due to dominated convergence.
     \end{proof}
 
+    We will also show that convergence in probability implies convergence in $L^1$, provided 
+    $X_n$ is uniformly integrable. 
+
+    \begin{definition}
+        A family of random variables $X_n$ is uniformly integrable if 
+        $\sup_n \mathbb P|X_n|\{|X_n| > M\} \to 0$ as $M \to \infty$. 
+    \end{definition}
+
     \begin{theorem}
-        Convergence in probability implies convergence in $L^1$.
+        If $X_n$ is a set of uniformly integrable functions 
+        and $X_n$ onvergence in probability, then $X$ converges in $L^1$.
     \end{theorem}
     \begin{proof}
-        Suppose $X_n \to X$ in probability. Fix $\epsilon, \delta > 0$. Let 
-        $N$ be such that $n \geq N \implies \mathbb P(\{|X_n - X| > \epsilon\}) < \delta$. 
-        Now observe that for $n \geq N$,
-
-        \[ \mathbb P(|X_n - X|) = \mathbb P(|X_n - X|\{|X_n - X| > \epsilon \} + |X_n - X|\{|X_n - X| \leq \epsilon \})\]
-        \[ \leq \epsilon + \mathbb P(|X_n - X|\{|X_n - X| > \epsilon \}) \]
+        Suppose $X_n \to X$ in probability. First, fix $\epsilon > 0$. 
+        
 
     \end{proof}
