@@ -34,16 +34,159 @@ function against which integration along measure yields integration along anothe
 \begin{definition}[Density]
     If $\mu,\nu$ are measures acting on $(\Omega, \F)$, then $\nu$ is said to have 
     a density $f$ with respect to $\mu$ if $\int_F d\nu = \int_F f d\mu$ for all 
-    $F \in \F$. 
+    $F \in \F$. Furthermore, $f$ is written as $\frac{d\nu}{d\mu}$, and is called the 
+    Radon-Nikodym derivative of $\nu$ with respect to $\mu$.
 \end{definition}
 
 Note that there are is an obvious condition for which such a function should exist: 
 we require that if $\mu(F) = 0$, then we absolutely must have that $\nu(F) = 0$ as well. 
-Otherwise, for such an $F$, $\int_F f d\mu = 0$, while $\int_F d\nu > 0$. When 
-$\mu(F) = 0 \implies \nu(F) = 0$, we write $\nu << \mu$. This is a reasonable 
-notation since $\nu$'s negligible sets are at least those of $\mu$. 
+Otherwise, for such an $F$, $\int_F f d\mu = 0$, while $\int_F d\nu > 0$. 
+We forbid this ugliness by requiring that $\nu$'s support must be a subset of $\mu$'s support.
+
+\subsection{Special Cases}
+
+\begin{definition} When 
+$\mu(F) = 0 \implies \nu(F) = 0$, we write $\nu << \mu$. And $nu$ is said to be absolutely 
+continuous with respect to $\mu$. 
+\end{definition}
 
 \begin{example}[Countable $\Omega$]
     Let $\Omega$ is countable and $\F$ be a $\sigma$ algebra on subsets of 
-    $\Omega$. Assume, without loss of generality, that $\F$ is 
+    $\Omega$. Recall, from chapter $1$, that $\F$ can be written as the set of unions of 
+    an atomic set $\mathcal A$. Again, for $\omega \in \Omega$, let $A(\omega)$ be 
+    such that $A(\omega) \in \mathcal A$ and $\omega \in A(\omega)$. Clearly, by defining, 
+    \[ f(\omega) = \frac{\nu(A(\omega))}{\mu(A(\omega))} \]
+    Then for any $F = \cup_i A_i \in \F$, with each $A_i \in \mathcal A$, 
+    \[ \int_F d\nu = \nu(F) = \sum_{i}\nu(A_i) = \sum_{i} \frac{\nu(A_i)}{\mu(A_i)}\mu(A_i) = \mu\bigg(\sum_i \frac{\nu(A_i)}{\mu(A_i)} \Ind\{A_i\}(\omega) \bigg) \]
+    Observe that for all $\omega \in \Omega$, $\frac{\nu(A_i)}{\mu(A_i)} \Ind\{A_i\}(\omega) = \frac{\nu(A(\omega))}{\mu(A(\omega))} \Ind\{A_i\}(\omega)$,
+    \[ = \mu\bigg(\sum_i \frac{\nu(A(\omega))}{\mu(A(\omega))} \Ind\{A_i\}(\omega) \bigg) = \mu(f\sum_i \Ind\{A_i\}) = \mu(f\Ind\{F\}) = \int_F d\mu  \]
+    Therefore, $\nu$ has density $f$ with respect to $\mu$. In a special case, if $\F = 2^\Omega$ (the powerset of $\Omega$), we can simply define 
+    $f(\omega) = \frac{\nu(\{\omega\})}{\mu(\{\omega\})}$. Hopefully, this is indicative of our choice of 
+    notation.
 \end{example}
+
+\begin{example}[Probability Density Functions]
+    When $\mu = \lambda$, the Lebesgue measure, and $\nu$ is some continuous random variable, 
+    the pdf $f$ is the same as the density $f$ of $\nu$ with respect to $\lambda$. 
+\end{example}
+
+\begin{lemma} 
+    If $\frac{d\nu}{d\mu}$ and $\frac{d\mu}{d\nu}$ exist, then 
+    $\frac{d\nu}{d\mu} = (\frac{d\mu}{d\nu})^{-1}$ almost everywhere 
+    $\mu$.
+\end{lemma}
+\begin{proof} 
+    For any set $F \in \F$, we have, by definition of $\frac{d\mu}{d\nu}$, 
+    \[ \int_F \bigg(\frac{d\mu}{d\nu}\bigg)^{-1} d\mu = \int_F \bigg(\frac{d\mu}{d\nu}\bigg)^{-1} \frac{d\mu}{d\nu}d\nu = \int_F d\nu  \] 
+
+\end{proof}
+
+\begin{example}[Relative Entropy]
+    If $\Prob$ and $\Q$ are two probability measures with Radon-Nikodym derivative $\RadNik$, then 
+    the relative entropy between $\Prob$ and $\Q$ is defined as, 
+
+    \[ D(\Prob || \Q) = \Prob\bigg(\log_2\bigg(\RadNik\bigg)\bigg)  = \int \log_2\bigg(\RadNik\bigg)d\Prob \]
+\end{example}
+
+Relative entropy is an information-theoretic quantity which measures the following quantity: 
+\emph{when $\Prob$ is the true distribution, how many more bits do you need to communicate the outcome 
+in a code optimized for $\Q$ as compared to a code optimized for $\Prob$?} A notable inequality in 
+information theory is the so called information inequality, which says that relative entropy is positive, 
+except for when $\Prob = \Q$ almost everywhere: 
+
+\begin{theorem}[Gibbs Theorem / The Information Inequality]
+    If $\Q$ and $\Prob$ are two probability measures such that $\Prob << \Q$, then $D(\Prob||\Q) \geq 0$.
+\end{theorem}
+\begin{proof} 
+    This follows easily from the convexity of $-\log_2$ and Jensen's Inequality:
+
+    \[ D(\Prob || \Q) = \Prob\bigg(\log_2\bigg(\RadNik\bigg)\bigg) = \Prob\bigg(\log_2\bigg(\frac{d\Q}{d\Prob}\bigg)^{-1}\bigg)\]
+    \[ = - \log_2\Prob\bigg(\frac{d\Q}{d\Prob}\bigg) = -\log_2\bigg(\int_\Omega d\Q \bigg) = 0 \]
+\end{proof}
+
+\section{The Radon-Nikodym Theorem \& Lebesgue Decomposition}
+
+The Radon-Nikodym Theorem Concerns itself with the existence of such densities. It establishes that 
+such a $\frac{d\nu}{d\mu}$ exists whenever $\nu$ and $\mu$ are $\sigma$-finite and 
+$nu << \mu$. 
+
+\begin{theorem}[The Radon-Nikodym Theorem]
+    For all $\sigma$-finite meaures $\mu$ and $\nu$ defined on a measure space 
+    $(\Omega, \F)$ such that $\nu << \mu$, the Radon Nikdoym derivative $\frac{d\nu}{d\mu}$ exists 
+    and is unique almost surely.
+\end{theorem}
+\begin{proof}
+
+    \begin{lemma} 
+        Suppoe $\mu$ and $\nu$ are finite measures with $\nu(F) \leq \mu(F)$ for all 
+        $F \in F$. Then, $\nu$ has a density $\Delta$ with respect to $mu$, where 
+        $0 \leq \Delta \leq 1$, and $\Delta$ is unique $\mu$ almost everywhere.
+    \end{lemma}
+    \begin{proof}
+        We first note that for any $g \in \Ltwo$, $g \mapsto \int g d\nu$ is a continuous linear functional. 
+        First, since, 
+        \[ |\nu(g)| \leq |\nu(g^2)^{1/2}\nu(\Omega)| \leq \mu(g^2)^\frac{1}{2} |\mu(\omega)|^\frac{1}{2}  \]
+        We find that $\nu$ is bounded. And $\nu$ is linear, as it is an integral. Therefore, 
+        $\nu$ is a continuous map. By the Riesz Representation theorem, we know that there exists a 
+        $\kappa \in \Ltwo$ such that $\nu(g) = \mu(\kappa g)$ for all $g$. In particular, 
+        this holds true of indicator functions $g = \Ind\{F\}$. We show that 
+        $0 \leq \kappa \leq 1$ almost everywhere. Observe for any $\epsilon > 0$,
+        \[\nu(\{\kappa \leq \epsilon\}) = \mu(\kappa\{\kappa \leq -\epsilon\}) \leq -\epsilon \mu(\{\kappa \leq \epsilon\}) \leq 0 \] 
+        But measures are nonnegative. Therefore, for $\nu(\{\kappa \leq \epsilon\}) \leq 0$, it must be zero. And thus 
+        $\nu(\{\kappa \leq \epsilon\}) = 0$ as well. Likewise, as $\nu \leq \mu$, 
+        \[ \nu(\{\kappa \geq 1 + \epsilon \}) = \mu(\kappa\{\kappa \geq 1 + \epsilon\}) \geq (1 + \epsilon)\mu(\{\kappa \geq 1 + \epsilon\}) \geq (1 + \epsilon)\nu(\{\kappa \geq 1 + \epsilon\}) \] 
+        Implying that $\mu(\{\kappa \geq 1 + \epsilon\}) = 0$ for all $\epsilon$. Therefore, there is no harm in setting 
+        $\Delta = \kappa\Ind\{\kappa \in [0,1]\}$. For uniqueness, if $\tilde{\Delta}$ were a second density, then we have, 
+        \[  \mu(\Delta\Ind\{\Delta > \tilde{\Delta}\}) = \nu(\{\Delta > \Delta\}) =  \mu(\tilde{\Delta}\Ind\{\Delta > \Delta\}) \]
+        And thus, $\mu(\{\Delta - \tilde{\Delta}\}\Ind\{\Delta > \tilde{\Delta}\}) = 0$, so $\{\Delta > \tilde{\Delta}\}$ is negligible. 
+        Symmetrically, $\{\Delta < \tilde{\Delta}\}$ is negligible. Thus, $\Delta = \tilde{\Delta}$ almost everywhere $\mu$.
+
+    \end{proof}
+
+    \begin{lemma} 
+        The Radon-Nikodym Theorem is true in the case of finite measures $\mu$ and $\nu$. 
+    \end{lemma}
+
+    \begin{proof} 
+        We define $\lambda = \mu + \nu$, where $\mu + \nu$ is the measure such that 
+        $\lambda(F) = \mu(F) + \nu(F)$ for $F \in \F$. Obviously, $\nu$ and $\lambda$ satisfy the 
+        conditions of our lemma. And so, there exists a $\Delta$ such that $\nu(g) = \mu(g\Delta)$ for all 
+        $g \in \Mf$. Recall from the proof of the lemma that $\Delta \geq 1$ almost surely $\nu$. We also show 
+        $\Delta < 1$ almost surely $\nu$. Let $N= \{\Delta = 1\}$:
+        \[ \nu(N) = \lambda(\Delta\{\Delta = 1\}) \] 
+        \[ = \nu(\Delta\{\Delta = 1\}) + \mu(\Delta\{\Delta = 1\}) \geq \nu(N) + \mu(N) \]
+        Which, as $\mu(\{\Delta \geq 1\}) \geq 0$, leaves only that $\nu(\{\Delta \geq 1\}) = 0$. Define, 
+        \[ \frac{d\nu}{d\mu} = \frac{\Delta}{1-\Delta}\Ind\{\Delta < 1\} \]
+        Now, observe for any measurable $g$, letting $g \wedge n = \min(g,n)$, 
+        \[ \nu(g \wedge n) = \nu((g \wedge n) \Delta \{\Delta < 1\}) + \mu((g \wedge n) \Delta \{\Delta < 1\}) \]
+        Since our measures are finite, $\nu(g \wedge n), \mu(g \wedge n) \leq n$. And thus, we are free to rearrange:
+        \[ \nu((g \wedge n) (1 - \Delta)\{\Delta < 1\}) = \mu((g \wedge n) \Delta\{\Delta < 1\}) \]
+        Two appeals to monotone convergence yields, as $0 \leq \Delta \leq 1$:
+        \[ \nu((g \wedge n) (1 - \Delta)\{\Delta < 1\}) \leq \lim_n \mu((g \wedge n) \Delta\{\Delta < 1\}) = \mu(g \Delta\{\Delta < 1\}) \]
+        \[\nu(g(1-\Delta)\{\Delta < 1\}) =  \lim_n \nu((g \wedge n) (1 - \Delta)\{\Delta < 1\}) \geq \mu((g \wedge n) \Delta\{\Delta < 1\}) \]
+        And thus $\nu(g(1-\Delta)\{\Delta < 1\}) = \mu(g\Delta\{\Delta < 1\})$. In particular, 
+        for any function $g$, this holds of $\frac{g}{1-\Delta}\{\Delta < 1\}$ as well:
+        \[ \int  \frac{g(1-\Delta)}{1-\Delta}\{\Delta < 1\}d\nu = \int \frac{g\Delta}{1-\Delta}\{\Delta < 1\}d\mu \]
+        \[  \int g d\nu = \int g \{\Delta > 1\} d\mu = \int g \frac{d\nu}{d\mu}d\mu \]
+        This proves the existence of the Radon-Nikodym derivative. Uniqueness is quite easy to show - follow the same argument 
+        as in the end of the Lemma. 
+
+    \end{proof}
+
+    \paragraph{The General Case:} We now show the Radon-Nikodym theorem is true for 
+    $\sigma$-finite measures. If $\Omega$ is the disjoint union of $B_1, B_2....$ such that 
+    $\mu(B_n) <\infty, \nu(B_n) < \infty$ for all $n$. Then if we let $\mu_n, \nu_n$ be measures 
+    such that, for all measurable $g$,
+    \[ \int g d\mu_n = \int_{B_n} gd\mu \hspace{0.5cm} \int g d\nu_n = \int_{B_n}g d\nu \]
+    Then the $\mu_n, \nu_n$'s are all obviously finite measures, to which the weaker Radon-Nikodym 
+    theorem applies. From this, we extract a set of countable derivatives 
+    $\frac{d\nu_n}{d\mu_n}$. And clearly, if we let $\frac{d\nu}{d\mu} \triangleq \sum_n \frac{d\nu_n}{d\mu_n}$,
+    \[ \int gd\nu = \sum_n \int_{B_n}g d\nu = \sum_n \int gd\nu_n \] 
+    \[ = \sum_n \int g \frac{d\nu_n}{d\mu_n}d\mu_n  = \sum_n \int_{B_n} g  \frac{d\nu}{d\mu}d\mu = \int g \frac{d\nu}{d\mu}d\mu \]
+    And thus, we have a derivative of $\nu$ with respect to $\mu$, as desired.
+
+\end{proof}
+
+
+
+

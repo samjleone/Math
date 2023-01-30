@@ -918,6 +918,74 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
 
     \end{proof}
 
+    \subsection{Basic Functional Analysis \& The Riesz Representation Theorem}
+
+    We will sketch through several basic proofs in functional analysis, ultimately building up to 
+    the Riesz-Representation theorem. The Riesz-Representation theorem concerns itself with the representation of linear functions as 
+    an integral against a particular function. The key observation is that because 
+    $\Ltwo$ is a Hilbert space, the Riesz-Representation theorem applies. 
+    We will use it most for $L^2$, particularly in our 
+    construction of the Radon-Nikodym derivative. 
+
+    \begin{theorem}[The Parallelogram Law]
+        In a Hilbert space $\mathcal H$ with inner product $\langle \cdot , \cdot \rangle$, for any two vectors $a,b \in \mathcal H$, the following holds: 
+        \[ \|a-b\|^2 + \|a+b\|^2 = 2\|a\|^2 + 2\|b\|^2 \]
+    \end{theorem}
+    \begin{proof} 
+        \[ \|a-b\|^2 + \|a+b\|^2 = \langle a- b, a-b \rangle + \langle a+b,a+b\rangle \]
+        \[ = \langle a, a \rangle - 2\langle a,b \rangle + \langle b, b \rangle  +  \langle a, a \rangle + 2\langle a,b \rangle + \langle b, b \rangle   \]
+        \[ = 2\langle a , a \rangle + 2 \langle b, b \rangle = 2\|a\|^2 + 2\|b\|^2 \]
+    \end{proof}
+
+    \begin{theorem}[The Projection Theorem]
+        If $\mathcal H$ is a Hilbert space, and $S \subseteq \mathcal H$ is a subspace, then 
+        for each $h \in \mathcal H$, there exists a unique vector $x \in S$ minimizing 
+        $\|y-x\|$. Furthermore, $y-x \perp s$ for all $s \in S$. 
+    \end{theorem}
+    \begin{proof}
+        Let us first show that such a minimizing vector exists for fixed $y$. 
+        Let $\delta = \inf_{s \in S}\|y-s\|$ and $x_n$ be a sequence of vectors such that 
+        $\|y-x_n\| \to \delta$. First, note that $\|(x_n - y)+(x_m-y)\|^2 = 4\|\frac{x_m + x_y}{2} - y\|^2 \leq 4\delta^2$, since 
+        $x_n, x_m \in S$, a subspace. By the parallelogram law, 
+        \[ \|x_n - x_m\|^2 +  \|(x_n - y)+(x_m-y)\|^2 = 2\|x_n - y\|^2 + 2\|x_m - y\|^2 \]
+        Rearranging, 
+        \[  \|x_n - x_m\|^2 = 2\|x_n - y\|^2 + 2\|x_m - y\|^2 - 4 \delta^2 \]
+        Taking $n,m \to \infty$, we have $\|x_n - x_m\|^2  \to 0$. By completeness, 
+        $x_n \to x$. We now show that $y-x \in S^\perp$. Suppose by way of contradiction that 
+        there is an $s$ for which $\langle y-x, s\rangle \neq 0$. Now observe that, letting 
+        $x(\epsilon) = x - \epsilon s$, we have, 
+        \[ \|y - x(\epsilon)\|^2 = \|y - x - \epsilon s\|^2 = \langle y-x-\epsilon s,y-x-\epsilon s\rangle  \]
+        \[ = \|y-x\|^2 - 2\epsilon \langle y - x,  s\rangle + \epsilon^2 \|s\|^2 \]
+        Depending on the sign of $\langle y - x,  s\rangle$, we either take $\epsilon \to 0$ from the right or from the left. 
+        In iether case, as $\epsilon > \epsilon^2$ for small $\epsilon$, there is an $\epsilon$ for which 
+        $\epsilon^2 \|s\|^2 - 2\epsilon \langle y - x,  s\rangle < 0$, meaning $\|y-x(\epsilon)\| < \|y-x\|$. 
+        As $x \in S$, $s \in S$, $x(\epsilon) = x + \epsilon s \in S$. This is a contradiction. Therefore, no such 
+        $s$ exists.
+    \end{proof}
+
+    We say a map $A$ is continuous if, for all $x \in \mathcal H$, $\epsilon > 0$, there exists a 
+    $\delta > 0$ such that $\|y-x\|<\delta \implies |A(x)-A(y)| < \epsilon$. In other words, if 
+    $x$ and $y$ are close in norm, they are close in image.
+
+    \begin{theorem}[The Riesz-Representation Theorem (for $\Ltwo$)]
+        Let $A : \mathcal H \to \R$ be bounded and linear. Then for a particular 
+        $x \in \mathcal H$, there exists a unique $a \in \mathcal H$ such that $A(x) = \langle a, x \rangle$. 
+    \end{theorem}
+    \begin{proof}
+        First, if $A \equiv 0$, let $a \equiv 0$, and we are done. Otherwise, assume that 
+        $A(x) \neq 0$ for at least one function $f \in \mathcal H$ with $A(x) \neq 0$. Letting 
+        $N = \text{ker}(A)$, we know that since $f$ is bounded and linear, it is continuous; therefore, 
+        $N$ is a closed subspace of $\mathcal H$, and so the projection theorem applies. Now, let 
+        $x^\perp$ be the projection of $x$ onto $N$, and 
+        $y = \frac{x-x^\perp}{A(x)}$, which is orthogonal to $N$ by the projection theorem.
+        Furthermore, $A(y) = \frac{A(x)}{A(x)} - \frac{A(x^\perp)}{A(x)} = 1$.
+        Now observe for all $h \in \mathcal H$, we have, $A(h - A(h)y) = A(y) - A(y)A(a) = A(y)(1 - A(a)) = 0$.
+        Therefore, $h-A(h)y \in N$. Meaning $\langle h - A(h) y, y \rangle = 0$, so $\langle h,y \rangle = A(h) \|y\|^2$. If we simply 
+        let $a = \frac{y}{\|y\|^2}$, it follows that $A(h) = \langle a,h \rangle$ for all $h \in \mathcal H$, 
+        as desired. 
+
+    \end{proof} 
+
     \section{Convergence Notions}
 
     The last topic in this chapter is what it means, exactly, for one random variable 

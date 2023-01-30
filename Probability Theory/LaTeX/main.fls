@@ -380,6 +380,7 @@ INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.p
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha5.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/matha7.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/mathb10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/mathabx-type1/mathx10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb
