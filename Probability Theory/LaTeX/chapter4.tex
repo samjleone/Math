@@ -1,0 +1,49 @@
+\chapter{Densities \& The Radon Nikodym Theorem}
+
+In your ordinary probability class, you learned about 
+``densities'' as being a sort of continuous version of a Probability 
+Mass Function. It was a sort of way to resolve the paradoxical fact that 
+any outcome in a continuous distribution has zero probability, yet a point 
+does have a notion of likelihood. If your random variable $X$ has a distribution 
+function $F$, the density $f$ is defined as $f(t) = F(t)$. The density then had 
+the nice property that $\Prob((-\infty, a]) = \int_{-\infty}^a f(t)dt$, where this holds by 
+the fundamental theorem of calculus. Why are densities useful? Because it let's us do 
+interesting things! We can easily calculate the expected value of $X$ by computing 
+$\mathbb E[X] = \int tf(t)dt$. If $g(X)$ were, say, some other function, we calculate 
+$\mathbb E[g(X)] = \int g(t)f(t)dt$. At the time, this is perhaps how you learned 
+to \emph{define} the expectation of a random variable. Rather, we show this is an 
+incredibly particular case of general densities between probability distributions. In this case, 
+$f$ is the density of the distribution of $X$ with respect to the Lebesgue measure on 
+$\mathbb R$. Thus, if $\lambda$ is the integral representing the Lebesgue measure, we are truly 
+saying $\mathbb E[X] = \lambda(f(\omega)X(\omega))$. Furthermore, as the Lebesgue measure of 
+any interval $[t,t+h]$ is $h$,
+
+\[ f(t) = F'(t) = \lim_{h \to 0^+} \frac{\Prob(X \in [t, t+h])}{\lambda([t,t+h])}  \]
+
+We this is also suggestive of the notation $f(t) = \frac{\partial \mathbb P}{\partial \lambda}(t)$. In some sense, 
+$f$ provides a measure of how quickly $\Prob$ changes with respect to $\lambda$, so $\frac{\partial \mathbb P}{\partial \lambda}$ is 
+a sort of derivative. Indeed, this is the right way to think about it. We show that this generalizes to a notoin of a 
+Radon-Nikdoym derivative, a universal translator from one measure to another. 
+
+\section{Densities}
+
+As you have already seen, the term \emph{density} is usually thought of as a continuous form of a 
+PMF. This does not generalize well to arbitary masures. Rather, it is appropriate to think of it as a 
+function against which integration along measure yields integration along another. More formally, 
+
+\begin{definition}[Density]
+    If $\mu,\nu$ are measures acting on $(\Omega, \F)$, then $\nu$ is said to have 
+    a density $f$ with respect to $\mu$ if $\int_F d\nu = \int_F f d\mu$ for all 
+    $F \in \F$. 
+\end{definition}
+
+Note that there are is an obvious condition for which such a function should exist: 
+we require that if $\mu(F) = 0$, then we absolutely must have that $\nu(F) = 0$ as well. 
+Otherwise, for such an $F$, $\int_F f d\mu = 0$, while $\int_F d\nu > 0$. When 
+$\mu(F) = 0 \implies \nu(F) = 0$, we write $\nu << \mu$. This is a reasonable 
+notation since $\nu$'s negligible sets are at least those of $\mu$. 
+
+\begin{example}[Countable $\Omega$]
+    Let $\Omega$ is countable and $\F$ be a $\sigma$ algebra on subsets of 
+    $\Omega$. Assume, without loss of generality, that $\F$ is 
+\end{example}

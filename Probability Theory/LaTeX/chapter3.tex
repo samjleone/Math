@@ -189,7 +189,8 @@ $\mu$:
 
 While the $d\mu$ does relate to the $dx$ from Riemannian integration, ignore this for now. 
 Think of the $d\mu$ merely as a symbol which says we are integrating with respect to 
-$\mu$, rather than some other measure. 
+$\mu$, rather than some other measure. When $\mu = \lambda$, $\lambda$ is assumed to be the 
+measure / integral corresponding to the Lebesgue meaasure.
 
 \subsection{Simple Functions}
 
@@ -356,10 +357,10 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
         functions. Furthemore, for any $n$, $\int X_n d\mu \leq \int X d\mu$ as $X_n \leq X$. So taking 
         $n \to \infty$, we find $\lim_n \int X_n d\mu \leq \int X d\mu$. It remains to show that 
         $\lim_n \int X_n d\mu \geq \int X d\mu$. Indeed, let $X_m$ be a sequence of simple 
-        functions such that $\int X_m d\mu > \int X - 1/m$. Now define $X_{n,m} = X_m (1-\frac{1}{m})\Ind\{X_n \geq (1-\frac{1}{m}X_m)\}$.
+        functions such that $\int X_m d\mu > (\int X d\mu) - 1/m$. Now define $X_{n,m} = X_m (1-\frac{1}{m})\Ind\{X_n \geq X_m(1-\frac{1}{m})\}$.
         Note that $X_{n,m}$ is simple, and $X_{n,m} \leq X_n$. And thus, 
         \[ \int X_{n,m} d\mu \leq \int X_n d\mu \]
-        Now assume that $X_m = \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m}\}$ so that $X_{n,m} = (1-\frac{1}{m}) \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m) \} \}$.
+        Now write that $X_m = \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m}\}$ so that $X_{n,m} = (1-\frac{1}{m}) \sum_{i=1}^{n_m} \alpha_{i,m} \Ind\{A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m) \} \}$.
         Thus, 
         \[ \int X_n d\mu \geq (1-\frac{1}{m}) \sum_{i=1}^{n_m}\alpha_{i,m} \mu(\{A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m) \} \}) \] 
         Taking $n \to \infty$, the continuity of measures implies that $A_{i,m} \cap \{X_n \geq (1-\frac{1}{m}X_m)\} \uparrow A_{i,m}$. Thus, 
@@ -379,6 +380,45 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
      function is said to be integrable.
       One can easily verify the 
     same niceness properties as before by splitting arbitrary functions into their positive and negative parts. 
+
+    \subsection{Riemann Integration is a Special Case of Lebesgue}
+
+    One of the nice properties of Lebesgue integration is that, if $f : \R \to \R$ is 
+    Riemann integrable, then it is Lebesgue integrable. That is, $\int_\R f(x)dx = \lambda(f)$. 
+    This follows as a simple consequence of the monotone convergence property. 
+
+    \begin{theorem} 
+        Let $f : \R \to \R$ be Riemann integrable and $\int_\R f(x)dx$ be its 
+        Riemannian integral, and $\lambda(f)$ be its integral with respect to the 
+        Lebesgue measure. Then $\int_\R f(x)dx = \lambda(f)$. 
+    \end{theorem}
+
+    \begin{proof} 
+        Recall, by the definition of Riemann integration, that if we let 
+        $\Pi$ be the set of partitions of $\R$ into finitely many intervals,
+        \[ L(f) = \sup_{\pi \in \Pi}\bigg\{ \sum_{I = (a,b] \in \pi} (b-a)\inf_{a < x < b}f(x) \bigg\}\]
+        \[ U(f) = \inf_{\pi \in \Pi}\bigg\{ \sum_{I = (a,b] \in \pi} (b-a)\sup_{a < x < b}f(x) \bigg\}\]
+        And if $L(f) = U(f)$, then $\int_\R f(x)dx = L(f) = U(f)$. To show equality, we will apply the monotone convergence 
+        theorem to $f^+ = |f|\Ind\{f(x) \geq 0\}$ and $f^- = |f|\Ind\{f(x) \leq 0$. Recall that if $f$ is Riemann integrable, 
+        then $f^+$ and $f^-$ are Riemann integrable as well. Furthermore, 
+        observe that for some fixed $\pi \in \Pi$, if we define,
+        \[ s_\pi = \sum_{I = (a,b] \in \pi} \Ind\{x \in I\} \inf_{a < x < b}f^+(x)  \]
+        Then we recognize that, 
+        \[ \lambda(s_\pi) = \sum_{I = (a,b] \in \pi} \lambda((a,b])\inf_{a < x < b}f(x) = \sum_{I = (a,b] \in \pi} (b-a)\inf_{a < x < b}f(x)  \]
+        Now, let $\{\pi_n\}_n$ such that $\lambda(s_\pi) \uparrow \int f(x)dx$. Furthermore, 
+        assume without loss of generality that for $m \leq n$, any $I \in \pi_m$ can be written as 
+        the union of intervals of $\pi_n$, i.e. that $\pi_n$ just refines the intervals already in $\pi_m$. 
+        It therefore follows that $s_{\pi_m} \leq s_{\pi_n}$. Furthermore, 
+        $\lambda(s_{\pi_n}) \uparrow \int f^+(x)dx$, by assumption. Furthermore, by the 
+        monotone convergence theorem, $\lambda(s_{\pi_n}) \uparrow \lambda(f^+)$. 
+        And therefore, $\int f(x)dx = \lambda(f^+)$. A similar argument yields that 
+        $\lambda(f^-) = \int f^-(x)dx$. And therefore, $\lambda(f) = \lambda (f^+(x) - f^-(x)) 
+        = \lambda(f^+) -\lambda(f^-) = \int f^+(x)dx - \int f^-(x)dx = \int f(x)dx$. 
+
+
+
+
+    \end{proof}
 
     \section{Limit Theorems}
 
@@ -451,6 +491,8 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
         But obviously, $\lim\sup_n \int_n X_n \geq \lim\inf_n \int_n X_n$. This forces their 
         equality, and thus the assertion follows as claimed.
 
+    \end{proof}
+
         \subsection{Application: Differentiation Under the Integral}
 
         Oftentimes, you will see something of the essence of: 
@@ -483,7 +525,41 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
             for all $t$.
         \end{theorem}
 
-    \end{proof}
+        \subsection{Integrating over Negligible Sets}
+
+        This is a fact which will get used over and over again. Let $X \in \Mf$ be a measurable and 
+        integrable random variable. We will show the integral of $X$, restricted to 
+        smaller and smaller sets, must go to zero. First, as a matter of notation, for any 
+        set $A \in \F$, define, 
+
+        \[ \int_A Xd\mu = \int X\Ind\{A\}d\mu \]
+        
+        \begin{theorem} 
+            Let $X \in \Mfp$ have $\int |X|d\mu < \infty$ and suppose $\{B_n\}_n \in \F$ with 
+            $B_n \downarrow \emptyset$. Then, $\int_{B_n}X d\mu  \to 0$
+        \end{theorem}
+        
+        \begin{proof}
+            Define $C_0 = B_1^c, C_1 = B_1 \setminus B_2, C_2 = B_2 \setminus B_3$, etc. Observe that 
+            the $C_n$'s are disjoint and span $\Omega$. Then, by the monotone convergence property,
+
+            \[ \int |X| d\mu = \int |X| \sum_{n=0}^\infty \Ind\{C_n\}d\mu =  \sum_{n=0}^\infty \int |X|\Ind\{C_n\}d\mu =  \sum_{n=0}^\infty \int_{C_n} |X| d\mu \]
+            
+            As these must all be finite, by integrability of $|X|$, it follows that 
+            $\lim_{m \to \infty} \sum_{n=m}^\infty \int_{C_n} |X| d\mu \to 0$. However, 
+            for $m > 0$, $\sum_{n=m}^\infty \int_{C_n} |X| d\mu = \int_{B_m} |X|d\mu$, also by the 
+            monotone convergence property. Observe, from the proof, that the same would hold if 
+            $X\Ind\{B_n\}$ were integrable for any finite $n$.
+
+        \end{proof}
+
+        To illustrate that integrability is necessary, we could consider, for example, the function 
+        $X = 1$, the Lebesgue measure on the line $\mu$, and $B_n = \cup_{m \in \mathbb Z}[2^n m, 2^n m + 1]$. 
+        You might suspect that this is a problem only with non-finite measures, such as the Lebesgue measure. 
+        However, counterexamples exist for probability measures as well. For example, letting 
+        $X(\omega) = 1/f(\omega)$, where $f$ is the density function of the distribution $\Prob$ with respect to 
+        the Lebesgue measure (see chapter 4 for greater explanation), then $\Prob(X B_n) = \lambda(f(\omega)1/f(\omega)B_n) = \lambda(B_n) = \infty$.
+    
 
     \section{The Borel Cantelli Lemma}
 
@@ -876,19 +952,88 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
     \end{proof}
 
     We will also show that convergence in probability implies convergence in $L^1$, provided 
-    $X_n$ is uniformly integrable. 
+    $X_n$ is uniformly integrable. At a high level, the requirement of uniform integrability 
+    simply says that a family of random variables universally doesn't put too much oomph above 
+    higher and higher thresholds.
 
     \begin{definition}
         A family of random variables $X_n$ is uniformly integrable if 
         $\sup_n \mathbb P|X_n|\{|X_n| > M\} \to 0$ as $M \to \infty$. 
     \end{definition}
 
+
     \begin{theorem}
-        If $X_n$ is a set of uniformly integrable functions 
-        and $X_n$ onvergence in probability, then $X$ converges in $L^1$.
+        If and only if (i) $X_n$ is a set of uniformly integrable functions 
+        and (ii) $X_n$ convergence in probability to $X$, then $X_n$ converges in $L^1$.
     \end{theorem}
     \begin{proof}
-        Suppose $X_n \to X$ in probability. First, fix $\epsilon > 0$. 
+        Suppose $X_n \to X$ in probability. First, fix $\epsilon > 0$. Now, 
+        fix $M$ such that $\sup_n \Prob(|X_n|\Ind\{X_n > M\}) < \epsilon$. 
+        Finally, let $N$ be such that $n \geq N$ implies $\Prob(\{|X_n - X| > M\}) < \epsilon/M$, which exists 
+        by convergence in probability. Then, for $n \geq N$,
         
+        \[ \Prob(|X_n - X|) = \] 
+        \[ \Prob(|X_n - X|\{|X_n - X| < \epsilon\}) \]
+        \[ + \Prob(|X_n - X| \Ind\{|X_n - X| > \epsilon \}\Ind\{|X_n - X| > M\})  \] 
+        \[ + \Prob(|X_n - X| \Ind\{|X_n - X| > \epsilon \}\Ind\{|X_n - X| < M\}) \]
+        \[ \leq \Prob(\epsilon \Ind\{|X_n - X| < \epsilon\}) \] 
+        \[ + \Prob(|X_n - X|\Ind\{|X_n - X| > M\}) + \Prob(M\Ind\{|X_n - X| > \epsilon\}) \]
+        \[ \leq \epsilon(1) + \epsilon + M(\epsilon/M) \] 
+        \[ = 3\epsilon \]
+
+        Of course, as $\epsilon$ was arbitrary, this completes the ``if'' direction. Now, 
+        we consider the ``only if'' direction. How do we gain uniform integrability from convergence in 
+        $L^1$? Observe that the following inequality always holds:
+
+        \[ |X_n|\{X_n > M\} \leq |X_\infty|\{|X_\infty| > M/2\} + 2 |X_n - X_\infty| \]
+
+        It can be checked by considering casees in which (i) either $X_n \leq M$ 
+        or $X_\infty > M/2$ (ii) otherwise. Taking expectations, we find, 
+
+        \[ \Prob(|X_n|\{X_n > M\}) \leq \Prob(|X_\infty|\{|X_\infty| > M/2\}) + 2\Prob(|X_n-X|) \]
+
+        Thus, we could make all of this less than some $\epsilon$ by first taking 
+        $n_0$ such that $\Prob(|X_n-X|) < \epsilon/4$ for $n \geq n_0$. Then let 
+        $M_1$ be such that $\Prob(|X_\infty|\{|X_\infty| > M/2\}) < \epsilon/2$ and 
+        $M_2 = \max_{n < n_0} \{M_n : \Prob(|X_n|\{X_n > m\})\} < \epsilon/2$. Finally, let 
+        $M^\star = \max(M_1,M_2)$. Then for either 
+        $n < n_0$ or $n \geq n_0$, $\Prob(|X_n|\{X_n > M\}) \leq \epsilon$, which suffices to show 
+        uniform integrability! Now, it remains to show convergence in probability. Fix $\epsilon > 0$. 
+        Then, by Markov's Inequality, $\Prob(|X_n - X| > \epsilon) \leq \frac{\Prob(|X_n - X|)}{\epsilon}$. 
+        Sending $n \to \infty$, we're all set. 
 
     \end{proof}
+
+\section{Pushforward Measures}
+
+\subsection{Measures on Outputs}
+
+Oftentimes, we are given a measure space $ (\Omega, \F, \mu)$ and we are interested in the distribution $\mathbb Q$ of a random variable $X$.
+For example, consider the simple dice roll, where $\Omega = \{1,2,3,4,5,6\}$, $\F$ is the usual 
+power set of $\Omega$, and $\mu$ is the fair distribution. $X$ might be $X(\omega) = \Ind\{\omega \in \{1,2,3\}\}$, i.e. 
+$X$ is the indicator for an odd roll. Then the measure measure $\mathbb Q$ says $\mathbb Q(\{1\}) = \Prob(\{X \in \{1,2,3\} \}) = 1/2$, 
+and $\Q(\{0\}) = 1/2$ as well. That is, for a given \emph{outcome} of $X$, we set the probability of that outcome to 
+be the probability of the set of events which produce that outcome. We make this more formal with the following 
+definition.
+
+\begin{definition}[Pushforward Meaasure]
+    Suppose $X : (\Omega, \F, \mu) \to (\mathcal Y, \mathcal A)$ is measurable. The pushforward measure $\Q$ such that $Q(A) = \Prob(X^{-1}(A))$ for all 
+    $A \in \mathcal A$. 
+\end{definition}
+
+\begin{lemma}
+    The pushforward meaasure is a measure.
+\end{lemma}
+
+\begin{proof} 
+    We simply check definition ~\ref{def:measure}. First, observe that 
+    for all $A \in \mathcal A$, $\Q(A) = \Prob(X^{-1}(A)) \geq 0$, since 
+    $\Prob$ is a measure. Likewise, $\Q(\emptyset) = \Prob(X^{-1}(\emptyset)) 
+    = \Prob(\emptyset) = 0$. Finally, we verify countable additivity. Let 
+    $A_1,A_2... \in \mathcal A$ be disjoint. Then, letting $A = \bigcup_n A_n$, 
+    \[ \Q(A) = \Prob\bigg(X^{-1}\big(\bigcup_n A_n\big)\bigg) = \Prob\bigg(\bigcup_n X^{-1}(A_n)\bigg) = \sum_n \Prob(X^{-1}(A_n)) = \sum_n \Q(A_n) \]
+    And hence, we have verified the necessaary properties.
+\end{proof}
+
+Occasionally, I will write $\Prob_X$ in place of $\Q$, as to clarify the random variable in question. 
+

@@ -119,7 +119,33 @@ full power set. However, if $\E = \{\{1,2,3\}, \{4,5,6\}\}$, then the resulting 
     $\sigma(\E)$. Suppose $A \in \sigma(\E)$. By definition, for all $\F$ containing $\E$, $A \in \F$. 
     Note also that for all $\F'$ containing $\E'$, $\F'$ contains $\E$ as well, so $A \in \F'$. 
     As a consequence $A \in \sigma(\E')$. Since $A$ was generic, $\sigma(\E) \subseteq \sigma(\E')$.
+\end{proof}
 
+\begin{theorem} 
+    Let $\Omega$ be countable with $\sigma$ algebra $\F$. Then there exists a 
+    partition $\mathcal A$ of $\Omega$ such that $\F = \bigg\{ \cup_i A_i : A_i \in \mathcal A \bigg\}$. 
+    In other words, $\F$ works by simply combining atomic sets in $\mathcal A$.
+\end{theorem}
+\begin{proof} 
+    We will form $\mathcal A$ constructively. For $\omega \in \Omega$, let $A(\omega) = \arg\min_{F \in \F : \omega \in F}|F|$.
+    Note that such a minimum must exist. And obviously, $A(\omega) \in \F$. Let us show that 
+    $\{A(\omega) : \omega \in \Omega\}$ are disjoint and their union is $\Omega$. Suppose we have two sets 
+    $A(\omega_1), A(\omega_2)$. Suppose $A(\omega_1) \neq A(\omega_2)$, but $A(\omega_1) \cap A(\omega_2) \neq \emptyset$. 
+    Suppose without loss of generality that $A(\omega_1) \supset A(\omega_2)$. Then 
+    $\omega_1 \in A(\omega_1) \setminus A(\omega_2)$, where $|A(\omega_1) \setminus A(\omega_2)| < |A(\omega_1)|$. 
+    This is a contradiction, as $A(\omega_1)$ is supposed have minimal cardinality. 
+    Therefore, either $A(\omega_1) = A(\omega_2)$ or $A(\omega_1) \cap A(\omega_2) = \emptyset$. Furthermore, obviously 
+    $\cup_{\omega \in \Omega}A(\omega) = \Omega$, since for any $\omega \in \Omega$, $\omega \in A(\omega)$ at the 
+    very least.\\ 
+    
+    We now show that $\F$ consists of unions of the $A(\omega)$'s. Let $F \in \F$ be arbitrary. 
+    Note that $F = \cup_{\omega \in F}\omega \subseteq \bigcup_{\omega \in F}A(\omega)$. It remains to show that 
+    this inclusion is \emph{not} strict. Suppose that there were a $\tilde{\omega} \in \bigcup_{\omega \in F}A(\omega) \setminus F$. 
+    Then there would be an $\omega \in F$ for which $\tilde{\omega} \in A(\omega) \setminus F$. Clearly, then 
+    $A(\tilde{\omega}) \cap A(\omega) \neq \emptyset$, so $A(\tilde{\omega}) = A(\omega)$. Yet 
+    $\tilde{\omega} \in A(\tilde{\omega})\setminus F$, where $| A(\tilde{\omega})\setminus F| < |A(\tilde{\omega})|$. 
+    This is, of course, a contradiction. Therefore,  $F = \cup_{\omega \in F}\omega = \bigcup_{\omega \in F}A(\omega)$ as 
+    desired.
 
 \end{proof}
 
