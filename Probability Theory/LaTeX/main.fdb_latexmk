@@ -1,5 +1,5 @@
 # Fdb version 3
-["pdflatex"] 1675122821 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1675122823
+["pdflatex"] 1675123643 "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" "main.pdf" "main" 1675123646
   "/Users/samuelleone/Documents/GitHub/Math/Probability Theory/LaTeX/main.tex" 1675097213 1247 621a87143447aba1fad4f27776a0687a ""
   "/usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2022/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
@@ -99,9 +99,9 @@
   "/usr/local/texlive/2022/texmf.cnf" 1647878952 577 209b46be99c9075fd74d4c0369380e8c ""
   "chapter1.tex" 1675043018 12116 8f2615c7986aa25ea7ec0d798f24f6c4 ""
   "chapter2.tex" 1673403376 35690 f49b9fd37c7403e77852280dac8048a1 ""
-  "chapter3.tex" 1675122757 58114 2c8ebdb5f410ea4c8b95dbd59668d946 ""
+  "chapter3.tex" 1675123642 58403 2fc221610d550f4e3b831a4727af98ad ""
   "chapter4.tex" 1675122820 12417 0fc82346f9a97d10ede21385b376d14e ""
-  "main.aux" 1675122823 7553 fac48f70092e88a5ffd7e179a89851d8 "pdflatex"
+  "main.aux" 1675123646 7553 fac48f70092e88a5ffd7e179a89851d8 "pdflatex"
   "main.tex" 1675097213 1247 621a87143447aba1fad4f27776a0687a ""
   (generated)
   "main.aux"

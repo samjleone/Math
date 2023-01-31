@@ -960,7 +960,10 @@ Note for fixed $i, \gamma_{i,j} = \alpha_i$. For fixed $j$, $\gamma_{i,j} = \bet
         In iether case, as $\epsilon > \epsilon^2$ for small $\epsilon$, there is an $\epsilon$ for which 
         $\epsilon^2 \|s\|^2 - 2\epsilon \langle y - x,  s\rangle < 0$, meaning $\|y-x(\epsilon)\| < \|y-x\|$. 
         As $x \in S$, $s \in S$, $x(\epsilon) = x + \epsilon s \in S$. This is a contradiction. Therefore, no such 
-        $s$ exists.
+        $s$ exists.\\
+        Furthermore, we may establish uniqueness like so. By the strict convexity of the norm 
+        $\|\cdot\|$, if $x,x'$ are distinct minimizers of distance, a strictly lower distance will be achieved by a convex 
+        combination of $x$ and $x'$. This would be a contradiction.
     \end{proof}
 
     We say a map $A$ is continuous if, for all $x \in \mathcal H$, $\epsilon > 0$, there exists a 
