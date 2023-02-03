@@ -1,4 +1,4 @@
-\chapter{Densities \& The Radon Nikodym Theorem}
+\chapter{Densities \& Conditional Expectation}
 
 In your ordinary probability class, you learned about 
 ``densities'' as being a sort of continuous version of a Probability 
@@ -104,7 +104,7 @@ except for when $\Prob = \Q$ almost everywhere:
     \[ = - \log_2\Prob\bigg(\frac{d\Q}{d\Prob}\bigg) = -\log_2\bigg(\int_\Omega d\Q \bigg) = 0 \]
 \end{proof}
 
-\section{The Radon-Nikodym Theorem \& Lebesgue Decomposition}
+\section{The Radon-Nikodym Theorem}
 
 The Radon-Nikodym Theorem Concerns itself with the existence of such densities. It establishes that 
 such a $\frac{d\nu}{d\mu}$ exists whenever $\nu$ and $\mu$ are $\sigma$-finite and 
@@ -187,6 +187,26 @@ $nu << \mu$.
 
 \end{proof}
 
+The Radon-Nikdoym theorem has a wide variety of applications. For one, we have given a sort of rigorous justification 
+for continuous derivatives with respect to the Lebesgue measure, from which the theory of continuous 
+distributions follows. But, in some sense, we had already defined these distributions by such a density, defined by 
+a Riemannian integral over intervals, and extended it to the Borel $\sigma$-field via Caratheodory's extension theorem.
+So our work is somewhat circular. What about a more novel application?
+it can be applied to prove the existence of Kolmogorov's abstract conditional expectation.
 
+\section{Conditional Expectation}
+\subsection{What is a conditional expectation?}
 
-
+Typically, we define conditional expectations in terms of conditional probabilities. 
+We say something of the essence of, 
+\[ \Prob(A|B) = \frac{\Prob(A,B)}{\Prob(B)} \]
+This quantity is supposed to represent \emph{the fraction of the times that $A$ occurs when $B$ occurs}. 
+In the continuous case, we replace the above probabilities with densities $p(a|b) = p(a,b)/p(b)$. Already, we are in somewhat murky 
+territory. Why would we do such a thing? The probability of a particular $a,b$ occuring is zero, but so is the probability of 
+a particular $b$. While replacing pmfs with pdfs seems reasonable, it's essentially arbitrary
+from a \emph{microscopic} point of view. But such conditional densities have nice \emph{macroscopic properties}. 
+\begin{itemize}
+    \item $p(a|b) = 0$ when $p(a,b) = 0$ (for $p(b) \neq 0$)
+    \item Defining $\Prob(A|b) = \int_A p(a|b)da$, the conditional distribution is 
+        in fact a probability measure.
+\end{itemize}
