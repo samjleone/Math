@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Curvilinear Coordinate Systems</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Curvilinear Coordinate Systems</h3>
+
+        <h4>Some Formalism</h4>
+
+        Oftentimes, we are interested in representing the same function in two different coordinate systems. 
+        For instance, we might choose to represent the function \(u(x,y,z) = x^2 + y^2 + z^2\) in Cartesian coordinates 
+        by \(u(r,\theta,\phi) = r^2 \) in spherical coordinates which is simpler. This is a little upsetting formally;  
+        you might argue that \( u(r,\theta,\phi) \) really ought to just be \( r^2 + \theta^2 + \phi^2\) (just plugging in the arguments). 
+        Formally, you might imagine we have a function \(\psi\) which actually does the coordinate mapping \(x = \psi(x')\). 
+        Then we would say there is another function \(\tilde{u}\) such that \(\tilde{u}(x') = u(\psi(x')) \). For instance, in spherical coordinates, 
+        \[ \psi(r,\theta,\phi) = (r \cos\phi \sin\theta, r\sin\phi \sin\theta, r\cos\theta),\] 
+        \[ \tilde{u}(r,\theta,\phi) = r^2. \]
+        So then what we mean by an expression like \(\frac{\partial u}{\partial r}\) is what one would rigorously call 
+        \(\frac{\partial \tilde{u}}{\partial r}\), since \(\tilde{u}\) really is just a paraphrasing of \(u\) in the appropriate 
+        coordinate system.
+
+        <h4>Cartesian Coordinates are Special</h4>
+
+        In a typical math class, you will define differential operators in terms of the arguments. For instance, \(\nabla u(a_1,a_2\ldots a_n)\) is the vector 
+        whose kth entry is \(\partial_{a_k} u\). The physicists take a different approach. They would say that you really define a differential operator in a particular 
+        coordinate system (almost definitely Cartesian), and to express the same "operator'' in a different coordinate system may require a more complicated expression.
+        For example, it would be totally WRONG to recycle the definition of \(\nabla\) in a new coordinate system and say that \(\nabla \cdot \tilde{u} = \partial_{r} \tilde{u}_1 + \partial_{\theta} \tilde{u}_2 + \partial_{\phi} \tilde{u}_3 \). 
+        No, you want to take \(\nabla\) much more literally: the usual formula applies in the Cartesian coordinate system, and when working in another coordinate system, we need to define a map 
+        that coincides in value with the Cartesian version. 
+
+        <h4>Local Coordinate Systems and Gradients</h4>
+
+        Recall our construction that \(x = \psi(x')\). When one changes the value of \(x'_i\) by a smidge, we see that the 
+        corresponding change in \(x\) is (by the chain rule)
+        \[ \frac{dx}{dx_i'} = \bigg(\frac{\partial \psi_1}{\partial x'_i}, \frac{\partial \psi_2}{\partial x'_i} \ldots \frac{\partial \psi_n}{\partial x'_i}\bigg) \]
+        This is of a course a vector. One can think about it sort of like the image of \(dx_i'\). That is, if one imagines drawing the set of grid lines, in which one parameter 
+        varies at a time, it is the case that \(\frac{dx}{dx_i'}\) is tangent to the \(x_i'\) grid line which passes through \(x\). Define by \(b_i(x)\) this vector as a function of \(x\). 
+        Provided the coordinate mapping \(\psi\) is bijective, it is reasonable to suspect that the \(\{b_i\}_i\)'s form a basis for \(\mathbb R^n\). That suspicion is correct. 
+        These local coordinate systems will provide a nice middle man between coordinate transformations. <br><br>
+
+        <img class = 'graphic' src="graphics/curvilinear_loc_coordinates.png" width = "100%">
+
+        As an illustrative example, we shall use these local coordinates to re-express the gradient. Suppose that the \(\{b_i\}_i\)'s are orthogonal, although perhaps not normal. 
+        Consider what happens if we increase \(x_i'\) by some small perturbation \(ds\). This change in \(x_i'\) will also cause a change of 
+        \( \frac{\partial u}{\partial x_i'} ds \) to the value of \(u\). At the same time, \(x\) changes by \(\frac{\partial x}{\partial x_i'} ds =  \hat{b_i} ds |b_i| \); in other words, the 
+        resulting perturbation in Cartesian space is by an amount \(ds |b_i|\) in the direction of \(\hat{b_i}\). Rescaling, it must then be the case that by moving a step \(ds\) in the 
+        \(\hat{b_j}\) direction, then \(u\) changes by \(\frac{1}{|b_i|} \frac{\partial u}{\partial x_i'}\). Thus, to be consistent with our observations, we require that 
+        \[ \nabla u \cdot \hat{b_i} = \frac{1}{|b_i|} \frac{\partial u}{\partial x_i'} \]
+        And because the \(b_i\)'s are orthogonal, this implies
+        \[ \nabla u = \sum_{i=1}^n \frac{1}{|b_i|} \frac{\partial u}{\partial x_i'} \hat{b_i}. \]
+        <img class = 'graphic' src="graphics/curvilinear_gradient.png" width = "100%">
+        It's a little bit catchier to just write, in the operator sense,
+        \[ \nabla = \hat{b_i} \frac{1}{|b_i|}  \frac{\partial}{\partial x_i'} \]
+        The sum is implicit in the above expression, as is traditional in the Einstein notation. This expression can also be derived using the multiariate chain rule. At the same time, I'm trying to give a taste of infinitesimal reasoning, so this is preferred. 
+        Note that if the \(b_i\)'s weren't orthogonal, our observation about \(\nabla u \cdot \hat{b_i}\) would still hold. The only part that would go wrong is the reconstruction of the gradient in Cartesian space. 
+        We can still say something (convoluted), however. If we assemble 
+        our b vectors into the columns of a matrix B, we can assume that \(\nabla u = B v\) for some vector \(v\). This is the same as saying that
+        \(\nabla u = \sum_{i=1}^n v_i b_i\). Then necessarily 
+        \[ \frac{\partial u}{\partial x_j'} = |b_j| (\hat{b_j} \cdot \nabla u) = b_j^\top B v \]
+        Considering this equation for each \(j\) can be stated in vector form as 
+        \[ \begin{pmatrix} \frac{\partial u}{\partial x_1'} \\ \ldots \\ \frac{\partial u}{\partial x_n'} \end{pmatrix} = B^\top B v \]
+        Because the b's are linearly independent, we can speak of \( (B^\top B)^{-1} \) and thus, 
+        \[ v_i = \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'},   \]
+        \[ \nabla u = \sum_{i=1}^n b_i v_i = \sum_{i=1}^n b_i \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'} = \sum_{i} \hat{b_i} \bigg( \sum_j |b_i| (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'} \bigg). \]
+        One can easily check that in the orthogonal case this coincides with our first finding.  
+        <!--
+
+        Consider the gradient as an illustrative example. Suppose for simplicity that our \(b_1\ldots b_n\) forms an orthogonal basis. If we assemble these vectors into a matrix 
+        \[ B = \begin{bmatrix} b_1 \ldots b_n \end{bmatrix} = \begin{bmatrix} \frac{\partial x_1}{\partial x_1'} & \ldots & \frac{\partial x_1}{\partial x_n'} \\ \ldots & \ldots & \ldots \\ \frac{\partial x_n}{\partial x_1'} & \ldots & \frac{\partial x_n}{\partial x_n'} \end{bmatrix} \]
+        this matrix will obviously be orthogonal, meaning its inverse is its own transpose.  It is also the Jacobian \(D\psi\). Thus, \(B^\top\) is \(D\psi^{-1}\), which means that 
+        \(\frac{\partial x_i'}{\partial x_j} = D\psi^{-1}_{i,j} = B^\top_{i,j} = B_{j,i} =  b_i^j \).
+
+         Then one can see via the chain rule that 
+        \[ \sum_{i=1}^n \frac{\partial u}{\partial x_i}e_i = \sum_{i=1}^n \sum_{i=j}^n \frac{\partial u}{\partial x_j'} \frac{\partial x_j'}{\partial x_i} =  \sum_{i=j}^n \frac{\partial u}{\partial x_j'} \sum_{i=1}^n b_i^j e_i = \sum_{i=j}^n \frac{\partial u}{\partial x_j'} b_i  \]
+        And this is not a coincidence. We expect this to be true since a gradient represents a physical quantity. Thus, we expect that to calculate the gradient, we can apply the same rules with any orthogonormal coordinate system. For instance, we know that \(\nabla u\) is the vector for which 
+        \(\nabla u^\top b_i\) gives the directional derivative of \(u\) in the direction of \(b_i\), which is \(\frac{\partial u}{\partial x'_i}\). Making the ansatz \(\nabla u = \sum_{i=1}^n \alpha_i b_i\), orthonormality implies that the only valid choice of 
+        \(\frac{\partial u}{\partial x'_i}\), which implies the desired result.
+
+        Now we might consider the (much more common) case where the b's are still orthogonal, but no longer normal. This case quickly reduces to the earlier one by considering the unit vectors 
+        \(\hat{b_i} = b_i / |b_i|\). Then the old result is still true and
+        \[ \nabla u = \sum_{i=1}^n \frac{\partial u}{\partial x_i'} \frac{1}{|b_i|}b_i. \]
+        Which is nice because it provides a nice formula solely in terms of our old variables. There is another way of seeing this too. Note that if \(B\) is an orthogonal matrix and \(D\) contains the squared norms of the columns, then 
+        \( D^{-1} B^\top B\) is the identity. This means that \(D^{-1} B^\top \) is necessarily the inverse of \(B\). So by the same logic, 
+        \[ \frac{\partial x_j'}{\partial x_i} = B^{-1}_{j,i} = (D^{-1} B^\top )_{j,i} = \frac{B^\top_{j,i}}{|b_j|^2} = \frac{B_{i,j}}{|b_j|^2} = \frac{1}{|b_j|^2}\frac{\partial x_i}{\partial x_j'} = \frac{b_j^i}{|b_j|^2} \]
+        And then 
+        \[ \nabla u = \sum_{i,j} \frac{\partial u}{\partial x'_j}\frac{\partial x'_j}{\partial x_i} e_i = \sum_{i,j} \frac{\partial u}{\partial x'_j} \frac{b_j^i}{|b_j|^2}e_i = \sum_{j} \frac{\partial u}{\partial x'_j} \frac{b_j}{|b_j|^2} = \sum_{j} \frac{1}{|b_j|} \frac{\partial u}{\partial x'_j} \hat{b_j} \]
+        There is a more intuitive way of looking at this, however. If we change \(x_j'\) by a smidgen \(ds\), this will correspond to a jump of \(ds b_j = ds \hat{b_j} |b_j| \) ambiently. Simultaneously, \(u\) will change by an amount \(\frac{\partial u}{\partial x_j'} ds \). This is all to say that when we move by an infinitesimal amount 
+        \(ds \hat{b_j}\) in ambient space, we expect \(u\) to change by an amount \(\frac{1}{|b_j|}\frac{\partial u}{\partial x_j'}ds\). This necessarily means that the directional derivative of \(u\) in direction 
+        \(b_j\) is \(\frac{1}{|b_j|}\frac{\partial u}{\partial x_j'}\).
+
+
+    --> 
+        <h4>The Divergence</h4>
+        We might also be interested in writing the divergence in the new coordinate system. By combining this with the gradient, for instance, we 
+        can obtain the Laplacian. Because the divergence represents the extent to which a point acts as a source / sink, we know it is invariant under rotations. 
+        What this is means is that, once more for an orthogonal coordinate system, if 
+        \[ u(x) = \sum_{i=1}^n u_i b_i \]
+        Where the \(b_i\)'s are orthonormal, then it should still hold that \(\nabla \cdot u = \sum_{i=1}^n \frac{\partial u_i}{\partial x_i} \). I will assume this without proof. 
+        What is less obvious is what to do in the orthogonal (but not orthonormal) scenario. 
+
+        Consider the image of \(x'\) and the ambient surfaces formed by \(x'_i \pm \frac{1}{2} \epsilon\). These will all form a surface represented in Cartesian coordinates by 
+        some \(S\) with an interior \(V\). By the divergence theorem, 
+        \[ vol(V) div(u) \approx \int_{S} u \cdot n da \]
+        And in particular, this approximation becomes arbitrarily good for smaller and smaller \(\epsilon\):
+        \[ div(u) = \lim_{\epsilon \to 0} \frac{1}{vol(V)} \int_{S} u \cdot n da.\]
+        The easy part is the denominator: to the first order, \( vol(V) = |b_1||b_2| \ldots |b_n| \epsilon^n \).
+
+        <img class = 'graphic' src="graphics/curvilinear_divergence.png" width = "100%">
+
+        The numerator is a little more complicated. Consider the fixing of coordinate i. Then we will have two integrals involved in \(S\), one of which is approximately 
+        \( \epsilon^{n-1} u_i  \prod_{j \neq i} |b_j|\); the \(u_i\) part corresponds to \(u \cdot n\), as the normal to the surface of a 
+        And the other being approximately \(- \epsilon^{n-1} u_i  \prod_{j \neq i} |b_j|\), just because we flip the surface normal. As we take \(\epsilon\) to be very very 
+        small, this difference is basically 
+        \[ \epsilon^{n-1} \cdot \epsilon \frac{\partial}{\partial x_i'}\bigg(u_i \prod_{j\neq i}|b_j|\bigg) \]
+        Thus, 
+        \[ \nabla \cdot u = \lim_{\epsilon \to 0} \frac{\epsilon^n  \sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg) + \text{low order}}{\epsilon^n \prod_{j \neq i}|b_i| + \text{low order}} =\frac{\sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg)}{\prod_{j \neq i}|b_i|}. \]
+        
+        <h4>The Laplacian</h4>
+        Combining the gradient with the divergence, we can easily obtain the Laplacian. It's now obvious in curvilinear coordinates that 
+        \[ \Delta u = \nabla \cdot \nabla u = \frac{1}{|b_1|\ldots |b_n|} \sum_{i=1}^n \frac{\partial}{\partial x_i'} \bigg( \frac{1}{|b_i|} \frac{\partial u}{\partial x_i'} \cdot \prod_{j \neq i} |b_j| \bigg) \]
+        Again, key to our analysis was the orthogonality of the local coordinates. For most applications, this is a pretty reasonable assumption.
+
+        <h3>Examples</h3>
+        <h4>Example 1: Cylindrical Coordinates</h4>
+        For cylindrical coordinates, the coordinate map is given explicitly by 
+        \[ \psi(r,\theta,h) = (r\cos\theta, r\sin\theta, h) \]
+        The implication for the scale factors is that 
+        \[ b_r = \frac{\partial x}{\partial r} = \begin{pmatrix} \cos(\theta) \\ \sin(\theta) \\ 0 \end{pmatrix}, b_{\theta} = \begin{pmatrix} -r\sin(\theta) \\ r\cos(\theta) \\ 0 \end{pmatrix}, b_h = \begin{pmatrix} 0 \\ 0 \\ 1 \end{pmatrix} \]
+        \[ |b_r| = 1, |b_\theta| = r, |b_z| = 1 \]
+        This means that the gradient can be very easily expressed as
+        \[ \nabla u = \begin{pmatrix}  \cos(\theta) \frac{\partial u}{\partial r} - \frac{1}{r} \sin (\theta)\frac{\partial u}{\partial \theta}  \\  \sin(\theta) \frac{\partial u}{\partial r} + \frac{1}{r} \cos (\theta)  \frac{\partial u}{\partial \theta} \\ \frac{\partial u}{\partial h} \end{pmatrix} \]
+        The divergence is 
+        \[ \frac{1}{r} \bigg( \frac{\partial}{\partial r}(r u_r) + \frac{\partial}{\partial \theta}(u_\theta) + \frac{\partial}{\partial h}(u_h) \bigg) \]
+        Where \(u_r\) is the projection of \(u\) onto the radial direction, \(u_\theta\) is the projection of \(u\) onto the counterclockwise tangent direction, and \(u_h\) is just the 
+        vertical component:
+        \[ u_r = \cos\theta u_x + \sin\theta u_y, u_\theta = -\sin\theta u_x + \cos\theta u_y, u_h = u_z \]
+        Finally, for a scalar, the Laplacian is 
+        \[ \Delta u = \frac{1}{r} \bigg[ \frac{\partial}{\partial r}\bigg(r \frac{\partial u}{\partial r} \bigg) + \frac{\partial}{\partial \theta}\bigg(\frac{1}{r} \frac{\partial u}{\partial \theta} \bigg) + \frac{\partial}{\partial h}\bigg(r \frac{\partial u}{\partial h} \bigg)  \bigg] \]
+        It is easy to check that simplifies a tad to the more well known expression:
+        \[ \Delta u = \frac{1}{r} \frac{\partial}{\partial r}\bigg(r \frac{\partial u}{\partial r} \bigg)  + \frac{1}{r^2}  \frac{\partial^2 u}{\partial \theta^2}  + \frac{\partial^2 u}{\partial h^2}. \]
+
+        <h4>Example 2: Spherical Coordinates</h4>
+        One can repeat the same analysis for spherical coordinates (I promise nothing interesting happens). When one does this, they find: 
+        \[ \Delta u = \frac{1}{r} \frac{\partial}{\partial r^2}(r\Phi) + \frac{1}{r^2\sin \theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{r^2\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2}. \]
+        This equation is of great importance when one goes to derive the spherical harmonics.
+
+
+    </body>
+</html>
