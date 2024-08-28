@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Legendre Functions</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Laplace's Equation</h3>
+
+        <h4>Analogies with Fourier Series</h4>
+
+        Because \(\sin(nx)\) satisfies \(\frac{d^2}{dx^2}\sin(nx) = n^2 \sin(nx)\) (and likewise for \(\cos\)), the trigonometric 
+        functions can be viewed as "eigenfunctions" of the second derivative operator.  The amazing thing is that arbitrary "nice" functions 
+        can be expanded in terms of these eigenfunctions. In 3D, \(\frac{d^2}{dx^2}\) will become the Laplacian. 
+
+        <h4>A Preview of What is to Come</h4>
+        We will show that there exists a doubly index set of functions \(Y_\ell^m(\theta,\phi)\) defined on the sphere, as well as a 
+        radial function \(A_l(r)\) with \(A(1) = 1\) such that the function \( Y_{\ell}^m(\theta,\phi)A_l(r) \) is harmonic. Moreover, the \(Y_\ell^m(\theta,\phi)\)'s will 
+        be orthogonal and complete. The result of this is that by expanding a function \( f(\theta, \phi) \) as \(\sum_{\ell,m} a_{\ell,m} Y_{\ell}^m \), then 
+        \[ \sum_{\ell,m} a_{\ell,m} A_{l}(r) Y_\ell^m(\theta,\phi) \]
+        is equal to \(f\) on the sphere and also harmonic in the whole space. This makes the spherical harmonics very useful in the solution of potential problems on 
+        the sphere.
+
+        <h4>Laplace's Equation on the Sphere</h4>
+        One can show using <a href= '../curvilinear.html'>curvilinear coordinates</a> an expression for the Laplacian in spherical coordinates
+        \[ \Delta u = \frac{1}{r} \frac{\partial^2}{\partial r^2}(ru) + \frac{1}{r^2}\bigg[\frac{1}{\sin\theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2}\bigg]. \]
+        Setting this equal to zero yields Laplace's equation in spherical coordinates. Another thing the physicists do is to define a differential operator \(\Delta\) such that
+        \[ \Delta u = \frac{1}{\sin\theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2} \]
+        Suppose we assume that \(u\) factorizes like \(u = Y(\theta,\phi)\frac{U(r)}{r}\). Then to satisfy Laplace's Equation, 
+        \[ 0 = \frac{\partial^2 U}{\partial r^2} + \frac{U}{Yr^2} \Delta Y \]
+        Because it captures all the dependence on the angular parts, \(\frac{1}{Y}\Delta Y\) must be constant. We now explore the ramifications of this fact for the function \(U\).
+        <h5>The Radial Portion</h5>
+        Because \(\frac{1}{Y}\Delta Y\) is constant (say it is equal to a), we thus have 
+        \[ \frac{\partial^2 U}{\partial r^2} + \frac{U}{r^2}a = 0 \]
+        Intuitively, we expect that this differential equation has a power series solution, since it involves only 
+        powers of \(r\). If we assume \(U\) has the Laurent series
+        \[ U = \sum_{k=-\infty}^\infty \alpha_n r^k, \]
+        then the we just need 
+        \[ \sum_{k} \alpha_k r^{k-2} \bigg( k(k-1) + a \bigg) = 0.  \]
+        So obviously, this differential equation will be satisfied if \(a = - k(k-1) \) for some integer \(k\).
+        In which case, the function \( r^{k} \) is a solution. There is a slightly less obvious solution too, though. 
+        If \(a = - k(k-1)\) for some \(k\), then \(a = - ( (-k + 1) )((-k + 1) - 1)\) as well. This indicates that 
+        \(r^{-k+1}\) is also a solution as well. 
+
+        Last (slightly weird) thing on this: it's more traditional to make the substitution \(\ell= k-1\). In this case, 
+        we will have that \(a = - \ell(\ell+1)\) and this equation is solved with \(r^{\ell+1}\) and \( r^{-\ell}\). To summarize, we may assume that \(U\) takes the form 
+        \[ U(r) = A r^{\ell + 1} + B r^{-\ell} \]
+        Where \(\frac{1}{Y}\Delta Y = - \ell(\ell+1) \). What this all means is that we will eventually discover appropriate restrictions on \(Y\). Then by ``extending'' that 
+        \(Y\) to a function on \(\mathbb R^3\) through the use of \(U/r\), we will construct something which is harmonic.
+
+        <h5>The Angular Portion</h5>
+
+        Now that we know \(\frac{1}{Y}\Delta Y = - \ell(\ell+1)\), it then follows that \(\Delta Y = - \ell(\ell + 1)Y\); in other words, 
+        \(Y\) is an eigenfunction of \(\Delta \) of eigenvalue \(-\ell(\ell+1)\). If we assume that \(Y\) is of the form \(Y(\theta,\phi) = P(\theta)Q(\phi)\) then 
+        this implies (after rearranging a bit) that
+        \[  \frac{1}{\sin\theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial P}{\partial \theta}  \bigg) + \bigg[\frac{1}{Q\sin^2\theta} \frac{\partial^2 Q}{\partial \phi^2} + \ell(\ell+1)\bigg]P = 0. \]
+        In order for this to hold for all \(\phi\), it has got to be the case that \(\frac{1}{Q} \frac{\partial^2 Q}{\partial \phi^2}\) is equal to some constant 
+        \(-b\). The differential equation \( \frac{\partial^2 Q}{\partial \phi^2} = - b Q \) has solutions \( Q = e^{-i\pm \sqrt{b} \phi} \). Of course, we seek a solution in which 
+        \(Q\) is single valued (so that everything is differentiable), which forces \(b\) to be square. Thus, we define \(b = m^2\). This tells us that \(Q(\varphi) =  e^{\pm i m \varphi}\). 
+        What this means for our original function \(u\) is that it'll oscillate \(m\) times as rotate in the \(\varphi\) direction.<br><br>
+        
+        Knowing this, we know seek solutions to
+        \[  \frac{1}{\sin\theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial P}{\partial \theta}  \bigg) + \bigg[\ell(\ell+1) - \frac{m^2}{\sin^2\theta}\bigg]P = 0. \]
+        To be clear, this is a differential equation in \(P\). This equation is very nearly something well studied. The last ingredient is make the substitution 
+        \(x = \cos\theta\). Geometrically, the quantity \(\cos\theta\) is the same as \(z/r\); it is the "rescaled" z coordinate. So if you imagine just examining \(Y(\theta,\phi)\) on the sphere, 
+        and you look at it head on so that the z axis is in your viewing plane, then \(P(x)\) will tell you how the function changes as you move along the z axis.
+        I do find this troubling; we have gone through a great deal of work, using curvilinear coordinates and all, to reason about Laplace's equation in spherical coordinates. 
+        In the curvilinear coordinates, the \(\sin\theta\) scale factor makes everything pretty ugly, owing to the asymmetric treatment of the \(\phi\) coordinate and the
+        \(\theta\) coordinate. And now that we have reached a critical step we go back to Cartesian coordinates! <br><br>
+
+        Regardless, with this substitution, \(\sin\theta = \sqrt{1-x^2}\), and also \(\frac{d}{d\theta} = \frac{d}{dx}\frac{dx}{d\theta} = -\sin\theta \frac{d}{dx}\). Thus 
+        \[ \frac{1}{\sin\theta} \frac{dP}{d\theta} \bigg( \sin\theta \frac{dP}{d\theta} \bigg) = -\frac{dP}{d\theta}\bigg( \sin^2(\theta) \frac{dP}{dx} \bigg)  = \frac{dP}{dx} \bigg( (1-x^2) \frac{dP}{dx} \bigg) \]
+        and so in terms of x we seek solutions to 
+        \[ \frac{dP}{dx}\bigg( (1-x^2) \frac{dP}{dx} \bigg) + \bigg[ \ell(\ell+1) - \frac{m^2}{1-x^2} \bigg] P = 0 \]
+        This is the generalized Legendre equation. It has a canonical solution \(P_{\ell}^m\) which we will find shortly. However, solving the equation doesn't benefit the big picture much, so let's 
+        postpone that for later and simply say that these \(P_\ell^m\)'s exist. Moreover, the \(P_{\ell}^m\)'s satisfy the following properties: 
+        
+        <ol>
+            <li>They are mutually orthogonal</li>
+            <li>\(P_\ell^m(1)\) is 1 if and only if \(m=0\), and is 0 otherwise. </li>
+            <li>The integral of \(P_\ell^m\) over \([-1,1]\) is \(\sqrt{\frac{4\pi}{2\ell + 1}}\). </li>
+          </ol> 
+
+        are all mutually orthogonal. This will mean that
+        \[ u = \bigg( Ar^\ell + B r^{-\ell-1}  \bigg) e^{\pm i m \phi} P_{\ell}^m \]
+        solves Laplace's equation. Because it captures the angular part, it is common to denote by \(Y_\ell^m(\theta,\phi) \) the function \(N_\ell^m e^{\pm i m \phi} P_{\ell}^m(\cos\theta) \),   suitably normalized by \(N_\ell^m = \sqrt{\frac{2\ell + 1}{4\pi}} \) so that  
+        \[ \int_{S} (Y_{\ell}^m)^* Y_{\ell}^m dA = 1 \]
+        where this integration is over the surface of the sphere S. Now, because the \(P_{\ell}^m\)'s are mutually orthogonal and the \(e^{im\phi}\)'s are mutually orthogonal, 
+        the \(Y_{\ell}^m\)'s form an orthonormal basis for functions on the sphere.
+
+
+        <h4>Applications in Electrostatics: The Multipole Expansion</h4>
+
+        If a function \(\Phi\) is (1) known on the surface of the sphere of radius R and (2) solves Laplace's equation outside this sphere, then the multiple expansion provides a representation. 
+        as \(\Phi\) is specified on the sphere of radius R, we expand \(\Phi\) in the orthonormal basis provided by the \(Y_\ell^m\)'s:
+        \[ \Phi(R,\theta,\phi) = \sum_{\ell,m} Y_{\ell}^m(\theta,\phi) \underbrace{\int_{S} (Y_\ell^m(\theta,\phi))^* \Phi(R,\theta,\phi)d\Omega}_{C_{\ell,m}}. \]
+        And it follows that 
+        \[ \Phi(r,\theta,\phi) = \sum_{\ell,m} (A_\ell r^{\ell} + B_{\ell}r^{-\ell-1}) Y_{\ell}^m(\theta,\phi)C_{\ell,m} \]
+        for some \(A_\ell\)'s' and \(B_\ell\)'s'. For electrostatic applications, you'd assume that \(\Phi\) is a potential energy to a (compactly supported) 
+        charge distribution. Thus, all the \(A_{\ell}\) ought to be zero so the thing doesn't blow up. Moreover, \(B_{\ell}\) has to be 
+        \( R^{\ell + 1} \) so that we have consistent values on the sphere of radius R. Now,
+        \[ \Phi = \sum_{\ell,m} \frac{R^{\ell + 1}}{r^{\ell + 1}} Y_{\ell}^m(\theta,\phi)C_{\ell,m}  \]
+        provides the so called multipole expansion of \(\Phi\).
+
+        <h4>Things which Commute</h4>
+
+        For any function \(f\) defined on the sphere, we can consider rotating it to produce a new function \(\tile{f} = Qf\). Note that this transformation 
+        is linear.  We argued in <a href = "curvilinear.html">Curvilinear Coordinate Systems and Operators</a> that 
+        \(\Delta\) is in fact the Laplace-Bertrami operator over the sphere. What this means is that 
+        \( (\Delta f)(x) \) is a measure of how much \(f(x)\) differs from \(f(y)\) for \(y\) close to \(x\). 
+        Note that we could calculate \(\Delta f\) by rotating \(f\), taking the \(\Delta\) of the rotated function, and rotating back. 
+        Another way of saying this is that 
+        \[ Q^{-1}\Delta Q = \Delta \]
+        Which in implies that \(Q\) and \(\Delta\) commute: \(Q\Delta = \Delta Q\). Because \(Y_{\ell}^m\) is an eigenfunction of \(\Delta\) of eigenvalue 
+        \(-\ell(\ell + 1)\), diagonalization of \(Delta\) allows one to write 
+        \[ \Delta = -\sum_{l=0}^\infty \ell(\ell+1)\Pi_{\ell}, \]
+        where \(\Pi_{\ell}\) is the projection operator onto the eigenspace \(E_{\ell}\) of eigenvalue \(-\ell(\ell+1)\), also being the span of \( \{Y_{\ell}^m \}_{-\ell \leq m \leq \ell} \). 
+        Then the commutation of \(Q\) and \(\Delta\) implies:
+        \[ \sum_{l=0}^\infty \ell(\ell+1)\Pi_{\ell}Q = \sum_{l=0}^\infty \ell(\ell+1)Q\Pi_{\ell} \]
+        However, as \(\Pi_{\ell}Q\) and \(Q\Pi_{\ell}\) both send things to \(E_{\ell}\), and the \(E_{\ell}\) spaces or orthogonal, 
+        each of the summands must be equal as well (actually this argument breaks for \(\ell = 0\), but that's obviously true anyway since  
+        \(Y_{0}^0\) is constant). Which is all to say \(Q\Pi_{\ell} = \Pi_{\ell}Q \) for all \(\ell\).
+
+        <h4>The Addition Theorem</h4>
+        Consider any two functions \(f\) and \(g\). Their inner product 
+        \[ \int_S f(x)g(x)da \]
+        is obviously unaffected by rotations of \(f\) and \(g\). This fact will be useful later.
+
+        Consider two points \(x\) and \(y\) on the unit sphere and their delta functions \(\delta_x, \delta_y\). 
+        Now consider the functions \(\delta^\ell_x = \Pi_\ell \delta_x, \delta^\ell_y = \Pi_{\ell} \delta_y\). These are both the projections of the 
+        respective delta functions into the \(\ell(\ell+1)\) eigenspace. Therefore, 
+        \[ \delta_x^\ell = \sum_{m=-\ell}^\ell Y_{\ell}^m(z) \int_{S} Y_{\ell}^m(r)^* \delta_x(r)da =  \sum_{m=-\ell}^\ell Y_{\ell}^m(z)Y_{\ell}^m(x)^*.  \]
+        And the analogous expression is true of \(y\). Consider any rotation at all \(Q\). Because the inner product 
+        of any two functions doesn't change under rotation,
+        \[ \int_{S} ( \delta^\ell_x )^*   \delta^\ell_y da = \int_{S} (Q \delta^\ell_x)^* Q \Pi_{\ell} \delta^\ell_y da.  \]
+        And because rotation commutes with projection, 
+        \[ = \int_{S} (Q\Pi_{\ell} \delta_x )^* Q \Pi_{\ell} \delta_y^\ell da = \int_{S} (\Pi_{\ell}Q \delta_x )^* \Pi_{\ell}Q \delta_y^\ell da.  \]
+        Of course, \(Q \delta_x, Q\delta_y\) will just be the delta functions of rotated points. Therefore, the value of this expression doesn't change 
+        if we rotate \(x\) and \(y\) together.
+
+        Another way of calculating the integral \(\int_{S} ( \delta^\ell_x )^*   \delta^\ell_y da\) is using Plancherel's Theorem to sum the Fourier coefficients:
+        \[  \int_{S} ( \delta^\ell_x )^*   \delta^\ell_y = \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x)Y_{\ell}^m(y)^*.  \]
+        Of course, the left hand side of this expression is unchanged under rotations of \(x\) and \(y\), the right hand side must be as well. In particular, if we 
+        take a rotation which sends \(x\) to \(x' = (0,0,1) \) and \(y\) to any \(y'\), then 
+        \[ \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x)Y_{\ell}^m(y)^* = \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x')Y_{\ell}^m(y')^* = \sum_{m=-\ell}^{\ell} (N_\ell^m)^2 P_\ell^m(1) P_{\ell}^m(x' \cdot y'). \]
+  An important feature of the associated Legendre functions is that \(P_{\ell}^m(1)\) is 1 if \(m = 0\) and is zero otherwise. Thus, the above sum reduces to only \(P_{\ell}^0(x' \cdot y')\). 
+        It is also a matter of convention that \(P_\ell^0 = P_\ell\), the ommission of the superscript indicating the normal Legendre functions. And as \(x' \cdot y'\) is \(\cos\gamma\) for the angle \(\gamma\) between 
+        \(x\) and \(y\), this all reduces to the statement that
+        \[  \frac{4\pi}{2\ell + 1} \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x)Y_{\ell}^m(y)^* = P_\ell(\cos\gamma), \]
+        which is called the "Addition Theorem."
+
+        <h4>Solving the Generalized Legendre Equation </h4>
+        This is now a TODO. We'll establish all the properties of the Legendre functions.
+      
+    </body>
+</html>

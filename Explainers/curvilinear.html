@@ -67,8 +67,8 @@
         Considering this equation for each \(j\) can be stated in vector form as 
         \[ \begin{pmatrix} \frac{\partial u}{\partial x_1'} \\ \ldots \\ \frac{\partial u}{\partial x_n'} \end{pmatrix} = B^\top B v \]
         Because the b's are linearly independent, we can speak of \( (B^\top B)^{-1} \) and thus, 
-        \[ v_i = \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'},   \]
-        \[ \nabla u = \sum_{i=1}^n b_i v_i = \sum_{i=1}^n b_i \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'} = \sum_{i} \hat{b_i} \bigg( \sum_j |b_i| (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'} \bigg). \]
+        \[ v_i = \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_j'},   \]
+        \[ \nabla u = \sum_{i=1}^n b_i v_i = \sum_{i=1}^n b_i \sum_{j=1}^n (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_i'} = \sum_{i} \hat{b_i} \bigg( \sum_j |b_i| (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_j'} \bigg). \]
         One can easily check that in the orthogonal case this coincides with our first finding.  
         <!--
 
@@ -120,12 +120,47 @@
         small, this difference is basically 
         \[ \epsilon^{n-1} \cdot \epsilon \frac{\partial}{\partial x_i'}\bigg(u_i \prod_{j\neq i}|b_j|\bigg) \]
         Thus, 
-        \[ \nabla \cdot u = \lim_{\epsilon \to 0} \frac{\epsilon^n  \sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg) + \text{low order}}{\epsilon^n \prod_{j \neq i}|b_i| + \text{low order}} =\frac{\sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg)}{\prod_{j \neq i}|b_i|}. \]
-        
+        \[ \nabla \cdot u = \lim_{\epsilon \to 0} \frac{\epsilon^n  \sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg) + \text{low order}}{\epsilon^n \prod_{i}|b_i| + \text{low order}} =\frac{\sum_{i=1}^n \frac{\partial}{\partial x_i} \bigg(u_i \prod_{j\neq i}|b_j|\bigg)}{\prod_{i}|b_i|}. \]
+
+        Once more, this analysis was most simple because the b vectors were orthogonal. It is possible to extend the analysis for the more general case. We just need to be a 
+        bit more cautious about our expression for areas. Indeed, we repeat the same analysis using the level surfaces of the different coordinates for a given \(\epsilon\). Now, the 
+        total volume is \( \epsilon^n \sqrt{\det(B^\top B)}\), where \(B\) is the matrix 
+        \[ B = \begin{bmatrix} b_1 & b_2 \ldots b_n \end{bmatrix}. \]
+        Now, consider the level surfaces for a given coordinate i. The n-1 dimensional volume of the surface spanned by all vectors except \(b_i\) is known to be \(\sqrt{\det(B_{\neq i}^\top B_{\neq i})}\), where 
+        \[ B_{\neq i} = \begin{bmatrix} b_1 \ldots  b_{i-1} & b_{i+1} \ldots b_n \end{bmatrix}. \]
+        Let \(b_i\) decompose as \(b_i^1 + \b_i^2\), where \(b_i^1\) is orthogonal to the vectors \(b_1 \ldots b_{i-1},b_{i+1}\ldots b_n\) and 
+        \(b_i^2\) is in their span. Necessarily, \(b_i^1\) is parallel to the surface normal n. And thus, \(b_i \cdot n = |b_i^1|\). Therefore, 
+        if \(u = \sum_{j} u_j \hat{b_j} \) is the decomposition of u in the b basis, it ought to be that \(u \cdot n = u_i \frac{1}{|b_i|} b_i \cdot n = u_i \frac{|b^1_i|}{|b_i|}  \). Consequently, the integral is: 
+        \[ \approx \epsilon^{n-1} \frac{1}{|b_i|} \sqrt{\det(B_{\neq i}^\top B_{\neq i})} |b^1_i| u_i = \frac{1}{|b_i|} \epsilon^{n-1} \sqrt{\det(B^\top B)} u_i \]
+        we note that \(\sqrt{\det(B_{\neq i}^\top B_{\neq i})} |b^1_i| u_i\) ought to be the the volume of the parallelipiped formed by the \(b_i\)'s, since 
+        \(\sqrt{\det(B_{\neq i}^\top B_{\neq i})}\) is the area of hte n-1 dimensional base and \(|b^1_i|\) is its height.  
+
+        Now, for coordinate i, there are two faces. And the sum are their fluxes is approximately 
+        \[ \epsilon^{n} \frac{\partial}{\partial x_i}\bigg(\frac{u_i}{|b_i|} \sqrt{\det(B^\top B)} \bigg). \]
+        Then, by the same logic as before,
+        \[ \nabla \cdot u = \lim_{\epsilon \to 0} \frac{\epsilon^n \sum_{i=1}^n \frac{\partial }{\partial x_i} \bigg(\frac{u_i}{|b_i|} \sqrt{\det(B^\top B)}\bigg) + \text{ low order}}{\epsilon^n \sqrt{\det(B^\top B)}+ \text{ low order}} = \frac{\sum_{i=1}^n \frac{\partial }{\partial x_i} \bigg(\frac{u_i}{|b_i|} \sqrt{\det(B^\top B)}\bigg)}{\sqrt{\det(B^\top B)}} \]
+
         <h4>The Laplacian</h4>
-        Combining the gradient with the divergence, we can easily obtain the Laplacian. It's now obvious in curvilinear coordinates that 
+        Combining the gradient with the divergence, we can easily obtain the Laplacian. It's now obvious in orthogonal curvilinear coordinates that 
         \[ \Delta u = \nabla \cdot \nabla u = \frac{1}{|b_1|\ldots |b_n|} \sum_{i=1}^n \frac{\partial}{\partial x_i'} \bigg( \frac{1}{|b_i|} \frac{\partial u}{\partial x_i'} \cdot \prod_{j \neq i} |b_j| \bigg) \]
-        Again, key to our analysis was the orthogonality of the local coordinates. For most applications, this is a pretty reasonable assumption.
+        For most applications, this is a pretty reasonable assumption. For the more general non-orthogonal case, the same substitutions yield: 
+        \[ \Delta u =  \frac{\sum_{i=1}^n \frac{\partial }{\partial x_i} \bigg( \sqrt{\det(B^\top B)} \sum_{j} (B^\top B)^{-1}_{i,j} \frac{\partial u}{\partial x_j'} \bigg)}{\sqrt{\det(B^\top B) }} \]
+        It is fairly common to denote by \(g\) the determinant of \(B^\top B\), and to write for \(g^{ij}\) the (ij)th entry of \(g^{-1}\). With this simplification, in the Einstein sum notation,
+        \[ \Delta = \frac{1}{\sqrt{g}}\frac{\partial}{\partial x_i} \bigg( \sqrt{g} g^{ij} \frac{\partial} {\partial x_j'} \bigg)  \]
+        In the above expression, there is an implicit inner sum over \(j\) and outer sum over \(i\). Sometimes, g is not used for the determinant, but rather the Gram matrix 
+        \(B^\top B\). Such a matrix is called a metric tensor. This is because for any dx' in parameter space,
+        \[ (dx')^\top g (dx') = |B(dx')|^2 = \sum_{i} \bigg(\sum_{j} \frac{\partial x_i}{\partial x_j} dx_j'\bigg)^2 \]
+        computes the length of the image of dx' when mapped according to the change of variables. This matrix is of considerable interest because it allows one to make statements about lengths in the 
+        "post-transformation" space using "pre-transformation" objects.
+    
+        <h4>The Laplace-Bertrami Operator</h4>
+        It is conceivable that we might not have a function \(u\) defined over all of space. Rather, it might be defined on a lower dimensional subspace, like the sphere. For the sphere, we know that it is just the level set of the r=1 coordinates. Thus, we could imagine constructing analagous vector operators 
+        by eliminating coordinates that are no longer relevant. For instance, we might replace the matrix \(B\) for spherical coordinates with the matrix \(B_{\neq r} = [b_{\phi} b_{\theta}]\). Then defining \(g\) again as the determinant of the Gram matrix and 
+        \(g^{ij}\) as the ijth entry of the inverse Gram matrix, then 
+        \[ \Delta u = \frac{1}{\sqrt{g}}\frac{\partial}{\partial x_i} \bigg( \sqrt{g} g^{ij} \frac{\partial} {\partial x_j'} u \bigg)  \]
+        is still a "Laplacian"-like function of u. And indeed, this works in general. For any d-dimensional smooth manifold \(M\) and \(x \in M\), it possesses a local parameterization \(\psi\) sending points 
+        \( (x_1'\ldots x_d') \in \mathbb R^d\) to \(M\). Thus, \(x_i'\) works just like any old coordinate, and we can apply the same formula for the Laplace-Bertrami operator. 
+        While there is much, much more to calculus on manifolds than I have let on, I hope this provides at least some intuition for the definitions that exist.
 
         <h3>Examples</h3>
         <h4>Example 1: Cylindrical Coordinates</h4>
@@ -148,8 +183,11 @@
 
         <h4>Example 2: Spherical Coordinates</h4>
         One can repeat the same analysis for spherical coordinates (I promise nothing interesting happens). When one does this, they find: 
-        \[ \Delta u = \frac{1}{r} \frac{\partial}{\partial r^2}(r\Phi) + \frac{1}{r^2\sin \theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{r^2\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2}. \]
-        This equation is of great importance when one goes to derive the spherical harmonics.
+        \[ \Delta u = \frac{1}{r} \frac{\partial^2}{\partial r^2}(ru) + \frac{1}{r^2}\bigg[\frac{1}{\sin \theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2}\bigg]. \]
+        This equation is of great importance when one goes to derive the spherical harmonics. Inspecting the above equation, we can see that we have completely isolated the angular part of the Laplacian as the expression within the 
+        brackets. Thus, that expression should give the local difference of u "along the sphere." It is then quite believable that the expression is in fact the 
+        Laplace-Bertrami operator on the sphere. 
+
 
 
     </body>
