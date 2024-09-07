@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Special Relativity</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Special Relativity</h3>
+
+        Imagine two frogs in a pond with the following amazing property: frog 1 is exactly to the right of frog 2. You might argue that's actually not 
+        so amazing, because left and right are made up and you could always orient yourself so that this fact is true. This fact would seem amazing, however, 
+        to a race of people who have always faced roughly the same direction as each other, give or take a few thousands of a degree. To them left and right is not 
+        relative, but an absolute. Likewise, to them, forward and backwards are an absolute. But you know better. 
+        <br><br>
+
+        Pretty much, the same analogy holds with space and time. For most of human history, we have all been pointed in the same direction (we have all roughly zero velocity compared 
+        to one another), and so we had this misconception that time is a meaningful thing, and that there is a universal notion of two things "happening at the same time." But no, just like 
+        left and right, time is completely dependent on the observer. And just as forwardsness and backwardsness are not absolute, space is not either. What you perceive to be one length I may 
+        perceive to be completely different. <br><br>
+
+        There are, however, some things that everyone should be able to agree on, namely length. 
+        Any chump with their idea of right / left and forwards / backwards can purchase two meter sticks and screw them together at a right angle. 
+        To calculate the distance between two points in the pond, you just use the Pythagorean Theorem. That's a little silly of course. Most would point their meter sticks so that "right" is in the 
+        direction of the thing to which they want to find the distance, and then the length is immediate without having to deal with forwards and backwards. Once more, the analogy holds. We speak of things 
+        like space and time, but it's really just a convenient orientation of our meter sticks. You could also measure lengths by orienting your meter sticks a different way, although you might have to do a little 
+        more math. 
+
+        <h4>The Speed of Light is Constant</h4>
+
+        A simple but powerful statement is Einstein's second postulate: the speed of light is a constant \(c\). The consequences of this are far reaching. 
+        To illustrate my point, consider the following experimental setup. You and I both purchase very long and expensive meter sticks, so that the sticks have a tick 
+        mark every light second. It is possible to use this feature to keep time: if I fire a beam of light and watch it traverse my meter stick, every time it passes a tick, I'll 
+        know that one second has elapsed. And the same goes for you.
+
+        Now let's suppose you are moving relative to me at a speed \(v\), and the direction of movement is perpendicular to the direction our meter sticks are placed in. Suppose that you pass me, we call this time zero, and 
+        at this time, we fire our light beams. As you watch me and my meter stick whiz by you at speed \(v\), you notice my light beam travelling at the speed of light. And this speed has two components: one component 
+        is \(v\), and the other component \(v_{\perp}\) perpendicular to it, and thus 
+        \[ c^2 = v^2 + v_{\perp}^2. \]
+        So you rearrange to find that \(v_{\perp} = c\sqrt{1-v^2/c^2}\), and this is the speed at which you see the light traverse my meter stick. But since this is my mechanism of keeping time, 
+        you conclude that my clock must be running more slowly than yours, by a factor \(\sqrt{1-v^2/c^2}\). When one of your seconds passes, the light will have travelled a distance 
+        so that \(\sqrt{1-v^2/c^2}\) of my seconds will have passed. 
+
+        <h4>Spacetime</h4>
+        The key idea of spacetime is to assign every "thing" that can happen a coordinate \((x,t)\), where \(x\) is a three-dimensional spatial coordinate and 
+        \(t\) is a one dimensional time coordinate. It's best to think of something concrete, like a frog burping. When I see the frog burp, I see it happen at a 
+        space time coordinate \( (x,t) \). But if you're moving past me at some velocity, you will see the frog burp at your own space time coordinate 
+        \( (x', t') \). In the case in which we share a common origin (a spacetime event we both call \( (0,0\)), it is possible to relate your coordinates to 
+        mine and vice versa.
+
+        <h4>Linear Algebraic Derivation of the Lorentz Transformation</h4>
+
+        Let us restrict our attention to one spatial dimension and one time dimension. You are moving in the 
+        \(+x\) direction relative to me with velocity \(v\). Let's begin by plotting things from my reference frame. 
+
+        An object moving at a velocity \(u\) relative to me will trace out a line in the direction of \( (u,1) \), i.e. it 
+        traverses distance \(u\) in space for each distance 1 in time.  Assume now that for a given event, my coordinates are related to yours by a linear transformation \(T\), so that 
+        \[ \begin{pmatrix} t' \\ x' \end{pmatrix} = T \begin{pmatrix} t \\ x \end{pmatrix}  \]
+        which obeys the following constraints:
+        
+        <ol>
+          <li>We both agree that things move at light speed: This means that a spacetime point of the form \( (cs,s)\) in my coordinates 
+            has to be parallel to the point \( (c,1) \) in your coordinates, so that I also perceive it as moving light speed.
+            In other words, we may write \( T(c,1) = \lambda_1 (c,1) \). Similarly, \(T(-c,1) = \lambda_2 (-c,1) \). </li>
+          <li>Points on your trajectory have zero \(x\)-coordinate, according to you. Put another way, \( [T(v,1)]_1 = 0 \). </li>
+        </ol>
+        The first point implies that \(T\) has \( (c,1), (-c,1) \) as eigenvectors, and thus it has the following spectral decomposition:
+        \[ T = \begin{pmatrix} c & -c \\ 1 & 1 \end{pmatrix} \begin{pmatrix}\lambda_1 & 0 \\ 0 & \lambda_2 \end{pmatrix}  \begin{pmatrix} c & -c \\ 1 & 1 \end{pmatrix}^{-1} = \frac{1}{2c} \begin{pmatrix} c & -c \\ 1 & 1 \end{pmatrix}  \begin{pmatrix} \lambda_1 & c\lambda_1 \\ -\lambda_2 & c\lambda_2 \end{pmatrix}  = \frac{1}{2c} \begin{pmatrix} c(\lambda_1 + \lambda_2) & c^2(\lambda_1 - \lambda_2) \\  \lambda_1 - \lambda_2 & c(\lambda_1 + \lambda_2) \end{pmatrix}  .  \]
+        And our second point requires that 
+        \[ (\lambda_1 + \lambda_2)c v + (\lambda_1 - \lambda_2)c^2  = 0, \]
+        implying 
+        \[ \lambda_1 - \lambda_2 = - (\lambda_1 + \lambda_2) \frac{v}{c}. \]
+        Plugging this back in, 
+        \[  T = \frac{\gamma}{c} \begin{pmatrix} c & - vc \\  - \frac{v}{c} & c \end{pmatrix}  \]
+        Where we have absorbed \(( \frac{\lambda_1 + \lambda_2}{c})\) into one parameter \(\gamma\). And this provides a perfectly valid map for coordinates \(x'\) in terms of the \(x\) coordinates. However, we will constrain 
+        \(\gamma\) so that the map is more symmetric between the two observers. In particular, the inverse of this transformation is  
+        \[ T^{-1} = \frac{c}{\gamma (c^2 - v^2) } \begin{bmatrix} c & vc \\ \frac{v}{c} & 1 \end{bmatrix} \]
+        So, apart from constant multiples, the transformation for \(T^{-1}\) is precisely that for \(T\), but substituting \(v\) with \(-v\).
+        If we want the transformation to be "fully symmetric" to go back and forth, it would be logical to have those constant factors be the same as well. 
+        So we would like 
+        \[ \frac{\gamma}{c} = \frac{c}{\gamma (c^2 - v^2)} \implies \gamma^2 = \frac{1}{\sqrt{1-\frac{v^2}{c^2}}}.  \]
+        The multiple \(\gamma\) is called the Lorentz factor. And with this value, 
+        \[  T = \gamma \begin{pmatrix} 1 & - v \\  - \frac{v}{c^2} & 1 \end{pmatrix}  \]
+        provides the Lorentz transform. Element by element, this says
+        \[ x' = \gamma(x-vt) \]
+        \[ t' = \gamma(t-\frac{v}{c^2}x) \]
+        At times, is more illuminating to express things in terms of \(ct\) rather than \(t\) alone. In which case, 
+        we have 
+        \[ x' = \gamma(x-\frac{v}{c}(ct)) \]
+        \[ ct' = \gamma(ct-\frac{v}{c}x) \]
+        The last step is to introduce new spatial coordinates, which is uninteresting. By symmetry, we assume that 
+        if a coordinate direction is orthogonal to the direction of motion, then the two observers agree. We are now in position
+        to state the more general Lorentz transform. Letting \(x_0 = ct\), \(x_1\) be the spatial direction parallel to the velocity, and 
+        \(x_2,x_3\) be coordinates orthogonal to the motion, we have that
+        \[ x_0' = \gamma(x_0 - \frac{v}{c}x_1) \]
+        \[ x_1' = \gamma(x_1 - \frac{v}{c}x_0) \]
+        \[ x_2' = x_2 \]
+        \[ x_3' = x_3 \]
+        Which is realized by the matrix transformation
+        \[ \begin{pmatrix} x_0' \\ x_1' \\ x_2' \\ x_3' \end{pmatrix} = \begin{pmatrix} \gamma & - \gamma \frac{v}{c} & 0 & 0 \\ - \gamma \frac{v}{c} & \gamma & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} x_0 \\ x_1 \\ x_2 \\ x_3 \end{pmatrix}. \]
+
+        <h4>The Spacetime Interval and Moving Clocks</h4>
+
+        Because the two observers should agree on the speed of light, they should agree that for any spacetime point describing a light wavefront,
+        \[ x_0^2 - x_1^2 - x_2^2 - x_3^2 = 0 = x_0^2 - x_1^2 - x_2^2 - x_3^2 . \]
+        However, not all spacetime points are on the wavefront of light, and in general \(s^2 \triangleq x_0^2 - x_1^2 - x_2^2 - x_3^2  \) certainly need not be zero. Yet, 
+        it can easily be verified from the Lorentz transform that two observers will always agree on the value of \(s^2\). In fact, for any two points \(x,y\) in spacetime, 
+        \[ (x_0-y_0)^2 - (x_1-y_1)^2 - (x_2-y_2)^2 - (x_3-y_3)^2 = (x_0'-y_0')^2 - (x_1'-y_1')^2 - (x_2'-y_2')^2 - (x_3'-y_3')^2. \]
+        Another way of saying this is that 
+        \[ (x-y)^\top g (x-y) = (x-y)^\top g' (x-y), \]
+        where \(g\) is the \(4 \times 4\) diagonal matrix with values \( (1,-1,-1,-1) \). The matrix \(g\) is called the metric tensor, 
+        and it allows one to measure "length" in a consistent way in spacetime. For a discussion of metric tensors, see <a href = "curvilinear.html">Curvilinear Coordinate Systems</a>.
+        When a vector \(X = (x_0, x_1,x_2,x_3) \) has space and time components, we simply denote by \(|X|\) the value of the spacetime interval.
+
+        In my reference frame, the spacetime coordinates representing where I am all have spatial component zero. And hence \(s^2 = x_0^2 = c^2 t^2\). And the same is true for a moving particle. For spacetime coordinates 
+        describing its motion, in its reference frame, the primed spatial components are all zero. But because we both agree on the value of spacetime intervals,
+        \[ c^2(t')^2 = s^2 = c^2t^2 - |x|^2. \]
+        In other words, if I want to know what your clock says at a given place in spacetime, I can just evaluate \( \sqrt{t^2 - \frac{1}{c^2}|x|^2} \). This quantity is called proper time, and is denoted 
+        by \(\tau\). 
+
+        Similar facts apply on the infinitesimal scale. For two very nearby points in spacetime both describing your position, you detect a change 
+        like \( (ds)^2 = c^2 (d\tau)^2 \), while I detect a change like \(c^2 (dt)^2 - dx_1^2 - dx_2^2 - dx_3^2\). Thus, 
+        \[ d\tau = \sqrt{ (dt)^2 - \frac{1}{c^2}(dx_1^2 - dx_2^2 - dx_3^2)}. \]
+        Fortunately, this can be simplified using the velocity. If at my time \(t\), I see you traveling at a velocity \(v(t)\), it has 
+        got to be that \(dx_1^2 - dx_2^2 - dx_3^2 = |v(t)|^2 dt^2\), so
+        \[ d\tau = \sqrt{1-\frac{|v(t)|^2}{c^2}}dt = \frac{dt}{\gamma(t)} \]
+        Where \(\gamma(t)\) is the Lorentz factor calculated using \(v(t)\). This relationship can, of course, be integrated, so that 
+        \[ \tau = \int_{t_1}^{t_2} \frac{dt}{\gamma(t)} \]
+        yields a formula for how much time has elapsed on your clock, in the language of my reference frame. 
+
+        A slightly more intuitive approach is to think of the proper time as the amount of "oomph" a moving clock has accrued as it moves through spacetime. 
+        If not for the negative signs, it would just be arc length. But because of the negative sign, a clock can accrue positive "oomph" by moving through time (as we do) and 
+        negative "oomph" by moving through space. If a clock moves perfectly at the speed of light, then the oomph is zip. You could imagine something like a wind-up car that can 
+        "wind up" for certain directions and "wind down" for others.
+
+        <h4>4-Velocity</h4>
+
+        Fix a particular coordinate system, and consider a moving particle. Imagine tracing out its path through spacetime, using some parameterized curve. 
+        A reasonable thing to do is to consider the spacetime point as a function of the particle's time, yielding a parameterized curve \(X(\tau) = (ct(\tau), x(\tau))\). 
+        One interpretation of \(X(\tau)\) is that it traces out the time axis of a moving object in its own reference frame. For two 
+        very close points, the spacetime interval is
+        \[ |dX(\tau)|^2 = c^2 (d t(\tau))^2 - |dx(\tau)|^2 = (d\tau^2)(c^2 \gamma(\tau)^2 - |\dot{x}(\tau)|^2) \]
+        which is not particularly illuminating. But what is interesting is that any two observers should agree on the value 
+        of \(|dX(\tau)|\), in particular the particle itself. For the particle, the curve is expressed trivially as \(X(\tau) = (c\tau,0,0,0) \), and thus 
+        \(|dX(\tau)|^2 = c^2 d\tau^2\). And thus, \( \big|\frac{dX(\tau)}{d\tau}\big| = c \). 
+        
+        The quantity \(U \triangleq \frac{\partial X}{\partial \tau}\) is called the 4-Velocity. This is similar to the ordinary 
+        \(\frac{\partial x}{\partial t}\) of ordinary velocity, except for the addition of a time component and the use 
+        of a slightly different time. Because the 4-Velocity has length \(c\), it is sometimes said that everything "moves through spacetime" with 
+        speed \(c\). On one end of the extreme, stationary things move only through time at speed \(c\). On the other end of the extreme, light particles 
+        move through space at speed \(c\), and they do not move through time at all. Actually, this is slightly false, since you can't define 
+        proper time for things moving at light speed. 
+
+        We can be a little more explicit about the components of the 4-Velocity. Using \( \frac{dt}{d\tau} = \gamma \) and the chain rule, 
+        \[ U = \frac{dX}{d\tau} = \frac{dX}{dt} \frac{dt}{d\tau} = \gamma \bigg(c, \frac{dx_1}{dt}, \frac{dx_2}{dt}, \frac{dx_3}{dt} \bigg) = \gamma(c, \vec{v})\]
+
+        <h4>4-Momentum (Work in Progress)</h4>
+        It's reasonable to extend the usual momentum law \(p = mv\) to 4-Velocities to define \(P = mU\) as the "4-Momentum" of an object. The idea being that we require a notion of 
+        momentum that is consistent across reference frames and looks like the normal momentum for small speeds. So then 
+        \[ P = \gamma m(c, v), \]
+        where \(v\) is the classical velocity of the thing.  Importantly, any two observers should be able 
+        to agree on the value of \(|P|\). Of course, in the particle's reference frame, \(P' = m(c,0) \). 
+        Taking the length, a stationary particle moves through time with momentum mc.
+
+        <h4>General Lorentz Transform and Velocity Addition Law</h4>
+
+        When the coordinate frame is fixed, it could certainly be the case that the velocity isn't parallel to the \(x_1\) coordinate direction. To remedy this is simple: we 
+        can just rotate into a coordinate system \(y\) where \(y_1\) is parallel to \(v\), calculate the Lorentz transform \(y'\), and then rotate back. A sensible thing to do is come up with orthonormal vectors
+        \(y_1, y_2,y_3\) such that \(y_1\) is parallel to \(v\). Then as
+        \[ x = (y_1^\top x)y_1 + (y_2^\top x)y_2 + (y_3^\top x)y_3 \]
+        provides an expression for \(x\) in the \(y\) basis, the Lorentz transform says that 
+        \[ \begin{pmatrix} ct \\ (y_1^\top x) \\  (y_2^\top x) \\  (y_3^\top x) \end{pmatrix} \mapsto 
+        \begin{pmatrix} \gamma(ct - y_1^\top x \frac{|v|}{c}) \\ \gamma (y_1^\top x - ct\frac{|v|}{c}) \\ y_2^\top x \\ y_3^\top x \end{pmatrix} \]
+        which we may transform back in the x-coordinate system as 
+        \[ \begin{pmatrix} ct' \\ x' \end{pmatrix} = \begin{pmatrix} \gamma(ct - y_1^\top x \frac{|v|}{c}) y_1 \\ \gamma(y_1^\top x  - ct\frac{|v|}{c})y_1 + (y_2y_2^\top + y_3y_3^\top)x \end{pmatrix} = \begin{pmatrix} \gamma(ct - \frac{v^\top x}{c} )  \\ \gamma(\frac{v}{|v|}^\top x  - t|v|)\frac{v}{|v|} + (I - \frac{1}{|v|^2} vv^\top)x \end{pmatrix} \]
+        This is not beautiful, although it is usable. 
+
+        A nice application of the general Lorentz transform is to add velocities. Consider three objects \(A,B,C\), and suppose momentarily that we are in the reference frame in which 
+        \(B\) is fixed in place, and suppose that we know the velocities \(v_A, v_C\) of \(A,C\) in this reference frame. Now we ask the question: what is the speed of C in A's reference frame? 
+        Conventional wisdom would say that the velocities just add, so the answer is \(v_A + v_C\). But the conventional wisdom does not apply relativistically. For instance, if \(A\) and \(C\) are light particles moving 
+        in opposite directions at speed \(3c/4\), then the "classical" answer would be \(3/2 c\), which is wrong, since nothign can move faster than the speed of light.  
+
+        An inelegant but straightforward approach is to use the Loretnz transform to calculate speeds. For instance, after t seconds have elapsed in the B frame, particle C is at position \(p_c = v_Ct\) according to the B frame. 
+        In the A frame, the Lorentz transform says for the position of the particle that 
+        \[ p_C' = \gamma(v_A)(\frac{v_A}{|v_A|}^\top v_C t  - t|v_A|)\frac{v_A}{|v_A|} + (I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C t \]
+        at time 
+        \[ t' = \frac{1}{c}\gamma(ct - \frac{v_A^\top v_C}{c} t )  \]
+        Dividing position by time, we have for the velocity that 
+        \[ \frac{p_C'}{t} = \frac{\gamma(\frac{v_A}{|v_A|}^\top v_C t  - t|v_A|)\frac{v_A}{|v_A|}  + (I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C t }{ \frac{1}{c}\gamma(ct - \frac{v_A^\top v_C}{c} t )  }  \]
+        \[ = \frac{\big(\frac{v_A}{|v_A|^2} v_A^\top v_C  -  v_A \big) }{(1 - v_A^\top v_C/c^2)} + \frac{c(I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C}{ \gamma(c - v_A^\top v_C)}  \]
+        A case of particular importance is when \(v_A\) and \(v_C\) are parallel. In particular, the second term vanishes and 
+        \[ v_C' = \frac{|v_C| \sigma - |v_A|}{1 - \sigma |v_A| |v_C|/c^2} \hat{v_A} \]
+        where \(\sigma\) is 1 if \(v_C,v_A\) are facing the same direction and is \(-1\) if they are facing the opposite direction. When they are opposite, 
+        \[ |v_C'| = \frac{|v_C| + |v_A|}{1 + \frac{|v_A| |v_C|}{c^2}} \]
+        Which is the velocity addition law.
+
+        <h4>Natural Units</h4>
+        Everything becomes enormously simple if we define time so that \(c \equiv 1\). In other words, light now travels at 1 meter per "second." This is equivalent to letting
+        \( \tilde{t} = ct \) and writting everything in terms of that. In this case, everything simplifies. For instance, the Lorentz transform now becomes 
+        \[ t' = \gamma(t-vx) \]
+        \[ x' = \gamma(x-vt) \]
+        the addition law becomes
+        \[ v'_C = \frac{v_A + v_C}{1 + v_A v_C} \]
+        additionally, a 4-Velocity now always has length 1. Of course, now all velocities lie between zero and one by definition.
+
+    </body>
+</html>
