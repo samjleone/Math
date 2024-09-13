@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Lagrangian Mechanics</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Lagrangian Mechanics</h3>
+
+        The fundamental premise of Lagrangian mechanics is that, among all the paths we could possibly conceive of, 
+        the physical paths that actually happen minimize a certain kind of energy. Unlike Newtonian mechanics, in which one writes down 
+        \(F = ma\) and solves the resulting differential equation, Lagrangian mecahnics considers the "first" and "last" state as fixed in time and space, 
+        and then the in-between is thing that minimizes energy. <br>
+
+        To the state of a system, we can define a function \(\mathcal L\) of its position, velocity, and the current time. This 
+        function is called the Lagrangian. It has units of energy. Given an initial configuration \(a\) at time \(t_1\) and final configuration \(b\) at time \(t_2\), 
+        the action function is defined as 
+        \[ S = \int_{t_1}^{t_2} \mathcal L dt = \int_{t_1}^{t_2} \mathcal L( q(t), \dot{q}(t), t)dt  \] 
+        then Hamilton's principle says the following:<br><br>
+
+
+        <div class = 'statement'>
+            <b>Hamilton's Principle:</b> Paths of motion minimize \(S\), subject to their initial values.
+        </div><br>
+
+        Many texts will provide a Lagrangian, and then say that Hamilton's principle applies to that particular Lagrangian. And with a totally 
+        arbitrary looking Lagrangian, we reproduce the laws of physics, and that is somehow a miracle! 
+        To gain intuition for these Lagrangians, let's actually work in reverse: figure out the ramifications of these eqtremal approaches, 
+        and then rectify them with known laws of physics.
+
+        <h3>Strictly Mathematical Properties of the Lagrangian</h3>
+
+        Let's begin with a mathematical discussion of Lagrangians and their associated action functional. The Lagrangian is a function of position and velocity 
+        \(\mathcal L(q, \dot{q}, t)\). While it's natural to think of \(q = (q_1 \ldots q_d)\) as  Cartesian position and velocity, that's not necessary.
+
+        <h4>The Euler-Lagrange Equations</h4>
+        For simplicity, everything is going to be smooth. For a path \(q(t)\) of motion minimizing \(S\), it is of course necessary that 
+        a perturbation of \(q\) of the form \(q(t) + \beta \xi(t)\) is suboptimal for minimizing \(S\), so long as \(\xi\) has \(\xi(t_1) = \xi(t_2) = 0\). 
+        And since \(q\) is optimal, 
+        \[ \frac{\partial}{\partial \beta} S = 0. \]
+        We make no assumption yet on the specific form of the Lagrangian, except that our action functional is defined from it. To be explicit mathematically, we will denote by 
+        \[ \frac{\partial \mathcal L}{\partial q} \]
+        to be the gradient of \(\mathcal L\) with respect to its first argument, holding the second and third arguments fixed. We do the same for \(\dot{q}\) as well. Armed with this notation,
+        \[ \begin{aligned} 0 & = \frac{\partial}{\partial \beta} S \\ 
+        & = \frac{\partial}{\partial \beta} \int_{t_1}^{t_2} \mathcal L(q + \beta \xi, \dot{q} + \beta \dot{\xi}, t)dt \\ 
+        & =  \int_{t_1}^{t_2} \frac{\partial}{\partial \beta} \mathcal L(q + \beta \xi, \dot{q} + \beta \dot{\xi}, t)dt & \text{ switching the order} \\ 
+        & = \sum_{n=1}^d \int_{t_1}^{t_2} \frac{\partial \mathcal L}{\partial q_n} \xi_n(t) + \frac{\partial \mathcal L}{\partial \dot{q_n}} \dot{\xi_n}(t)& \text{ by the Chain rule} \\
+        & = \sum_{n=1}^d \int_{t_1}^{t_2} \frac{\partial \mathcal L}{\partial q_n} \xi_n(t) + \int_{t_1}^{t_2} \frac{\partial \mathcal L}{\partial \dot{q_n}} \frac{d}{dt} \xi(t)  \\
+        & = \sum_{n=1}^d \int_{t_1}^{t_2} \frac{\partial \mathcal L}{\partial q_n} \xi_n(t) - \int_{t_1}^{t_2} \xi(t) \frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{q_n}} & \text{ Integrating by Parts, using } \xi(t_1) = \xi(t_2) = 0  \\
+        & = \sum_{n=1}^d \int_{t_1}^{t_2} \bigg(\frac{\partial \mathcal L}{\partial q_n} - \frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{q_n}}\bigg) \xi(t)dt
+        \end{aligned} \]
+        and quite interestingly, this holds for arbitrary \(\xi\)! This can only be the case if the expression inside the integral is zero for all \(n\). This implies the Euler-Lagrange equation:
+        \[ \frac{\partial \mathcal L}{\partial q} - \frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{q}} = 0 \]
+
+        <h4> Noether's Theorem</h4>
+        In the Euler-Lagrange equations, it could be the case that the Lagrangian doesn't depend on a specific \(q_n\) of \(q = (q_1 \ldots q_d)\). 
+        A reasonable example are functions which depend on velocity, but not position (like kinetic energy, or momentum). This means that \(\frac{\partial \mathcal L}{\partial q}\) 
+        is zero, and thus that 
+        \[  \frac{\partial \mathcal L}{\partial \dot{q_n}} = C_n \]
+        for some constant \(C_n\). So to each "symmetry" (quantity on which the Lagrangian doesn't depend), there is a "conserved quantity" in time. 
+        This is the simplest statement of Noether's Theorem, although fancier generalizations do exist. The conserved quantity \(\frac{\partial \mathcal L}{\partial \dot{q_n}}\) is 
+        called a generalized momentum. <br><br>
+        <h4>"Energy" Conservation</h4>
+        The total derivative of the Lagrangian with respect to time is 
+        \[ 
+        \begin{aligned}
+        \frac{d}{dt}\mathcal L & = \frac{\partial \mathcal L}{\partial q} \cdot \dot{q} + \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \ddot{q} + \frac{\partial \mathcal L}{\partial t} & \text{ by the chain rule} \\ 
+                               & = \bigg(\frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{q}}\bigg) \cdot \dot{q} + \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \ddot{q} + \frac{\partial\mathcal  L}{\partial t} & \text{ by Euler-Lagrange} \\
+                               & = \frac{d}{dt}\bigg( \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \dot{q} \bigg)  + \frac{\partial \mathcal L}{\partial t}
+        \end{aligned}
+        \]
+        implying 
+        \[ \frac{d}{dt}\bigg(  \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \dot{q} - \mathcal L \bigg) = -  \frac{\partial\mathcal L}{\partial t}.  \]
+        It is thus very interesting for when the Lagrangian does not depend on time (in the non-total sense that \(\frac{\partial\mathcal L}{\partial t} = 0\)), as this means 
+        \[ E \triangleq \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \dot{q} - \mathcal L\]
+        is unchanging as time goes on. It is possible to unify this observation with the prior one, which I may save for a later version of 
+        this explainer.
+
+        <h4>Separable Lagrangians</h4>
+        Suppose further that the Lagrangian can be separated like \( \mathcal L = T(\dot{q}) - V(q).\) In this case, the Euler Lagrange equations 
+        imply that 
+        \[ \frac{d}{dt} \frac{\partial T}{\partial \dot{q}} = -\frac{\partial V}{\partial q} \]
+        This observation will be of greater interest later.
+
+        <h3>Lagrangians in Physics</h3>
+
+        <h4>Motivating Example: Conservative Forces</h4>
+        Consider once more the equation for a separable Lagrangian:
+        \[ \frac{d}{dt} \frac{\partial T}{\partial \dot{q}} = -\frac{\partial V}{\partial q} \]
+        and compare this to the force due to a conservative force:
+        \[ \frac{d}{dt} p = -\nabla V \]
+        where \(V\) is the scalar potential. A sensible thing to do would be to construct 
+        \(\mathcal L = T - V \) so that \(\frac{\partial T}{\partial \dot{q}} = p = m\dot{x} =  \frac{\partial \mathcal L}{\partial x}\).
+        And then we would just take \(V\) to be scalar potential energy. A solution to 
+        \[ \frac{\partial T}{\partial \dot{q}} = m \dot{x} \]
+        is for \(T = \frac{1}{2}m |\dot{v}|^2\). This is, of course, the kinetic energy. Therefore, in such a case, 
+        the choice of \(\mathcal L = T - V \) is a good Lagrangian. And in the presence of conservative forces, 
+        the principle of stationary action applies. Moreover, the four fundamental forces are all conservative ones, 
+        so this is a powerful statement.
+
+        <h4>Energy Conservation</h4>
+        We argued that for a Lagrangian that doesn't depend on time, the following quantity is conserved:
+        \[ E \triangleq \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \dot{q} - \mathcal L\]
+        Letting \(\mathcal L = T-V\) be our specified Lagrangian, this means that 
+        \[ E = \frac{\partial T}{\partial \dot{q}} \cdot \dot{q} - (T-V) = m \dot{q} \cdot \dot{q} - T + V = 2T - T + V = T + V \]
+        is always conserved. This is the conservation of energy. It is worth noting that 
+        the main reason this worked is because \(\frac{\partial T}{\partial \dot{q}} \cdot \dot{q} = 2T\).  <br><br>
+
+        <h4>What was Important?</h4>
+        Let's reflect on what we found, and what was needed:
+        <ol>
+            <li>Assuming Newton's laws for a conservative force, we were able to prove that motions follow the principle of 
+                stationary action with the Lagrangian \(T-V\).
+            </li>
+            <li>
+                Given the specific form of \(V = \frac{1}{2}m|\dot{q}|^2\), we could prove the conservation of energy.
+            </li>
+        </ol>
+        In my mind, the question remains: which of these are necessary? Is there another order? 
+
+        <h3>The Following are Equivalent</h3>
+
+        Consider the following laws of physics with a fixed notion of kinetic energy \(T = \frac{1}{2}m|\dot{q}|^2\):
+        \[ \begin{aligned} A: & \hspace{0.25cm} m \ddot{q} = - \nabla V, \text{ for some } V. \\
+          B: & \hspace{0.25cm} \text{The principle of stationary action holds with } \mathcal L =  T(\dot{q}) - V(q), \text{ for some } V. \\
+          C: & \hspace{0.25cm} T(\dot{q}) + V(q) \text{ is constant, for some } V.  \end{aligned} \]
+        We were able to deduce that \(A \implies B \implies C\). In particular, we showed that Newton's second law implies 
+        that \(V\) is the "right" function for conservation of energy. <br><br>
+        
+        Note that if \(C \implies A\) directly, then the three would all be logically equivalent. Indeed, \(C\) implies that 
+        \[ \frac{d}{dt} T(\dot{q}(t)) = - \frac{d}{dt} V(q(t))  \]
+        \[ m\dot{q} \cdot \ddot{q} = - \nabla V \cdot \dot{q} \]
+        and as \(\dot{q}\) is arbitrary in this expression, it must be that \(m \ddot{q} = - \nabla V \), which is \(A\).
+        To summarize, this analysis has been interesting, but not coincidental! In particular, \(C \implies B \implies A\). 
+        In plain English, the conservation of energy implies Newton's second law, which is basically just the Euler-Lagrange equation 
+        for the Lagrangian \(\mathcal L = T-V\). 
+    
+        <h4>But What do We Gain?</h4>
+        One could say that law \(B\) is just a corollary of A and/or C and therefore brings nothing new to the table. 
+        At the same time, it greatly simplifies the problem-solving process. Energies are scalars, and calculus is 
+        easier than modeling. 
+
+    </body>
+</html>

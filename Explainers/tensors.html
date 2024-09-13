@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Tensors</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+        <h2>Tensors</h2>
+
+        Tensors are a subject of much confusion. After many Google searches, I was left dissatisfied. 
+        The definitions I had found were either unmotivated mathematical slodge, or the much joked about statement 
+        "a tensor is something which transforms like a tensor." The latter truly is actually quite a good definition, 
+        but it takes some examples to understand what is really meant by that. <br><br>
+
+        The whole point of tensors and covariant and contravariant bla bla is one mission: to be able to describe 
+        mathematical (though typically linear) operations unambiguously. So what does it mean to "transform like a tensor?"
+        The approach to tensors is to define it in the abstract, 
+        represent it in bases, and derive rules for how those representations must transform. Then for all intents and purposes, we 
+        can omit the abstract understanding, and just say that if an object follows those transformation rules, then it represents something 
+        real. In other words, <br><br>
+
+        <center>
+        <b>A tensor is self-consistent.</b><br><br>
+        </center>
+
+        A secondary goal I have for this explainer is introducing the standard notation in a way that feels natural. Taking up a dimensional analysis point of view 
+        is, as we will see, very helpful for keeping indices straight.
+
+        <h3>Notation</h3>
+
+        Mathematicians and computer scientists quite like to think about vectors as something with components, like a list of 
+        numbers. The sooner you can abandon this way of thinking, the better. For our purposes, a vector is much more real than a list of numbers: 
+        it is a real thing. But how different people might represent that thing is relative to their choice of basis. 
+        I shall denote by bolded script objects which are basis-independent. For instance, 
+        \(\boldsymbol{u}\) might refer to a vector in the abstract, while \(u\) will denote its representation in a given basis. <br><br>
+        
+        For the purposes of this explainer, we shall assume that there exist two bases 
+        \[ \boldsymbol{\alpha}_1 \ldots \boldsymbol{\alpha}_n \hspace{0.5cm} \text{and} \hspace{0.5cm} \boldsymbol{\beta}_1 \ldots \boldsymbol{\beta}_n \]
+        These two bases must be related by a linear transformation, which can be summed up by an \(n \times n\) matrix \(T\). Likewise the inverse matrix \(T^{-1}\) undoes the change:
+        \[ \boldsymbol{\beta}_b = \sum_{a} \boldsymbol{\alpha}_a T_b^a \]
+        \[ \boldsymbol{\alpha}_a = \sum_{b} \boldsymbol{\alpha}_b (T^{-1})_a^b \]
+        I am obviously being unclear about how \(a\) and \(b\) correspond to the row indices and column indices. To indulge you just once, I shall write the corresponding matrix-vector equations:
+        \[
+        \begin{aligned} 
+         \begin{pmatrix} \boldsymbol{\beta}_1 \ldots \boldsymbol{\beta}_n \end{pmatrix} & = \begin{pmatrix} \boldsymbol{\alpha}_1 \ldots \boldsymbol{\alpha}_n \end{pmatrix} \begin{pmatrix} T_1^1 & T_2^1 \ldots T_n^1 \\ T_1^2 & T_2^2 \ldots T_n^2 
+                                                                                                            \\ \ldots & \ldots  \\ T_1^n & T_2^n \ldots T_n^n \end{pmatrix}  \\ 
+                          \begin{pmatrix} \boldsymbol{\alpha}_1 \ldots \boldsymbol{\alpha}_n \end{pmatrix} &= \begin{pmatrix} \boldsymbol{\beta}_1 \ldots \boldsymbol{\beta}_n \end{pmatrix} \begin{pmatrix} (T^{-1})_1^1 & (T^{-1})_2^1 \ldots (T^{-1})_n^1 \\ (T^{-1})_1^2 & (T^{-1})_2^2 \ldots (T^{-1})_n^2 
+                                                                                                            \\ \ldots & \ldots  \\ (T^{-1})_1^n & (T^{-1})_2^n \ldots (T^{-1})_n^n \end{pmatrix}                                           
+        \end{aligned}
+        \]
+        but this is completely uninspiring, and quite confusing always to write. An idea which is more constructive is to realize that the column indices correspond to the "from" and row indices correspond to the "two." 
+        Likewise, when you invert a matrix, the from-to relationship inverts, and thus the indices must as well. Much of what makes tensors challenging is the index juggling, but if you think about the from-to relationships, 
+        then things become more obvious. <br><br> 
+        
+        One final remark on my notation: in the equation 
+        \(\sum_{a} \boldsymbol{\alpha}_a T_b^a\), I put the \(a\) upstairs and the \(b\) downstairs, and for good reason. The idea is that, much like fractional cancellation, the a that's already downstairs in \(\alpha_a\) "cancels" the 
+        \(a\) that's upstairs in \(T_b^a\). And all that's left is the \(b\) downstairs, rightly indicating that we have expressed something having to do with \(b\). In other words, a sort of dimensional analysis has become our savior! 
+        Furthermore, because the lower index is in the "direction of change," it is called a <i>covariant index,</i> and the \(a\) index is the <i>contravariant index.</i>
+
+
+        <h3>Inner Product Spaces, Dual Vectors, Contravariant and Covariant Components</h3>
+        <h4>Contravariant Components</h4>
+        With a specified basis, \(\boldsymbol{u}\) can be specified by a list of numbers, which I shall denote by the unbolded \(u\). That is, \(u^0, u^1 \ldots \) 
+        is such that 
+        \[ \boldsymbol{u} = u^1 \boldsymbol{\alpha}_1 + u^2\boldsymbol{\alpha}_2 \ldots + u^n \boldsymbol{\alpha}_n = \sum_a u^a \boldsymbol{\alpha}_a \]
+        Why did I put the number upstairs rather than downstairs? Once more, to make the dimensional analysis convenient! The index upstairs 
+        in \(u\) "cancels" the index downstairs of \(\alpha\). The resulting thing has no indices, and is thus a basis-independent object. <br><br>
+
+        Because,
+        \[ \begin{aligned} 
+         \boldsymbol{u} &=  \sum_a u^a \boldsymbol{\alpha}_a \\ 
+                        & = \sum_a\bigg[ u^a \sum_b (T^{-1})_a^b \boldsymbol{\beta}_b  \bigg] \\
+                        & = \sum_b \boldsymbol{\beta}_b \bigg[\sum_a (T^{-1})_a^b u^a \bigg] \\ 
+                        & \triangleq \sum_b \tilde{u}^b \boldsymbol{\beta}_b
+         \end{aligned}
+         \]
+        the list \(\tilde{u}\) whose \(b\)th entry \(\tilde{u}^b\) is \(\sum_a (T^{-1})_a^b u^a\) thus provides the coefficient of 
+        \(\boldsymbol{u}\) in the \(\boldsymbol{\beta}\) basis. Because we use \(T^{-1}\) rather than \(T\) to do this conversion, 
+        the coefficients transform the opposite way that the basis does, and therefore it is said that \(u^b, \tilde{u}^b\) are 
+        <i>contravariant.</i> <br><br> 
+
+        <h4>Covariant Components</h4>
+        In an inner product space, we have a bilinear operator on elements on a vector space \(V\). The "inner product" between \( \boldsymbol{u}\) and \(\boldsymbol{v}\) is denoted \(\langle \boldsymbol{u}, \boldsymbol{v} \rangle\).
+        Provided that
+        \[ \boldsymbol{u} = \sum_a u^a  \boldsymbol{\alpha}_a, \hspace{0.5cm} \boldsymbol{v} = \sum_a v^a \boldsymbol{\alpha}_a, \]
+        bilinearity implies 
+        \[ \langle \boldsymbol{u}, \boldsymbol{v} \rangle = \sum_{a} v^a \sum_{a'} u^{a'} \langle \boldsymbol{\alpha_a}, \boldsymbol{\alpha_a'} \rangle. \]
+        In lieu of this observation, it makes sense to define "covariant components" of \(u\):
+        \[ u_{a} \triangleq \sum_{a'} u^{a'} \langle \boldsymbol{\alpha_a}, \boldsymbol{\alpha_a'} \rangle \]
+        with this definition, we have simply that 
+        \[ \langle \boldsymbol{u}, \boldsymbol{v} \rangle  = \sum_a u_a v^a  \]
+        which again makes the dimensional analysis more obvious.  <br><br>
+
+        This is all closely related to the notion of dual vectors. If we hold \(\boldsymbol{u}\) fixed, the function \(\langle \boldsymbol{u}, \cdot \rangle\) is a linear function in the second 
+        argument. This function is denoted by \(\boldsymbol{u}^*\), meaning \(\boldsymbol{u}^*(\boldsymbol{v}) =\langle \boldsymbol{u}, \boldsymbol{v} \rangle \). This function lives in the so-called <i>algebraic dual space</i> \(V^*\) (which is just the space of linear 
+        scalar functions acting on \(V\)). For the quantum-mechanically inclined, \(\boldsymbol{u}\) is the ket \(|\boldsymbol{u}\rangle\) and \(\boldsymbol{u}^*\) is the bra \(\langle \boldsymbol{u} |\). I am quite a fan of Dirac's notation, 
+        because it keeps the difference between these objects obvious! In our basis, it has got to be the case that 
+        \[
+        \begin{aligned}
+        \boldsymbol{u}^*(\boldsymbol{v}) & = \boldsymbol{u}^*\bigg(\sum_a v^a \boldsymbol{\alpha_a}\bigg) = \sum_a v^a \boldsymbol{u}^*(\boldsymbol{\alpha}_a).
+        \end{aligned}
+        \]
+        Comparing this to the above paragraph, it is obvious that \(u_a = \boldsymbol{u}^*(\boldsymbol{\alpha}_a)\). This also implies that in the other basis, 
+        \[ \begin{aligned} \tilde{u}_b &= \boldsymbol{u}^*(\boldsymbol{\beta}_b)  \\ 
+                                       &= \sum_{a} T_b^a \boldsymbol{u}^*(\boldsymbol{\alpha}_a)  \\ 
+                                       & = \sum_{a} T_b^a u_a  \\ 
+        \end{aligned} \]
+        Therefore, because they transform like the basis vectors, these covariant components truly do transform covariantly, justifying their name. 
+
+        <h4>A Natural Dual Basis</h4>
+        For a given \({\alpha}_{a'}\), we can consider the linear map in its dual when "extracts" coordinates:
+        \[ \sum_a u^{a'} \boldsymbol{\alpha}_{a'} \mapsto u^a \]
+        we shall denote this map by \(\bar{\boldsymbol{\alpha}}^a \). It has the nice property of "orthogonalization," in that 
+        \[ \bar{\boldsymbol{\alpha}}^a \boldsymbol{\alpha}_a = \delta_{aa'} \]
+        I shall call the set of \(\bar{\boldsymbol{\alpha}_a}\)'s the "natural dual basis." I caution that this is not standard terminology, to the 
+        best of my knoweldge. As for the transformation properties, if 
+        \[ \begin{aligned}
+            \bar{\boldsymbol{\beta}}^b(\boldsymbol{u}) & = \sum_{a} u^a \bar{\boldsymbol{\beta}}^b(\boldsymbol{\alpha}_a)  \\ 
+                                                       & = \sum_{a}u^a  \sum_{b'}  (T^{-1})_a^{b'} \bar{\boldsymbol{\beta}}^b(\boldsymbol{\beta}_{b'}) \\ 
+                                                       & = \sum_{a} u^a (T^{-1})_a^{b} \\ 
+                                                       & = \sum_{a} (T^{-1})_a^{b} \bar{\boldsymbol{\alpha}}^{a}(\boldsymbol{u}) \\ 
+        \end{aligned} \]
+        And therefore, 
+        \[ \bar{\boldsymbol{\beta}}^b = \sum_{a} (T^{-1})_a^{b}  \bar{\boldsymbol{\alpha}}^{a} \]
+        meaning that these maps transform contravariantly! 
+
+        <h3>Tensors</h3>
+        Tensors eat vectors and dual vectors and spit out a number. The only other rule is that this process is multilinear in 
+        all its arguments. Let us first consider two examples:
+        <h4>Example 1: The Metric Tensor</h4>
+         For an example, consider the inner product. Obviously, 
+        \(\langle \boldsymbol{u}, \boldsymbol{v} \rangle\) eats two vectors. Moreover, if we let \(g_{aa'} = \langle \boldsymbol{\alpha}_a, \boldsymbol{\alpha}_{a'}\rangle\), then 
+        \[ \langle \boldsymbol{u}, \boldsymbol{v} \rangle = \sum_{a,a'} u^a g_{aa'} v^{a'}. \]
+        In this case, the object \(g\) would be a (representation of) the so-called metric tensor. Because we put our indices downstairs, 
+        it is covariant. Using covariance, you might guess that in a different basis,
+        \[ \tilde{g}_{bb'} = \langle \boldsymbol{\beta}_b, \boldsymbol{\beta}_{b'} \rangle  = \sum_{a,a'} g_{aa'} T_b^a T_{b'}^{a'}\]
+        and you would be right, as one can easily check. 
+
+        <h4>Example 2: An Evaluation Map</h4>
+        Hold vectors \(\boldsymbol{u_1}, \boldsymbol{u_2}\) as fixed. Then we could define for two vectors in the dual space
+        \[ T(\boldsymbol{v_1}, \boldsymbol{v_2}) = \boldsymbol{v_1}(\boldsymbol{u_1})\boldsymbol{v_2}(\boldsymbol{u_2}). \]
+        This isn't a particularly useful tensor, but it exemplifies that a tensor is allowed to eat only dual vectors. Moreover, 
+        it has the representation 
+        \[ 
+        \begin{aligned} 
+        T(\boldsymbol{v_1}, \boldsymbol{v_2}) & = \bigg(\sum_a u^a \boldsymbol{v_1}(\boldsymbol{\alpha_a}) \bigg)\bigg(\sum_{a'} u^{a'} \boldsymbol{v_2}(\boldsymbol{\alpha_{a'}}) \bigg) \\ 
+                                              & = \sum_{a,a'} u^a u^{a'} \boldsymbol{v_1}(\boldsymbol{\alpha_a})\boldsymbol{v_2}(\boldsymbol{\alpha_{a'}}) \\ 
+                                              & \triangleq \sum_{a,a'} u^a u^{a'} v_a v_{a'}
+        \end{aligned}
+        \]
+        but now, the thing that is inherent to the tensor is \(u^a u^{a'}\), an expression which transforms contravariantly:
+        \[ \tilde{u}^b \tilde{u}^{b'} = \sum_{bb'} (T^{-1})_a^b (T^{-1})_{a'}^{b'} u^a u^{a'}.  \]
+
+        <h4>Formal Definition</h4>
+        A tensor of type (p,q) eats q vectors and p covectors (vectors in the dual), and spits out a multilinear number. It can be regarded as a multilinear map 
+        \[ \boldsymbol{M} : \underbrace{V^* \times V^* \times \ldots \times V^*}_{\text{p covectors}} \times \underbrace{V \times V \ldots \times V}_{\text{q vectors}} \to \mathbb R \]
+        If we have a tuple \([\boldsymbol{v}_1] \ldots [\boldsymbol{v}_p], [\boldsymbol{u}_1] \ldots [\boldsymbol{u}_q]\) such that, 
+        \[ \begin{aligned}
+        [\boldsymbol{v}_{i}] & = \sum_a [v_i]_a \bar{\boldsymbol{\alpha}}^a \text{ for all } i \in \{1\ldots p\} \\ 
+        [\boldsymbol{u}_{j}] & = \sum_c [u_j]^c \boldsymbol{\alpha}_c \text{ for all } j \in \{1\ldots p\}\\ 
+        \end{aligned}\]
+        I tucked the index of the vector inside the bracket to isolate them from the harsh world of covariant and contravariant vector manipulation.
+        From multilinearity,
+        \[ 
+        \begin{aligned} 
+        \boldsymbol{M}([\boldsymbol{v}_1] \ldots [\boldsymbol{v}_p], [\boldsymbol{u}_1] \ldots [\boldsymbol{u}_q]) & = \sum_{(a_1 \ldots a_p) \in [n]^p} \sum_{(c_1 \ldots c_q) \in [n]^q} [v_1]_{a_1}\ldots[v_p]_{a_p}[u_1]^{c_1}\ldots[u_q]^{c_q} \boldsymbol{M}(\bar{\boldsymbol{\alpha}}^{a_1} \ldots \bar{\boldsymbol{\alpha}}^{a_p}, \boldsymbol{\alpha}_{c_1} \ldots  \boldsymbol{\alpha}_{c_q} )
+        \end{aligned}
+        \]
+        This is suggestive that, when a basis is understood, a tensor can be represented by the following multidimensional array: 
+        \[ M_{c_1\ldots c_q}^{a_1\ldots a_q} = \boldsymbol{M}(\bar{\boldsymbol{\alpha}}^{a_1} \ldots \bar{\boldsymbol{\alpha}}^{a_p}, \boldsymbol{\alpha}_{c_1} \ldots  \boldsymbol{\alpha}_{c_q}) \] 
+        In a different basis, however, one has that 
+        \[ 
+        \begin{aligned} 
+        \boldsymbol{M}(\bar{\boldsymbol{\beta}}^{b_1} \ldots \bar{\boldsymbol{\beta}}^{b_p}, \boldsymbol{\beta}_{d_1} \ldots  \boldsymbol{\beta}_{d_q}) 
+        =  \sum_{(a_1 \ldots a_p) \in [n]^p} \sum_{(c_1 \ldots c_q) \in [n]^q} (T^{-1})_{a_1}^{b_1}\ldots (T^{-1})_{a_p}^{b_p} T_{d_1}^{c_1}\ldots T_{d_q}^{c_q} \boldsymbol{M}(\bar{\boldsymbol{\alpha}}^{a_1} \ldots \bar{\boldsymbol{\alpha}}^{a_p}, \boldsymbol{\alpha}_{c_1} \ldots  \boldsymbol{\alpha}_{c_q})
+        \end{aligned}
+        \]
+        And thus, the array representations have got to satisfy the following property in order to be consistent:
+        \[ \tilde{M}_{d_1 \ldots d_q}^{b_1 \ldots b_p} = \sum_{(a_1 \ldots a_p) \in [n]^p} \sum_{(c_1 \ldots c_q) \in [n]^q}  (T^{-1})_{a_1}^{b_1}\ldots (T^{-1})_{a_p}^{b_p} M_{c_1\ldots c_q}^{a_1\ldots a_q} T_{d_1}^{c_1}\ldots T_{d_q}^{c_q}   \]
+        which is what it means to transform like a tensor. Consider the term:
+        \[  (T^{-1})_{a_1}^{b_1}\ldots (T^{-1})_{a_p}^{b_p} M_{c_1\ldots c_q}^{a_1\ldots a_q} T_{d_1}^{c_1}\ldots T_{d_q}^{c_q} \]
+        The expression \( T_{d_1}^{c_1}\ldots T_{d_q}^{c_q}\) eats \(\boldsymbol{\beta}\) coordinates and transforms them contra-contravariantly, i.e. covariantly, to 
+        restore the appropriate \(\boldsymbol{\alpha}\) coordinates. The expression \((T^{-1})_{a_1}^{b_1}\ldots (T^{-1})_{a_p}^{b_p} \) does the opposite: it eats the covariant 
+        dual \(\bar{\boldsymbol{\beta}}\) coordinates and transforms them contravariantly to convert back to the \(\bar{\boldsymbol{\alpha}}\). Upon this conversion, it can then 
+        apply the \(M_{c_1\ldots c_q}^{a_1\ldots a_q}\) machine on an input it already knows how to deal with.
+
+    </body>
+</html>

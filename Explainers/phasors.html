@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Phasor Analysis</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Phasor Analysis</h3>
+
+        <h4>Motivation</h4>
+        Recall the equations governing the relationships between the current through passive components and the voltage at its endpoints:
+        \[ v(t) = R i(t) \text{ for a Resistor} \]
+        \[ i(t) = C v'(t) \text{ for a Capacitor} \]
+        \[ v(t) = L i'(t) \text{ for an Inductor}\]
+        See <a href= '../passive_component_equations.html'>Equations of Passive Components</a> for derivations of these. 
+
+        To illustrate how things can be hard, let's consider an example circuit. 
+        Suppose for the sake of argument that we have a capacitor and an inductor in series, and that the voltage between the ends of this whole apparatus is 
+        \(v(t)\). And we let 
+        <ol>
+            <li>\(v_C, v_I\) be the voltages across the capacitor and inductor</li>
+            <li>\(i_C, i_I\) be the currents through the capacitor and inductor</li>
+        </ol>
+        To solve for the behavior of the circuit requires solving the following system of equations:
+        \[ i_C(t) = i_I(t) \]
+        \[ i_C(t) = C v_C'(t) \]
+        \[ v_I(t) = L i_I'(t) \]
+        \[ v_C(t) + v_I(t) = v(t) \]
+        Using \(i = i_L = i_I\) for the common current, this can be simplified to solving:
+        \[ i = Cv_C' \]
+        \[ v_C = v-Li' = v - CL v_C'' \implies (1 + CL \frac{d^2}{dt^2}) v_C = v \]
+        This is of course a second order differential equation. There are many ways to solve it, but 
+        one reasonable way is using Fourier Transforms. If we assume that 
+        \[ v(t) = \Re\bigg(\sum_{n \in \mathbb N} a_n e^{2\pi i n t}\bigg), v_C(t) = \Re\bigg(\sum_{n \in \mathbb N} b_n e^{2\pi i n t}\bigg) \]
+        then the differential equation can if we take 
+        \[ b_n = \frac{a_n}{1-CLn^2} \]
+
+        <h4>Extending to the Imaginary Plane</h4>
+
+        The previous analysis was all done assuming an arbitrary \(v(t)\). The reality is of course that 
+        in AC, the voltage between two points typically takes the form of a sinusoid: 
+        \[ v(t) = A \cos(2\pi \omega  (t + \phi)) = \Re\bigg( A e^{2\pi i \omega (t + \phi)} \bigg) \]
+        which also immensely simplifies the Fourier Transform of \(v\). As is typical in Fourier analysis, differential operators 
+        simply become algebraic ones. For instance, for the capacitor,
+        \[ i(t) = Cv'(t) = - CA\sin(2\pi \omega (t + \phi)) = \Re\bigg( 2\pi i CA e^{2\pi i \omega (t + \phi )} \bigg) \]
+        Hopefully, by now, the business of taking real parts has gotten old. It is much more convenient to work with complex functions and 
+        have it be understood that you just take real parts when you want to get the "physical" quantity. So to this end, it's common to say that a 
+        voltage is defined as the complex function 
+        \[ v(t) = A e^{2\pi i \omega (t + \phi)} = A e^{2\pi i \omega \phi} e^{2\pi i \omega t}.  \]
+   
+        <h4>Defining Phasors</h4>
+        <h5>Voltage and Current Across Passive Elements</h5>
+        Suppose that we have a sinusoidal voltage and current of a common frequency:
+        \[ v(t) = A_V e^{2\pi i \omega \phi_V} e^{2\pi i \omega t}  \]
+        \[ i(t) = A_I e^{2\pi i \omega \phi_I} e^{2\pi i \omega t}  \]
+        if we are describing the endpoints of a capacitor, it would then be the case that 
+        \[   2\pi i \omega C A_V e^{2\pi i \omega \phi_V} e^{2\pi i \omega t} = C v'(t) = i(t) =  A_I e^{2\pi i \omega \phi_I} e^{2\pi i \omega t} \]
+        or for an inductor that 
+        \[ A_V e^{2\pi i \omega \phi_V} e^{2\pi i \omega t} = v(t) = L i'(t) = 2\pi i L A_I e^{2\pi i \omega \phi_I} e^{2\pi i \omega t} \]
+        in all of these equations, we have \( e^{2\pi i \omega t}\) being multiplied by some fixed complex number. So dividing through, we can see that we could simply say that
+        \[   2\pi i \omega C A_V  = A_I e^{2\pi i \omega \phi_I}  \]
+        \[ A_V e^{2\pi i \omega \phi_V} = 2\pi i L A_I e^{2\pi i \omega \phi_I} \]
+        The quantities \(A_V e^{2\pi i \omega \phi_V}\) and \(A_I e^{2\pi i \omega \phi_I}\) are called the \emph{phasor representations} of the signals \(v\) and \(i\). 
+        They are complex numbers we could denote by \(V\) and \(I\). So then our final iteration of the resistor/ capacitor / inductor equations is
+        \[ V = IR \]
+        \[  V = \frac{1}{2\pi i \omega C} I \]
+        \[  V = 2\pi i \omega L I \]
+        Squinting, we see that these all look a whole lot like Ohm's Law, except now with complex numbers instead. In general, if 
+        \(V = IZ\) for some \(Z\), then that \(Z\) is called the impedance. 
+        In lieu of these, for AC circuit analysis, it is easiest to work with the phasors, which are purely algebraic. Once you've worked out what the phasors ought to be, you 
+        can translate this back to "real life" using
+        \[ v(t) = \Re\bigg( Ve^{2\pi i \omega t} \bigg) \]
+        \[ i(t) = \Re\bigg( I e^{2\pi i \omega t} \bigg) \]
+        <h5>Kirchhoff's Voltage and Current Law</h5>
+        We will see that Kirchhoff's Laws continue to hold for phasors as well. For instance, if \(v_1, v_2 \ldots v_n\) describe (properly) oriented voltages across components that form 
+        a closed loop, then 
+        \[ \sum_{i=1}^n v_i(t) = 0 \]
+        which implies for their corresponding phasors \(V_1 \ldots V_n\) that
+        \[ 0 = \sum_{i=1}^n \Re\bigg(e^{2\pi i \omega t} V_i\bigg) = \Re\bigg(e^{2\pi i \omega t} \sum_{i=1}^n V_i \bigg)  \]
+        For this to hold at all times, the sum inside is zero. (Think about it: if any rotation of a complex number has zero real part, then that complex number 
+        must be zero to begin with.) A very similar analysis can be done for currents, which shows that KCL continues to hold as well. 
+
+        <h3>Components in Series and in Parallel</h3>
+        In DC, we have rules for computing the "effective resistance" from different ways of combining resistors. In AC, there are 
+        very similar formulas. 
+        <h4>Components in Series</h4>
+        Suppose that we have two elements in series wth their respective impedances \(Z_1,Z_2\). If there is a total voltage \(V\) across the device, then we can split this into 
+        \(V = V_1 + V_2\) across the two components. Moreover, there will be a common current phasor \(I\) flowing through the two components. Setting this up, we have the algebraic equations: 
+        \[ V_1 = I_1 Z_1  \]
+        \[ V_2 = I_2 Z_2  \]
+        \[ I_1 = I_2 = I \]
+        \[ V= V_1 + V_2 \]
+        which implies the one equation
+        \[ I = \frac{V_1}{Z_1} = \frac{V - V_1}{Z_2}  \]
+        which is solved with 
+        \[ V_1 = V \bigg( \frac{\frac{1}{Z_2}}{\frac{1}{Z_1} + \frac{1}{Z_2}}\bigg) \]
+        \[ I = \frac{V_1}{Z_1} = V\bigg( \frac{\frac{1}{Z_2Z_1}}{\frac{1}{Z_1} + \frac{1}{Z_2}}\bigg)   \]
+        or finally, 
+        \[ V = I\bigg(\frac{\frac{1}{Z_1} + \frac{1}{Z_2}}{\frac{1}{Z_2Z_1}} \bigg) = I (Z_1 + Z_2) \]
+        By induction, if we had \(n\) components in series, the corresponding impedance would be 
+        \[ Z_1 + Z_2 \ldots Z_n \]
+        <h4>Components in Parallel</h4>
+        Suppose now we now have two components in parallel with impedances \(Z_1, Z_2\). We now have that both of these components 
+        have a common voltage across it \(V\), and across each component 
+        \[ V = I_1 Z_1 = I_2 Z_2 \]
+        which means for the total currenet \(I\) that 
+        \[ I = I_1 + I_2 = \frac{V}{Z_1} + \frac{V}{Z_2} = V\bigg(\frac{1}{Z_1} + \frac{1}{Z_2} \bigg) \]
+        or finally, 
+        \[ V = \frac{1}{\frac{1}{Z_1} + \frac{1}{Z_2}}I \]
+        meaning that the final impedance is
+        \[ Z = \frac{1}{\frac{1}{Z_1} + \frac{1}{Z_2}} \]
+        it is not hard to see that, had we done this for \(n\) components instead, 
+        \[ Z = \frac{1}{\sum_{i=1}^n \frac{1}{Z_n}} \]
+
+    </body>
+</html>

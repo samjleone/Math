@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Relativistic Lagrangians</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+
+
+
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>The Twin Paradox</h3>
+
+        As a precursor to our discussion, consider spacetime with the standard metric:
+        \[ ds^2 = c^2(dt)^2 - |d\boldsymbol{x}|^2 \]
+        Just as we consider the lengths of curves in space, it is appropriate to consider the lengths of 
+        curves in spacetime. To this end, let \(A,B\) be two 4-Positions, and we may consider the value of 
+        \[ \int_A^B |ds| \]
+        over all curves. Any given curve in spacetime can be parameterized by its proper time, which 
+        constitutes a curve \(q(\tau)\). It will be natural to assume that any such curve is causal, in the sense that 
+        \(q(\tau_2)\) is always in the future cone of \(q(\tau_1)\) whenever \(\tau \geq \tau_2\).  
+
+        
+        In the time of a particular reference frame, this can also be 
+        written as \(q(t)\), and then:
+        \[ \int_A^B |ds| = \int_{t_1}^{t_2} \sqrt{c^2 - |\dot{q}(t)|^2}dt \hspace{0.5cm}  \]
+        One can verify using the Euler-Lagrange equations that the action \(\mathcal L = \sqrt{c^2 - |\dot{q}(t)|^2}\) 
+        is stationary when
+        \[ 0 = \frac{d}{dt} \frac{\mathcal L}{d\dot{q}} = \frac{d}{dt} \frac{\dot{q}}{\sqrt{c^2 - |\dot{q}(t)|^2}} \]
+        in other words, \(\dot{q}_i = C_i\sqrt{c^2 - |\dot{q}(t)|^2} \) for some constant \(C_i\) and each coordinate \(i \in \{1,2,3\}\).
+        And thus 
+        \[ \dot{q}_1^2 = C_1^2 c^2 - C_1^2|\dot{q}|^2 \]
+        \[ \dot{q}_2^2 = C_2^2 c^2 - C_2^2|\dot{q}|^2 \]
+        \[ \dot{q}_3^2 = C_3^2 c^2 - C_3^2|\dot{q}|^2 \]
+        One can sum both sides of this equation to show that \(|\dot{q}|^2\) is necessarily constant. From which it follows that 
+        each of the components are constant as well. We summarize with the following observation: the 
+        <b>action is stationary if and only if acceleration is zero</b>.<br><br>
+
+        The question remains of whether this is a maximum or minimum. By Cauchy-Schwarz, 
+        \[ 
+        \int_{t_1}^{t_2}  \sqrt{c^2 - |\dot{q}(t)|^2}dt \leq \bigg( \int_{t_1}^{t_2} (c^2 - |\dot{q}|^2) dt \bigg)^{1/2}(t_2 - t_1)^{1/2}  
+        \]
+        with equality when the integrand is constant (while this could have been used to begin with in the place of the E-L analysis, it does not 
+        suffer from the hindsight bias). It therefore follows that the action is maximized for the curve of constant velocity. Do note that the 
+        notion of constant velocity is Lorentz invariant. Moreover, among all possible curves \(Z(\tau)\), it happens to be the case that 
+        \[ \int_A^B |ds| = \int_A^B d\tau \]
+        so this arclength also describes the elapsed time on a clock moving along the trajectory \(Z\). And therefore, this elapsed time is also at a 
+        minimum when the velocity is constant. From this we obtain the twin paradox: if two twins take separate paths through spacetime from \(A\) to \(B\), but 
+        twin 1 moves at constant velocity whereas twin 2 moves at nonconstant velocity, then twin 1 will be older than twin 2 when they reconvene, because 
+        the constant velocity maximizes the action.
+
+    </body>
+</html>

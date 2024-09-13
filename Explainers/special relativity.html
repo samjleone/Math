@@ -83,7 +83,8 @@
         If we want the transformation to be "fully symmetric" to go back and forth, it would be logical to have those constant factors be the same as well. 
         So we would like 
         \[ \frac{\gamma}{c} = \frac{c}{\gamma (c^2 - v^2)} \implies \gamma^2 = \frac{1}{\sqrt{1-\frac{v^2}{c^2}}}.  \]
-        The multiple \(\gamma\) is called the Lorentz factor. And with this value, 
+        The multiple \(\gamma\) is called the Lorentz factor. While I got at the Lorentz factor by saying it's a "balanced choice," it's also mathematically necessary to be 
+        what it is once you add at least a second spatial dimension, so that we have additional constraints on a constant "speed of light." And with this value, 
         \[  T = \gamma \begin{pmatrix} 1 & - v \\  - \frac{v}{c^2} & 1 \end{pmatrix}  \]
         provides the Lorentz transform. Element by element, this says
         \[ x' = \gamma(x-vt) \]
@@ -111,7 +112,7 @@
         it can easily be verified from the Lorentz transform that two observers will always agree on the value of \(s^2\). In fact, for any two points \(x,y\) in spacetime, 
         \[ (x_0-y_0)^2 - (x_1-y_1)^2 - (x_2-y_2)^2 - (x_3-y_3)^2 = (x_0'-y_0')^2 - (x_1'-y_1')^2 - (x_2'-y_2')^2 - (x_3'-y_3')^2. \]
         Another way of saying this is that 
-        \[ (x-y)^\top g (x-y) = (x-y)^\top g' (x-y), \]
+        \[ (x-y)^\top g (x-y) = (x'-y')^\top g (x'-y'), \]
         where \(g\) is the \(4 \times 4\) diagonal matrix with values \( (1,-1,-1,-1) \). The matrix \(g\) is called the metric tensor, 
         and it allows one to measure "length" in a consistent way in spacetime. For a discussion of metric tensors, see <a href = "curvilinear.html">Curvilinear Coordinate Systems</a>.
         When a vector \(X = (x_0, x_1,x_2,x_3) \) has space and time components, we simply denote by \(|X|\) the value of the spacetime interval.
@@ -158,14 +159,17 @@
         We can be a little more explicit about the components of the 4-Velocity. Using \( \frac{dt}{d\tau} = \gamma \) and the chain rule, 
         \[ U = \frac{dX}{d\tau} = \frac{dX}{dt} \frac{dt}{d\tau} = \gamma \bigg(c, \frac{dx_1}{dt}, \frac{dx_2}{dt}, \frac{dx_3}{dt} \bigg) = \gamma(c, \vec{v})\]
 
-        <h4>4-Momentum (Work in Progress)</h4>
-        It's reasonable to extend the usual momentum law \(p = mv\) to 4-Velocities to define \(P = mU\) as the "4-Momentum" of an object. The idea being that we require a notion of 
-        momentum that is consistent across reference frames and looks like the normal momentum for small speeds. So then 
-        \[ P = \gamma m(c, v), \]
-        where \(v\) is the classical velocity of the thing.  Importantly, any two observers should be able 
-        to agree on the value of \(|P|\). Of course, in the particle's reference frame, \(P' = m(c,0) \). 
-        Taking the length, a stationary particle moves through time with momentum mc.
-
+        We might be interested also in what the magnitude of a given velocity is, pre and post Lorentz transform. In particular, consider a particle moving at velocity 
+        \(v\) in Frame 1. In Frame 2, which moves from Frame 1 at velocity \(u\), \(v\) takes on a new value \(v'\). In the two frames,
+        \[ c^2 = \gamma(v)^2 (c^2 - |v|^2) \]
+        \[ c^2 = \gamma(v')^2 (c^2 - |v'|^2) \]
+        Hence, 
+        \[ |v'|^2 = c^2 - \frac{\gamma(v)^2}{\gamma(v')^2}(c^2 - |v|^2)  \]
+        \[ |v'|^2 = c^2 - \frac{\gamma(v)^2}{1-(|v'|/c)^2}(c^2 - |v|^2)  \]
+        \[ c^2 (1-(|v'|/c)^2)^2  =   \gamma(v)^2 (c^2 - |v|^2)  \]
+        \[  c (1-(|v'|/c)^2)  =  c \gamma(v) \sqrt{ (1 - |v|^2/c^2)}  \]
+        \[  (1-(|v'|/c)^2)  =  c  \]
+      
         <h4>General Lorentz Transform and Velocity Addition Law</h4>
 
         When the coordinate frame is fixed, it could certainly be the case that the velocity isn't parallel to the \(x_1\) coordinate direction. To remedy this is simple: we 
@@ -191,12 +195,43 @@
         \[ t' = \frac{1}{c}\gamma(ct - \frac{v_A^\top v_C}{c} t )  \]
         Dividing position by time, we have for the velocity that 
         \[ \frac{p_C'}{t} = \frac{\gamma(\frac{v_A}{|v_A|}^\top v_C t  - t|v_A|)\frac{v_A}{|v_A|}  + (I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C t }{ \frac{1}{c}\gamma(ct - \frac{v_A^\top v_C}{c} t )  }  \]
-        \[ = \frac{\big(\frac{v_A}{|v_A|^2} v_A^\top v_C  -  v_A \big) }{(1 - v_A^\top v_C/c^2)} + \frac{c(I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C}{ \gamma(c - v_A^\top v_C)}  \]
-        A case of particular importance is when \(v_A\) and \(v_C\) are parallel. In particular, the second term vanishes and 
-        \[ v_C' = \frac{|v_C| \sigma - |v_A|}{1 - \sigma |v_A| |v_C|/c^2} \hat{v_A} \]
-        where \(\sigma\) is 1 if \(v_C,v_A\) are facing the same direction and is \(-1\) if they are facing the opposite direction. When they are opposite, 
-        \[ |v_C'| = \frac{|v_C| + |v_A|}{1 + \frac{|v_A| |v_C|}{c^2}} \]
-        Which is the velocity addition law.
+        \[ = \frac{\big(\frac{v_A}{|v_A|^2} v_A^\top v_C  -  v_A \big) }{(1 - v_A^\top v_C/c^2)} + \frac{(I - \frac{1}{|v_A|^2} v_Av_A^\top)v_C}{ \gamma(1 - v_A^\top v_C /c^2)}  \]
+        Letting \(v = v_A\) and \(u = v_C\), this is more commonly written as
+        \[ \begin{aligned} u_{\parallel}' & = \frac{u_{\parallel} -  v}{1 - \frac{v \cdot u}{c^2}} \\ 
+                          u_{\perp}' & = \frac{u_{\perp}}{\gamma_v\bigg(1 - \frac{v \cdot u}{c^2}\bigg)} \end{aligned} \]
+        this formula is a bit more memorable, although it is harder to compute.
+        <h5>Velocity Addition and 4-Velocities</h5>
+
+        We conclude the discussion of velocity addition by discussing the relationship to 4-Velocities. 
+        Because 4-Velocities are a 4-Vector, any two observers should be able to agree on the "4-Angle" between 
+        the velocities of particles \(A\) and \(C\). In Frame 1, this is:
+        \[ U_A \cdot U_C = \gamma_{v_A} \gamma_{v_C}\bigg( c^2 -  v_A \cdot v_C \bigg) \]
+        And from Frame 2 it is:
+        \[ U_A' \cdot U_C' = (1)\gamma_{v_C'}\bigg( c^2 - 0 \cdot v_{C'} \bigg)  \]
+        Thus, these expressions necessariliy coincide. Therefore, these expressions coincide: 
+        \[  \gamma_{v_C'}  = \gamma_{v_A} \gamma_{v_C}\bigg( 1 -  \frac{v_A \cdot v_C}{c^2} \bigg)  \]
+        If we plug this back into our formula for the velocities, 
+        \[ u'_{\parallel} = \frac{u_{\parallel} + v}{\frac{\gamma_{u'}}{\gamma_u \gamma_v}} \implies \gamma_{u'} u'_{\parallel} = \gamma_u \gamma_v (u_{\parallel} + v) \]
+        \[ u'_{\perp} = \frac{u_{\perp} + v}{\frac{\gamma_v \gamma_{u'}}{\gamma_u \gamma_v}} \implies \gamma_{u'} u'_{\perp} = \gamma_u u_{\perp} \]
+        If we then consider the element \(\gamma_u(c,u)\),  it can be seen that 4-Velocities transform "like a" 4-Position, which is a reasonable way 
+        at getting at the idea of 4-Velocity. <br><br>
+
+        Another useful computation will be the squared magnitude of a velocity after a Lorentz transform. We calculate the norm is  
+        \[ \begin{aligned} \bigg\|\frac{\big(\frac{v_A^\top v_C}{|v_A|^2}   - 1 \big)v_A }{(1 - v_A^\top v_C/c^2)}\bigg\|^2 + \bigg\|\frac{(v_C - \frac{1}{|v_A|^2} v_A^\top v_C v_A)}{ \gamma(1 - v_A^\top v_C /c^2)} \bigg\|^2 
+        & =  \bigg(\frac{1-\frac{v_A^\top v_C}{|v_A|^2} }{1 - \frac{v_A^\top v_C}{c^2}}\bigg)^2 \|v_A\|^2 + \frac{1}{\gamma^2\big(1 - \frac{v_A^\top v_C}{c^2}\big)^2}\bigg\|\bigg(I - \frac{v_A v_A^\top}{|v_A|^2}\bigg)  v_C \bigg\|
+        \end{aligned}. \]
+        Using our latest developments, we also have an expression which is much more memorable:
+        \[ |v_C'| = c\sqrt{1-\frac{1}{\gamma_{v_C'}^2}} = c\sqrt{1 - \bigg(\frac{1}{\gamma_{v_A}\gamma_{v_C} \big(1+ \frac{v_A \cdot v_C}{c^2} }\bigg)^2} =  c\sqrt{1 - \frac{(1-\frac{|v_A|^2}{c^2})(1-\frac{|v_C|^2}{c^2})}{\big(1+ \frac{v_A \cdot v_C}{c^2}\big)^2 } } \]
+
+
+        <h4>4-Momentum (Work in Progress)</h4>
+
+        It's reasonable to extend the usual momentum law \(p = mv\) to 4-Velocities to define \(P = mU\) as the "4-Momentum" of an object. The idea being that we require a notion of 
+        momentum that is consistent across reference frames and looks like the normal momentum for small speeds. So then 
+        \[ P = \gamma m(c, v), \]
+        where \(v\) is the classical velocity of the thing.  Importantly, any two observers should be able 
+        to agree on the value of \(|P|\). Of course, in the particle's reference frame, \(P' = m(c,0) \). 
+        Taking the length, a stationary particle moves through time with momentum mc. <br><br>
 
         <h4>Natural Units</h4>
         Everything becomes enormously simple if we define time so that \(c \equiv 1\). In other words, light now travels at 1 meter per "second." This is equivalent to letting
@@ -206,6 +241,173 @@
         the addition law becomes
         \[ v'_C = \frac{v_A + v_C}{1 + v_A v_C} \]
         additionally, a 4-Velocity now always has length 1. Of course, now all velocities lie between zero and one by definition.
+
+        <h3>Energy and Momentum</h3>
+
+        <h4>Derivation of Relativistic Momentum</h4>
+        For energy an momentum, I'm truthfully following the Feynman lectures. To begin, it's worth noting why traditional 
+        momentum breaks: we can't simply write \(p = mv\), because then a valid collision in one frame might not be a valid collision in 
+        another frame, since the "naive" addition law no longer holds. In other words, Galilean invariance is critical to the traditional form of the law. 
+        However, we might assume that it's possible to glean some insights from the formula that works. In particular, we assume that there is a 
+        (3-dimensional) momentum p that takes the form \(p = \phi(v)mv\) such that, for a given collision, the conservation of momentum holds in any reference frame. We assume 
+        for the function \(\phi\) that
+        <ol>
+          <li>\(\phi\) depends only on the magnitude of \(v\) </li>
+          <li>\(\phi\) is continuous</li>
+          <li>\(\phi(0) = 1\).</li>
+        </ol>
+        Assumption 3 plus assumption 2 imply that \(p \approx mv\) for small velocities, so that the new law is compatible with the old one. 
+        With these assumptions, we can use a straightforward kinematic scenario to probe the values of \(\phi\).
+        <br><br>
+
+        We consider the following scenario for particles \(A\) and \(B\): particle \(A\) and \(B\) both collide towards each other 
+        at speed \(\pm v = (v_1, v_2)\), and they meet at the origin. Let's say, without loss of generality, that particle \(A\) is moving upward and to the right towards the origin, and it 
+        is then moving downard and to the right. Both particles initial velocities, as well as their final velocities, make an angle \(\theta\) with the 
+        horizontal axis. We have described this collision in what we'll call "Frame 1", and it's obvious that in this frame the initial and final momentum 
+        are both zero. <br><br>
+
+        In Frame 2, particle A satisfies 
+        \[ v_{A,1}' =0, v_{A,2}' = \frac{v_2}{\gamma(1 - \frac{v_1^2}{c^2})}  = v_2 \frac{\sqrt{1-\frac{v_1^2}{c^2}}}{1 - \frac{v_1^2}{c^2}} = \gamma v_2 \]
+        at the start of the collision, and particle B satisfies 
+        \[ v_{B,1}' = -\frac{2v_1}{1 + \frac{v_1^2}{c^2}}, v_2' = - \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)}   \]
+        The post-collision velocities are similar, and just have sign flips.
+
+        \[ 
+        \begin{aligned} 
+          \text{A, pre-collision} \hspace{0.25cm} :\hspace{0.25cm}  &   \begin{pmatrix} 0 & \gamma v_2 \end{pmatrix} &   \\
+          \text{A, post-collision} \hspace{0.25cm} :\hspace{0.25cm} &    \begin{pmatrix} 0 & -\gamma v_2 \end{pmatrix}  & \\
+          \text{B, pre-collision} \hspace{0.25cm} :\hspace{0.25cm} &  \begin{pmatrix} -\frac{2v_1}{1 + \frac{v_1^2}{c^2}} & - \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)}\end{pmatrix}  &  \\
+          \text{B, post-collision} \hspace{0.25cm} :\hspace{0.25cm} &   \begin{pmatrix} -\frac{2v_1}{1 + \frac{v_1^2}{c^2}} & \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)}\end{pmatrix}  &  \\
+        \end{aligned}
+        \]
+        Let \(\eta_A, \eta_B\) be the  magnitudes of the pre and post collision velocities. Then 
+        \[ 
+        \begin{aligned}
+        \eta_A & = \gamma  v_2   \\
+        \eta_B & = \frac{1}{\gamma \bigg(1 + \frac{v_1^2}{c^2} \bigg)} \sqrt{4v_1^2 \gamma^2 + v_2^2}  \\ 
+        \end{aligned}
+        \]
+        At long last, we can apply the conservation of momentum. We find that 
+        \[   \phi(\eta_A) m \begin{pmatrix} 0 \\ v_2 \gamma  \end{pmatrix} + \phi(\eta_B) m  \begin{pmatrix} -\frac{2v_1}{1 + \frac{v_1^2}{c^2}} \\ - \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)} \end{pmatrix} 
+        =   \phi(\eta_A) m \begin{pmatrix} 0 \\ - v_2\gamma \end{pmatrix} +  \phi(\eta_B) m  \begin{pmatrix} -\frac{2v_1}{1 + \frac{v_1^2}{c^2}} \\ \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)} \end{pmatrix} 
+        \]
+        In particular, if we consider the second component of this equation:
+        \[ 2 m \gamma v_2 \phi(\eta_A) = 2 m \phi(\eta_B) \frac{v_2}{\gamma\big(1 + \frac{v_1^2}{c^2}\big)} \]
+        \[ \frac{\phi(\eta_B)}{\phi(\eta_A)} =  \gamma^2 \bigg( 1 + \frac{v_1^2}{c^2}  \bigg) = \frac{1 + \frac{v_1^2}{c^2} }{1 - \frac{v_1^2}{c^2} } \]
+        Note that the right hand side of this expression does not depend on \(v_2\). Thus, by our continuity assumption, it should be the case 
+        that this equation holds as \(v_2 \to 0\) as well. And when this happens, 
+        \[  \eta_A \to 0, \hspace{0.5cm} \phi(\eta_A) \to 1 \]
+        \[ \eta_B \to \frac{2v_1}{1+\frac{v_1^2}{c^2}}, \hspace{0.5cm}  \phi(\eta_B) \to \phi\bigg(\frac{2v_1}{1 + \frac{v_1^2}{c^2}}\bigg)  \]
+        Therefore, in the limit
+        \[ \phi\bigg(\frac{2v_1}{1 + \frac{v_1^2}{c^2}}\bigg)  =  \frac{1+\frac{v_1^2}{c^2}}{1- \frac{v_1^2}{c^2}} \]
+        It can be shown that with
+        \[ w = \frac{2v_1}{1 + \frac{v_1^2}{c^2}}, \]
+        that 
+        \[ \begin{aligned} \frac{1}{\sqrt{1 - \frac{w^2}{c^2}}} & = \frac{1}{\sqrt{1 - \frac{1}{c^2} \bigg(\frac{2v_1}{1 + \frac{v_1^2}{c^2}}\bigg)^2 }} \\ 
+        & = \frac{1}{\sqrt{1 - \frac{4v_1^2}{(c + \frac{v_1^2}{c})^2}   }} \\
+        & = \frac{1}{\sqrt{1 - \frac{4v_1^2 c^2 }{(c^2 + v_1^2)^2}   }} \\ 
+        & = \frac{1}{\sqrt{\frac{c^4 + v_1^4 - 2v_1^2 c^2 }{(c^2 + v_1^2)^2}   }} \\
+        & = \frac{c^2 + v_1^2}{c^2 - v_1^2}   \\ 
+        & =  \frac{1+\frac{v_1^2}{c^2}}{1- \frac{v_1^2}{c^2}}
+        \end{aligned}\]
+        Letting the very first expression define a variable \(\gamma_2\), we find at last that 
+        \[ \phi(w) = \gamma_w. \]
+        To conclude, the necessary form of momentum for a particle of velocity \(w\) is 
+        \[ \gamma_w m w = \frac{mw}{\sqrt{1-\frac{w^2}{c^2}}} \]
+
+        <h4>Derivation of Relativistic Energy</h4>
+
+        We can make similar assumptions about the conservation of energy. If we assume now that these particles all have 
+        an energy of the form \(\mathcal E(v)\), then we can again try to reason about the values of energy. The problem with this 
+        is that that the conservation is energy is "triviliazed" in the above kinematic scenario, since the magnitudes of the velocities 
+        are the same before and after, and we assume that the energy depends only on magnitude. <br><br>
+        
+        Consider a new Kinematic scenario. We shall once more have to particles \(A,B\). In Frame 1, the collision appears like so: 
+        <ol>
+          <li>Before the collision, particle \(A\) is moving to the right with velocity \(v\), and particle \(V\) is moving to the right 
+            with velocity \(-v\).
+          <li>Upon the collision, particle \(A\) now makes an angle \(\theta\) with the horizontal, and particle \(B\) makes an angle \(-\theta\).</li>
+        </ol>
+        To be more explicit,
+        \[ \begin{aligned} v_{A,i}^1 & = \begin{pmatrix} v \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^1 & = \begin{pmatrix} -v \\ 0 \end{pmatrix}  \\
+                           v_{A,f}^1 & = \begin{pmatrix} v\cos\theta \\ v\sin\theta \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^1 & = \begin{pmatrix} -v\cos\theta  \\ -v\sin\theta  \end{pmatrix}  \end{aligned} \]
+        We now consider the same collision, but in the Language of a new Frame 2, defined as that which "follows" particle \(A\) at velocity \(v\). In this frame, particle \(A\) is stationary 
+        until the moment of collision, and then it appears to be moving (slowly) to the left. In contrast, particle 2 will be moving very quickly toward the origin before the collision, and 
+        continue moving left after the collision, although to a lesser degree. Letting \(w = (v,0)\) be the velocity of Frame 2 with respect to Frame 1,
+        
+        \[ \begin{aligned}
+         v_{A,i}^2 & = \begin{pmatrix} 0 \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^2 & = \begin{pmatrix} -\frac{2v}{1 - \frac{v_{B,i}^1 \cdot w}{c^2}} \\ 0 \end{pmatrix}  \\
+         v_{A,f}^2 & = \begin{pmatrix} \frac{v\cos\theta - v}{1-\frac{v_{A,f}^1 \cdot w}{c^2}} \\ \\ \frac{v\sin\theta}{\gamma_v\big(1-\frac{v_{A,f}^1 \cdot w}{c^2}\big)}  \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^2 & = \begin{pmatrix}\frac{-v\cos\theta - v}{1-\frac{v_{B,f}^1 \cdot w}{c^2}} \\ \\ \frac{-v\sin\theta}{\gamma_v\big(1-\frac{v_{B,f}^1 \cdot w}{c^2}\big)} \end{pmatrix}
+          \end{aligned} 
+        \]
+        This is a little notation heavy, admittedly, but it simplifies to something a little more reasonable:
+        \[ \begin{aligned}
+        v_{A,i}^2 & = \begin{pmatrix} 0 \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^2 & = \begin{pmatrix} -\frac{2vc^2}{c^2 - v^2} \\ 0 \end{pmatrix}  \\
+        v_{A,f}^2 & = \begin{pmatrix} \frac{vc^2(\cos\theta - 1)}{c^2 - v^2\cos(\theta)} \\ \\ \frac{vc^2 \sin\theta}{\gamma_v\big(c^2 - v^2\cos(\theta) \big)}  \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^2 & = - \begin{pmatrix}\frac{-vc^2 (\cos\theta +1)}{c^2 + v^2\cos\theta} \\ \\ \frac{-vc^2\sin\theta}{\gamma_v\big(c^2+v^2\cos\theta\big)} \end{pmatrix}
+         \end{aligned} 
+       \]
+       As we are interested only in the magnitudes, we compute those as well: 
+       \[ \begin{aligned}
+        v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = \frac{2vc^2}{c^2 - v^2}  \\
+        v_{A,f}^2 & = \sqrt{\bigg(\frac{vc^2(\cos\theta - 1)}{c^2 - v^2\cos(\theta)}\bigg)^2 + \bigg(\frac{vc^2\sin\theta}{\gamma_v\big(c^2 - v^2\cos(\theta) \big)}\bigg)^2 } &  \hspace{0.5cm} & v_{B,f}^2 & = \sqrt{ \bigg(\frac{-vc^2 (\cos\theta +1)}{c^2 + v^2\cos\theta}\bigg)^2 +  \bigg(\frac{-vc^2\sin\theta}{\gamma_v\big(c^2+v^2\cos\theta\big)}\bigg)^2 }
+         \end{aligned} 
+       \]
+       simplifying to 
+       <!--
+       \[ \begin{aligned}
+       v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = 2v\gamma_v  \\
+       v_{A,f}^2 & = \frac{v}{1 - \frac{v^2}{c^2} \cos(\theta)} \sqrt{(\cos\theta - 1)^2 +  \frac{\sin^2\theta}{\gamma_v^2} } &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{v}{1 + \frac{v^2}{c^2}\cos\theta} \sqrt{  (\cos\theta + 1)^2 +  \frac{\sin^2\theta}{\gamma_v^2}  }
+        \end{aligned}
+      \]-->
+      \[ \begin{aligned}
+      v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = 2v\gamma_v  \\
+      v_{A,f}^2 & = \frac{v}{\gamma_v\big(1 - \frac{v^2}{c^2} \cos(\theta) \big)} \sqrt{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)} &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{v}{\gamma_v\big(1 + \frac{v^2}{c^2}\cos\theta\big)} \sqrt{\gamma_v^2(\cos\theta + 1)^2  +   \sin^2\theta   }
+       \end{aligned}
+     \]
+
+     Then, squaring these
+     \[ \begin{aligned} \bigg(\frac{v^2_{A,f}}{v^2_{C,f}}\bigg)^2 & = \frac{1 + \frac{v^2}{c^2}\cos\theta}{1 - \frac{v^2}{c^2}\cos\theta} \times \frac{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)}{\gamma_v^2 (\cos\theta + 1)^2 +  \sin^2(\theta)} \\ 
+      & = \bigg(1 + \frac{2v^2\cos\theta}{c^2 - v^2\cos\theta}\bigg) \times \frac{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)}{\gamma_v^2 (\cos\theta + 1)^2 +  \sin^2(\theta)} 
+     \end{aligned}
+     \]
+     <h5>A Mathematical Aside</h5>
+      One can argue that the following approximation holds, to the first order:
+      \[ \frac{\phi(x)}{\phi(-x)} = 1 + 2\frac{\phi'(0)}{\phi(0)}x + o(x^2) \]
+      Thus if we let,
+      \[ \phi(r) =  (1 + \frac{v^2}{c^2}r) \big(\gamma_v^2 (r - 1)^2 +  (1-r^2) \big)  \]
+      One can show, 
+      \[ \phi'(r) = \frac{v^2}{c^2} \big(\gamma_v^2 (r - 1)^2 +  (1-r^2) \big)  +  (1 + \frac{v^2}{c^2}r) \bigg( 2\gamma_v^2(r-1) - 2r \bigg) \]
+      \[ \phi'(0) = \frac{v^2}{c^2}(\gamma_v^2 + 1) - 2\gamma_v^2 v^2 = \gamma_v^2 v^2 \bigg( \frac{1}{c^2} - 2 \bigg) + \frac{1}{v^2} \]
+      Thus, one could argue 
+      \[  \bigg(\frac{v^2_{A,f}}{v^2_{C,f}}\bigg)^2 = 1 + \cos\theta\bigg(\gamma_v^2 v^2 \bigg( \frac{1}{c^2} - 2 \bigg) + \frac{1}{v^2}\bigg)  \]
+
+      Note that, 
+      \[ \frac{d}{dr} \frac{\phi(r)}{\phi(-r)} = \frac{\phi'(r)\phi(-r) + \phi'(-r)\phi(r)}{\phi(-r)^2} \]
+      
+
+      <br><br>
+
+      Now we proceed to analyze the conservation of Energy. In Frame 2, the conservation of energy says that 
+      \[ \mathcal E(v_{B,i}^2) + \mathcal E(0) = \mathcal E(v_{A,f}^2) + \mathcal E(v_{B,f}^2). \]
+
+      Let \(r = \cos \theta\) for brevity, and consider this equation as a function of \(r\). Because the left hand side of the 
+      equation is unchanged (the initial conditions make no reference to the angle), it must be that: 
+      \[ \frac{d}{dr} \mathcal E(v_{A,f}^2) = - \frac{d}{dr} \mathcal E(v_{B,f}^2) \]
+      \[ \mathcal E'(v_{A,f}^2) \frac{d v_{A,f}^2}{dr} = - \mathcal E'(v_{B,f}^2) \frac{d v_{B,f}^2}{dr} \]
+      Now in terms of \(r\), 
+      \[ \begin{aligned}
+      v_{A,f}^2 & = \frac{v c^2}{c^2 - v^2 r} \sqrt{  r^2(1-\frac{1}{\gamma_v^2}) - 2r + (1+ \frac{1}{\gamma_v^2}) } &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{vc^2}{c^2 + v^2 r } \sqrt{  r^2 (1-\frac{1}{\gamma_v^2}) + 2r + (1 + \frac{1}{\gamma_v^2})  }
+       \end{aligned}
+     \]
+     It would be quite a pain to actually differentiate this by hand. A more elegant approach is to notice that these expressions are the same, except for a sign change of \(r\). 
+     Therefore, writing \( v_{A,f}^2(r) = \phi(r), v_{B,f}^2(r) = \phi(-r) \)
+     \[ \frac{d}{dr} v_{A,f}^2   = \phi'(r), \hspace{0.25cm} \frac{d}{dr} v_{B,f}^2   = - \phi'(-r)  \]
+      And so, 
+     \[ \frac{\mathcal E'(v_{A,f}^2)}{\mathcal E'(v_{B,f}^2)} = -\frac{\phi'(-r)}{\phi'(r)} \]
+     Note also that as \(r \to 0\), Frame 2 agrees more and more with the future direction of particle A. Thus, 
+     \[ \lim_{r \to 0} \mathcal E(v_{A,f}^2) = \mathcal E(0) \]
+     And the Taylor expansion of \(\mathcal E\) yields 
+     \[ \mathcal E(v_{A,f}) = \mathcal E(0) + r \mathcal E'(r) \]
 
     </body>
 </html>
