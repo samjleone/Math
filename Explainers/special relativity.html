@@ -199,7 +199,8 @@
         Letting \(v = v_A\) and \(u = v_C\), this is more commonly written as
         \[ \begin{aligned} u_{\parallel}' & = \frac{u_{\parallel} -  v}{1 - \frac{v \cdot u}{c^2}} \\ 
                           u_{\perp}' & = \frac{u_{\perp}}{\gamma_v\bigg(1 - \frac{v \cdot u}{c^2}\bigg)} \end{aligned} \]
-        this formula is a bit more memorable, although it is harder to compute.
+        this formula is a bit more memorable, although it is harder to compute. 
+
         <h5>Velocity Addition and 4-Velocities</h5>
 
         We conclude the discussion of velocity addition by discussing the relationship to 4-Velocities. 
@@ -316,98 +317,50 @@
         \[ \gamma_w m w = \frac{mw}{\sqrt{1-\frac{w^2}{c^2}}} \]
 
         <h4>Derivation of Relativistic Energy</h4>
-
-        We can make similar assumptions about the conservation of energy. If we assume now that these particles all have 
-        an energy of the form \(\mathcal E(v)\), then we can again try to reason about the values of energy. The problem with this 
-        is that that the conservation is energy is "triviliazed" in the above kinematic scenario, since the magnitudes of the velocities 
-        are the same before and after, and we assume that the energy depends only on magnitude. <br><br>
-        
-        Consider a new Kinematic scenario. We shall once more have to particles \(A,B\). In Frame 1, the collision appears like so: 
-        <ol>
-          <li>Before the collision, particle \(A\) is moving to the right with velocity \(v\), and particle \(V\) is moving to the right 
-            with velocity \(-v\).
-          <li>Upon the collision, particle \(A\) now makes an angle \(\theta\) with the horizontal, and particle \(B\) makes an angle \(-\theta\).</li>
-        </ol>
-        To be more explicit,
-        \[ \begin{aligned} v_{A,i}^1 & = \begin{pmatrix} v \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^1 & = \begin{pmatrix} -v \\ 0 \end{pmatrix}  \\
-                           v_{A,f}^1 & = \begin{pmatrix} v\cos\theta \\ v\sin\theta \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^1 & = \begin{pmatrix} -v\cos\theta  \\ -v\sin\theta  \end{pmatrix}  \end{aligned} \]
-        We now consider the same collision, but in the Language of a new Frame 2, defined as that which "follows" particle \(A\) at velocity \(v\). In this frame, particle \(A\) is stationary 
-        until the moment of collision, and then it appears to be moving (slowly) to the left. In contrast, particle 2 will be moving very quickly toward the origin before the collision, and 
-        continue moving left after the collision, although to a lesser degree. Letting \(w = (v,0)\) be the velocity of Frame 2 with respect to Frame 1,
-        
-        \[ \begin{aligned}
-         v_{A,i}^2 & = \begin{pmatrix} 0 \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^2 & = \begin{pmatrix} -\frac{2v}{1 - \frac{v_{B,i}^1 \cdot w}{c^2}} \\ 0 \end{pmatrix}  \\
-         v_{A,f}^2 & = \begin{pmatrix} \frac{v\cos\theta - v}{1-\frac{v_{A,f}^1 \cdot w}{c^2}} \\ \\ \frac{v\sin\theta}{\gamma_v\big(1-\frac{v_{A,f}^1 \cdot w}{c^2}\big)}  \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^2 & = \begin{pmatrix}\frac{-v\cos\theta - v}{1-\frac{v_{B,f}^1 \cdot w}{c^2}} \\ \\ \frac{-v\sin\theta}{\gamma_v\big(1-\frac{v_{B,f}^1 \cdot w}{c^2}\big)} \end{pmatrix}
-          \end{aligned} 
+        Because momentum is conserved in a collision, we can write down the equation
+        \[ 
+        \begin{pmatrix} 
+          \mathcal \alpha \\  \boldsymbol{p}_i 
+          \end{pmatrix}  = \begin{pmatrix} 
+          \mathcal \alpha \\ \boldsymbol{p}_f
+        \end{pmatrix}
         \]
-        This is a little notation heavy, admittedly, but it simplifies to something a little more reasonable:
-        \[ \begin{aligned}
-        v_{A,i}^2 & = \begin{pmatrix} 0 \\ 0 \end{pmatrix} & \hspace{0.5cm} & v_{B,i}^2 & = \begin{pmatrix} -\frac{2vc^2}{c^2 - v^2} \\ 0 \end{pmatrix}  \\
-        v_{A,f}^2 & = \begin{pmatrix} \frac{vc^2(\cos\theta - 1)}{c^2 - v^2\cos(\theta)} \\ \\ \frac{vc^2 \sin\theta}{\gamma_v\big(c^2 - v^2\cos(\theta) \big)}  \end{pmatrix} & \hspace{0.5cm} & v_{B,f}^2 & = - \begin{pmatrix}\frac{-vc^2 (\cos\theta +1)}{c^2 + v^2\cos\theta} \\ \\ \frac{-vc^2\sin\theta}{\gamma_v\big(c^2+v^2\cos\theta\big)} \end{pmatrix}
-         \end{aligned} 
-       \]
-       As we are interested only in the magnitudes, we compute those as well: 
-       \[ \begin{aligned}
-        v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = \frac{2vc^2}{c^2 - v^2}  \\
-        v_{A,f}^2 & = \sqrt{\bigg(\frac{vc^2(\cos\theta - 1)}{c^2 - v^2\cos(\theta)}\bigg)^2 + \bigg(\frac{vc^2\sin\theta}{\gamma_v\big(c^2 - v^2\cos(\theta) \big)}\bigg)^2 } &  \hspace{0.5cm} & v_{B,f}^2 & = \sqrt{ \bigg(\frac{-vc^2 (\cos\theta +1)}{c^2 + v^2\cos\theta}\bigg)^2 +  \bigg(\frac{-vc^2\sin\theta}{\gamma_v\big(c^2+v^2\cos\theta\big)}\bigg)^2 }
-         \end{aligned} 
-       \]
-       simplifying to 
-       <!--
-       \[ \begin{aligned}
-       v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = 2v\gamma_v  \\
-       v_{A,f}^2 & = \frac{v}{1 - \frac{v^2}{c^2} \cos(\theta)} \sqrt{(\cos\theta - 1)^2 +  \frac{\sin^2\theta}{\gamma_v^2} } &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{v}{1 + \frac{v^2}{c^2}\cos\theta} \sqrt{  (\cos\theta + 1)^2 +  \frac{\sin^2\theta}{\gamma_v^2}  }
-        \end{aligned}
-      \]-->
-      \[ \begin{aligned}
-      v_{A,i}^2 & = 0 & \hspace{0.5cm} & v_{B,i}^2 & = 2v\gamma_v  \\
-      v_{A,f}^2 & = \frac{v}{\gamma_v\big(1 - \frac{v^2}{c^2} \cos(\theta) \big)} \sqrt{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)} &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{v}{\gamma_v\big(1 + \frac{v^2}{c^2}\cos\theta\big)} \sqrt{\gamma_v^2(\cos\theta + 1)^2  +   \sin^2\theta   }
-       \end{aligned}
-     \]
-
-     Then, squaring these
-     \[ \begin{aligned} \bigg(\frac{v^2_{A,f}}{v^2_{C,f}}\bigg)^2 & = \frac{1 + \frac{v^2}{c^2}\cos\theta}{1 - \frac{v^2}{c^2}\cos\theta} \times \frac{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)}{\gamma_v^2 (\cos\theta + 1)^2 +  \sin^2(\theta)} \\ 
-      & = \bigg(1 + \frac{2v^2\cos\theta}{c^2 - v^2\cos\theta}\bigg) \times \frac{\gamma_v^2 (\cos\theta - 1)^2 +  \sin^2(\theta)}{\gamma_v^2 (\cos\theta + 1)^2 +  \sin^2(\theta)} 
-     \end{aligned}
-     \]
-     <h5>A Mathematical Aside</h5>
-      One can argue that the following approximation holds, to the first order:
-      \[ \frac{\phi(x)}{\phi(-x)} = 1 + 2\frac{\phi'(0)}{\phi(0)}x + o(x^2) \]
-      Thus if we let,
-      \[ \phi(r) =  (1 + \frac{v^2}{c^2}r) \big(\gamma_v^2 (r - 1)^2 +  (1-r^2) \big)  \]
-      One can show, 
-      \[ \phi'(r) = \frac{v^2}{c^2} \big(\gamma_v^2 (r - 1)^2 +  (1-r^2) \big)  +  (1 + \frac{v^2}{c^2}r) \bigg( 2\gamma_v^2(r-1) - 2r \bigg) \]
-      \[ \phi'(0) = \frac{v^2}{c^2}(\gamma_v^2 + 1) - 2\gamma_v^2 v^2 = \gamma_v^2 v^2 \bigg( \frac{1}{c^2} - 2 \bigg) + \frac{1}{v^2} \]
-      Thus, one could argue 
-      \[  \bigg(\frac{v^2_{A,f}}{v^2_{C,f}}\bigg)^2 = 1 + \cos\theta\bigg(\gamma_v^2 v^2 \bigg( \frac{1}{c^2} - 2 \bigg) + \frac{1}{v^2}\bigg)  \]
-
-      Note that, 
-      \[ \frac{d}{dr} \frac{\phi(r)}{\phi(-r)} = \frac{\phi'(r)\phi(-r) + \phi'(-r)\phi(r)}{\phi(-r)^2} \]
-      
-
-      <br><br>
-
-      Now we proceed to analyze the conservation of Energy. In Frame 2, the conservation of energy says that 
-      \[ \mathcal E(v_{B,i}^2) + \mathcal E(0) = \mathcal E(v_{A,f}^2) + \mathcal E(v_{B,f}^2). \]
-
-      Let \(r = \cos \theta\) for brevity, and consider this equation as a function of \(r\). Because the left hand side of the 
-      equation is unchanged (the initial conditions make no reference to the angle), it must be that: 
-      \[ \frac{d}{dr} \mathcal E(v_{A,f}^2) = - \frac{d}{dr} \mathcal E(v_{B,f}^2) \]
-      \[ \mathcal E'(v_{A,f}^2) \frac{d v_{A,f}^2}{dr} = - \mathcal E'(v_{B,f}^2) \frac{d v_{B,f}^2}{dr} \]
-      Now in terms of \(r\), 
-      \[ \begin{aligned}
-      v_{A,f}^2 & = \frac{v c^2}{c^2 - v^2 r} \sqrt{  r^2(1-\frac{1}{\gamma_v^2}) - 2r + (1+ \frac{1}{\gamma_v^2}) } &  \hspace{0.5cm} & v_{B,f}^2 & = \frac{vc^2}{c^2 + v^2 r } \sqrt{  r^2 (1-\frac{1}{\gamma_v^2}) + 2r + (1 + \frac{1}{\gamma_v^2})  }
-       \end{aligned}
-     \]
-     It would be quite a pain to actually differentiate this by hand. A more elegant approach is to notice that these expressions are the same, except for a sign change of \(r\). 
-     Therefore, writing \( v_{A,f}^2(r) = \phi(r), v_{B,f}^2(r) = \phi(-r) \)
-     \[ \frac{d}{dr} v_{A,f}^2   = \phi'(r), \hspace{0.25cm} \frac{d}{dr} v_{B,f}^2   = - \phi'(-r)  \]
-      And so, 
-     \[ \frac{\mathcal E'(v_{A,f}^2)}{\mathcal E'(v_{B,f}^2)} = -\frac{\phi'(-r)}{\phi'(r)} \]
-     Note also that as \(r \to 0\), Frame 2 agrees more and more with the future direction of particle A. Thus, 
-     \[ \lim_{r \to 0} \mathcal E(v_{A,f}^2) = \mathcal E(0) \]
-     And the Taylor expansion of \(\mathcal E\) yields 
-     \[ \mathcal E(v_{A,f}) = \mathcal E(0) + r \mathcal E'(r) \]
+        where \(\alpha\) is some constant to be determined later. Note that we haven't actually done anything. In another reference frame, 
+        we allow that there be some different constant \(\alpha'\):
+        \[ 
+        \begin{pmatrix} 
+          \mathcal \alpha' \\  \boldsymbol{p}_i 
+        \end{pmatrix}  = \begin{pmatrix} 
+        \mathcal \alpha' \\ \boldsymbol{p}_f
+      \end{pmatrix}
+        \]
+        where we <b>insist</b> that \(\alpha\) and \(\alpha'\) be related such that these objects are related by Lorentz Transformations. 
+        Because we already know that \(\boldsymbol{p}\) is the space part of the 4-Velocity times \(m\), the only remaining candidate for \(\alpha\) is that it 
+        be the time part times \(m\), being \(\gamma_v c m\): 
+        \[ \alpha = \gamma_v c m\]
+       A Taylor series for \(\gamma_v\) gives
+       \[ \frac{d}{dv^2}\gamma_v = -\frac{1}{2} \gamma_v^3 (-\frac{1}{c^2}) = \frac{1}{2c^2} \gamma_v^3  \]
+       And thus, 
+       \[ \gamma_v \approx 1 + \frac{v^2}{2c^2} + \ldots \]
+       \[ \alpha \approx cm +  \frac{m}{c} \frac{v^2}{2} + \ldots \]
+      We have identified an \(\alpha\) that, by construct, 
+        <ol>
+          <li>It is preserved in collisions, in every reference frame.</li>
+          <li>It is a function of velocity.</li>
+        </ol>
+      Therefore, we'd be inclined to say that this quantity is simply proportional to Kinetic Energy. To coincide with 
+      our classical formula \(\frac{1}{2}mv^2\), it is evident that the constant of proportionality has to be \(1/c\). To 
+      summarize, 
+      \[ 
+      \begin{pmatrix} 
+          \mathcal E/c \\  \boldsymbol{p}
+          \end{pmatrix}
+      \]
+      constitutes a valid 4-Vector (the "4-Momentum"), and each component is conserved in collisions. Moreover, 
+      \[ \mathcal E = \gamma_v m c^2, \]
+      which is the famous Einstein Energy-Mass Relation. Finally, because the 4-Momentum is simply \(m\) times the 4-Velocity, its 
+      length has got to be \(m^2c^2\): 
+      \[ m^2c^2 = \frac{\mathcal E^2}{c^2} - |\boldsymbol{p}|^2 \implies \mathcal E = \sqrt{m^2c^4 + |\boldsymbol{p}|^2} \]
 
     </body>
 </html>
