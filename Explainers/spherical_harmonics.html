@@ -112,7 +112,7 @@
 
         For any function \(f\) defined on the sphere, we can consider rotating it to produce a new function \(\tile{f} = Qf\). Note that this transformation 
         is linear.  We argued in <a href = "curvilinear.html">Curvilinear Coordinate Systems and Operators</a> that 
-        \(\Delta\) is in fact the Laplace-Bertrami operator over the sphere. What this means is that 
+        \(\Delta\) is in fact the Laplace-Beltrami operator over the sphere. What this means is that 
         \( (\Delta f)(x) \) is a measure of how much \(f(x)\) differs from \(f(y)\) for \(y\) close to \(x\). 
         Note that we could calculate \(\Delta f\) by rotating \(f\), taking the \(\Delta\) of the rotated function, and rotating back. 
         Another way of saying this is that 
@@ -149,7 +149,8 @@
         Of course, the left hand side of this expression is unchanged under rotations of \(x\) and \(y\), the right hand side must be as well. In particular, if we 
         take a rotation which sends \(x\) to \(x' = (0,0,1) \) and \(y\) to any \(y'\), then 
         \[ \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x)Y_{\ell}^m(y)^* = \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x')Y_{\ell}^m(y')^* = \sum_{m=-\ell}^{\ell} (N_\ell^m)^2 P_\ell^m(1) P_{\ell}^m(x' \cdot y'). \]
-  An important feature of the associated Legendre functions is that \(P_{\ell}^m(1)\) is 1 if \(m = 0\) and is zero otherwise. Thus, the above sum reduces to only \(P_{\ell}^0(x' \cdot y')\). 
+        An important feature of the associated Legendre functions is that \(P_{\ell}^m(1)\) is 1 if \(m = 0\) and is zero otherwise. Thus, the above sum reduces to only \(P_{\ell}^0(x' \cdot y')\). 
+
         It is also a matter of convention that \(P_\ell^0 = P_\ell\), the ommission of the superscript indicating the normal Legendre functions. And as \(x' \cdot y'\) is \(\cos\gamma\) for the angle \(\gamma\) between 
         \(x\) and \(y\), this all reduces to the statement that
         \[  \frac{4\pi}{2\ell + 1} \sum_{m=-\ell}^{\ell} Y_{\ell}^m(x)Y_{\ell}^m(y)^* = P_\ell(\cos\gamma), \]

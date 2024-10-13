@@ -30,6 +30,23 @@
         A secondary goal I have for this explainer is introducing the standard notation in a way that feels natural. Taking up a dimensional analysis point of view 
         is, as we will see, very helpful for keeping indices straight.
 
+        <h3>What's the Big Idea?</h3>
+        Suppose we have any space at all \(\mathcal X\), linear or not. Moreover, we could have two "coordinate systems" for this space related by a transformation 
+        \(T\). That is, what Bob calls \(x\) is what Alice calls \(\tilde{x}\) and, moreover, \(\tilde{x} = \phi(x)\). Now, we might also have a second space of coordinates 
+        \(\mathcal Y\), with Bob's coordinates \(y\) and Alice's coordinates \(\tilde{y}\), and \(\tilde{y} = \psi(y)\). Bob, for whatever, reason is interested in cominbing elements of \(X\) with elements of \(Y\) through 
+        some totally arbitrary function \(T\). For concreteness, we can assume this function's output is a number:
+        \[ T(y_1,y_2 \ldots y_p, x_1,x_2 \ldots x_q) : \mathcal Y^p \times \mathcal X^p \to \mathbb R \]
+        Now, Alice also wants access to this function. She wants a function \(\tilde{T}\) such that 
+        \[ \tilde{T}\bigg(\tilde{y}_1 \ldots \tilde{y}_p, \tilde{x}_1 \ldots \tilde{x}_q\bigg) = T\bigg(y_1,y_2 \ldots y_p, x_1,x_2 \ldots x_q\bigg) \]
+        The question is: how do we create such a \(\tilde{T}\) such that this map is consistent? Well, we just need that 
+        \[ \tilde{T}\bigg(\tilde{y}_1 \ldots \tilde{y}_p, \tilde{x}_1 \ldots \tilde{x}_q\bigg) = T\bigg(\psi^{-1}(\tilde{y}_1), \ldots\psi^{-1}(\tilde{y}_p), \phi^{-1}(\tilde{x}_1), \ldots \phi^{-1}(\tilde{x}_q)\bigg). \]
+        Then, almost by definition, Alice and Bob will agree, simply because Alice's function undoes the transformation to go back to Bob land, where he computes things for her. To summarize, so 
+        long as \(\tilde{T}\) "transforms from T" this way, then we know that we have described a consistent thing.   <br><br> 
+
+        A specific case of this scenario is multilinear algebra. If we assume that the function \(T\) is multilinear, and that the corresponding transformations are linear, then we can factorize everything through 
+        basis coefficients. And typically, \(\mathcal X\) would be a vector space and \(\mathcal Y\) would be its dual. The x-coordinates will correspond to the "contravariant" indices and the y-coordinates will be the "covariant" indices. 
+        But the underlying idea is simply the above. 
+
         <h3>Notation</h3>
 
         Mathematicians and computer scientists quite like to think about vectors as something with components, like a list of 
@@ -155,7 +172,7 @@
         but now, the thing that is inherent to the tensor is \(u^a u^{a'}\), an expression which transforms contravariantly:
         \[ \tilde{u}^b \tilde{u}^{b'} = \sum_{bb'} (T^{-1})_a^b (T^{-1})_{a'}^{b'} u^a u^{a'}.  \]
 
-        <h4>Formal Definition</h4>
+        <h4>A Formal Definition</h4>
         A tensor of type (p,q) eats q vectors and p covectors (vectors in the dual), and spits out a multilinear number. It can be regarded as a multilinear map 
         \[ \boldsymbol{M} : \underbrace{V^* \times V^* \times \ldots \times V^*}_{\text{p covectors}} \times \underbrace{V \times V \ldots \times V}_{\text{q vectors}} \to \mathbb R \]
         If we have a tuple \([\boldsymbol{v}_1] \ldots [\boldsymbol{v}_p], [\boldsymbol{u}_1] \ldots [\boldsymbol{u}_q]\) such that, 
@@ -192,6 +209,50 @@
         we know that coordinates transform in a certain way, then any multilinear map which "counters" that transformation 
         in its own representation will be consistent across bases. So, in this sense, it is immaterial what we truly mean by covariant 
         and contravariant, so long as we are self-consistent.
+
+        <h3>Examples</h3>
+
+        <h4>Partial Derivatives</h4>
+        Because, 
+        \[ \frac{\partial}{\partial \tilde{x}^b} = \sum_a \frac{\partial x^a}{\partial \tilde{x}^b}\frac{\partial}{\partial x^a}  \]
+        and \(\frac{\partial x^a}{\partial\tilde{x}^b}\) represents a change "against" our transformation, it is a covariant object. It is in this sense that 
+        we can think of \(\nabla\) as a covariant vector.  Moreover, with this transformation, it possible to define an intrinsic \(\boldsymbol{\nabla}\).
+
+        <h4>Vector Fields</h4>
+        If you have vector field \(\boldsymbol{F}\) and a tiny displacement \(\Delta \boldsymbol{x}\), the quantity 
+        \(\boldsymbol{F} \cdot \boldsymbol{x}\) is meant to yield something akin to work done. Therefore, in order for the work 
+        to become an intrinsic quantity, it is necessary that the transformation of vector fields counters the transformation of the displacement. 
+        As the displacement vector is contravariant, a vector field ought to be covariant. Another way of thinking of this is pictorally; so that the vector's oomph 
+        has the same scale as its ambient coordinate system, a covariant transformation is necessary. Therefore, we <b>define</b> the transformation of a vector field as 
+        \[ \tilde{F}_b(\tilde{x}) \triangleq \sum_{a} \tilde{F}_a \frac{\partial \tilde{x}^b}{\partial x^a} \]
+        Moreover, with this transformation, it possible to define an intrinsic \(\boldsymbol{F}\).
+
+        <h4>The Divergence</h4>
+        The Divergence eats 1) a set of partial derivatives, which we have argued are contravariant and 2) a vector field, which we have argued is contravariant. 
+        Therefore, the divergence \(D\) is a tensor of type (1,1). Because 
+        \[  \boldsymbol{\nabla} \cdot \boldsymbol{F} = \sum_a  \nabla^a F_a = \sum_{a,a'} \nabla^a \delta_a^{a'} F_{a'}  \]
+        we can let \(D_{a}^{a'} = \delta_a^{a'} \) in our first basis. Now because the vector field transforms covariantly, 
+        that index of the tensor must transform contravariantly, and vice versa for the gradient:
+        \[ \tilde{D}_{b}^{b'} = \sum_{a,a'}  \frac{ \partial \tilde{x}^{b'}}{\partial x^{a}} \delta_{a}^{a'} \frac{\partial x^{a'}}{\partial \tilde{x}^{b}} \]
+        
+        We can verify that this is the appropriate transformation because:
+        \[ 
+        \begin{aligned}
+           \sum_{b,b'} \tilde{D}_{b}^{b'} \tilde{\nabla}^{b'}  \tilde{F}_b & = \sum_{b,b'}\bigg[\bigg(\sum_{a_2,a_3} \frac{ \partial \tilde{x}^{b'}}{\partial x^{a_2}} \delta_{a_2}^{a_3} \frac{\partial x^{a_3}}{\partial \tilde{x}^{b}}\bigg)\bigg( \sum_{a_1} \frac{\partial x^{a_1}}{\partial \tilde{x}^{b'}}\frac{\partial}{\partial x^{a_1}}  \bigg)\bigg( \sum_{a_4} \tilde{F}_{a_4} \frac{\partial \tilde{x}^b}{\partial x^{a_4}}  \bigg)\bigg] \\ 
+           & = \sum_{b,b',a_1,a_2,a_3,a_4} \frac{ \partial \tilde{x}^{b'}}{\partial x^{a_2}} \delta_{a_2}^{a_3} \frac{\partial x^{a_3}}{\partial \tilde{x}^{b}}  \frac{\partial x^{a_1}}{\partial \tilde{x}^{b'}}\frac{\partial \tilde{x}^b}{\partial x^{a_4}} \frac{\partial}{\partial x^{a_1}} \tilde{F}_{a_4}  \\
+           & = \sum_{b,b',a_1,a_2,a_4} \frac{ \partial \tilde{x}^{b'}}{\partial x^{a_2}}  \frac{\partial x^{a_2}}{\partial \tilde{x}^{b}}  \frac{\partial x^{a_1}}{\partial \tilde{x}^{b'}}\frac{\partial \tilde{x}^b}{\partial x^{a_4}} \frac{\partial}{\partial x^{a_1}} \tilde{F}_{a_4}  \\
+           & = \sum_{a_1,a_4}\frac{\partial}{\partial x^{a_1}} \tilde{F}_{a_4} \underbrace{\sum_{b,b',a_2}\frac{ \partial \tilde{x}^{b'}}{\partial x^{a_2}}  \frac{\partial x^{a_1}}{\partial \tilde{x}^{b'}}\frac{\partial \tilde{x}^b}{\partial x^{a_4}}\frac{\partial x^{a_2}}{\partial \tilde{x}^{b}}}_{\frac{\partial x^{a_1}}{\partial x^{a_4}}} \\ 
+           & = \sum_{a_1,a_4} \delta_{a_4}^{a_1} \frac{\partial}{\partial x^{a_1}} \tilde{F}_{a_4} \\
+           & = \sum_{a_1} \frac{\partial}{\partial x^{a_1}} \tilde{F}_{a_1} \\ 
+           & = \boldsymbol{\nabla} \cdot \boldsymbol{F}
+        \end{aligned} 
+        \]
+        It is in this sense that we checked that our "tensor transformation" property holds. Another much easier way of seeing this is to notice, 
+        \[ \sum_{a} \frac{ \partial \tilde{x}^{b'}}{\partial x^{a}}  \frac{\partial x^{a}}{\partial \tilde{x}^{b}} = \delta_b^{b'} \]
+        And therefore, 
+        \[ \sum_b \tilde{\nabla}^b \tilde{F}_b = \sum_a \nabla^a F_a. \]
+        One could verify this more easily through the definitions directly. But this provides a motivation for the tensor transformation property.
+
 
          
     </body>

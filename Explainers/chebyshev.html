@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Chebyshev Polynomials</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>The Basics of Chebyshev Polynomials</h2>
+        <h3>An Interesting Observation About Cosine</h3>
+
+        The double angle formula
+        \( \cos(2x) = 2\cos^2(x) -1 \)
+        offers an expression for \(\cos(n\theta)\) as a polynomial of 
+
+        Consider the \(2 \times 2\) matrix \(Q_{\theta}\) which performs a counterclockwise rotation by \(\theta\) degrees: 
+        \[ Q_{\theta} = \begin{bmatrix} \cos(\theta) & - \sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix}. \]
+        Note one can achieve a rotation by \(n\theta\) by first rotating by \((n-1)\theta\) and then rotating an additional \(\theta\). 
+        Therefore,
+        \[ 
+        \begin{aligned}
+        \begin{bmatrix} \cos(n\theta) & - \sin(n\theta) \\ \sin(n\theta) & \cos(n\theta) \end{bmatrix} & = Q_n Q_{(n-1)\theta} \\ 
+        & = \begin{bmatrix} \cos((n-1)\theta) & - \sin((n-1)\theta) \\ \sin((n-1)\theta) & \cos((n-1)\theta) \end{bmatrix}\begin{bmatrix} \cos(\theta) & - \sin(\theta) \\ \sin(\theta) & \cos(\theta) \end{bmatrix} \\ 
+        & =  \begin{bmatrix}\cos(\theta)\cos((n-1)\theta) - \sin(\theta)\sin((n-1)\theta) &  -\cos((n-1)\theta)\sin(\theta) -\sin((n-1)\theta)\cos(\theta) \\ \cos((n-1)\theta)\sin(\theta) + \sin((n-1)\theta)\cos(\theta)  & \cos((n-1)\theta)\cos(\theta)-\sin((n-1)\theta)\sin(\theta) \end{bmatrix}
+        \end{aligned}.
+        \]
+        Comparing the top left elements of these, we find 
+        \[
+        \begin{aligned}  
+        \cos(n\theta) & = \cos((n-1)\theta)\cos(\theta) + \sin((n-1)\theta)\sin(\theta) \end{aligned} \] 
+        But
+        \[
+        \begin{aligned}
+        \sin((n-1)\theta)\sin(\theta) & = \cos((n-2)\theta)\sin^2(\theta) - \sin((n-2)\theta)\cos(\theta)\sin(\theta) \\ 
+                                     & = \cos((n-2)\theta)(1-\cos^2(\theta)) + \cos(\theta)\bigg[ \sin((n-2)\theta)\sin(\theta) \bigg] \\ 
+                                     & = \cos((n-2)\theta)(1-\cos^2(\theta)) + \cos(\theta)\bigg[ \cos((n-2)\theta)\cos(\theta)- \cos((n-1)\theta) \bigg] \\ 
+                                     & = \cos((n-2)\theta)(1-\cos^2(\theta)) + \cos^2(\theta)\cos((n-2)\theta) - \cos((n-1)\theta)\cos(\theta) \end{aligned} \] 
+      So 
+      \[ \begin{aligned}
+                      \cos(n\theta)  & =  \cos((n-1)\theta)\cos(\theta) - \cos((n-2)\theta)(1-\cos^2(\theta)) - \cos^2(\theta)\cos((n-2)\theta) + \cos((n-1)\theta)\cos(\theta) \\ 
+                                     & = 2\cos(\theta)\cos((n-1)\theta) - \cos((n-2)\theta)
+                                     \end{aligned}                     
+        \]
+        Therefore, if \(T_n\) is a function obeying the recurrence relations
+        \[
+        \begin{aligned} 
+        T_0(x) & \equiv 1 \\ 
+        T_1(x) & = x \\ 
+        T_n(x) & = 2x T_{n-1}(x) - T_{n-2}(x)
+        \end{aligned} \]
+        then by induction, \(T_n(\cos\theta)\) is just \(\cos(n\theta)\). Moreover, \(T_n(x)\) is a polyomial. This formula could be easily verified using Euler's identity, 
+        but I choose to approach this with rotation matrices because is it is easy to come up with, and also makes it believable that one could represent \(\cos(n\theta)\) as a polynomial in 
+        \(\cos(\theta)\).
+
+    <h3>Applications to Fourier Series</h3>
+
+    In a Fourier series, one expands an arbitrary function \(f : [-\pi,\pi] \to \mathbb R\) using trigonometric functions of integer frequencies:
+    \[ f(\theta) = \sum_{n=0}^\infty a_n \cos(n\theta) + \sum_{n=0}^\infty b_n \sin(n\theta). \] 
+    Assuming that \(f\) is even, the \(\sin\) terms vanish. Then, as one might expect, we can use our newfound facts about the cosine function to write
+    \[ 
+    \begin{aligned} f(\theta) & = \sum_{n=0}^\infty a_n T_n(\cos(\theta))  \\
+                    f(\arccos(x))      & = \sum_{n=0}^\infty a_n T_n(x)  
+    \end{aligned} \]
+    Therefore, the function \(g(x) \triangleq f(\arccos(x))\) can be expanded as 
+    \[ g(x) = \sum_{n=0}^\infty a_n T_n(x). \]
+    Reverse engineering our reasoning, an arbitrary function \(g\) has such an expansion so long as 
+    \[ f(\theta) \triangleq g(\cos(\theta)) \]
+    is even on \([-\pi, \pi]\) and has a convergent Fourier series. But since \(\cos\) is even, any such \(f\) is even, so 
+    the main requirement is a convergent Fourier series, which "generally" holds. Moreover, the coefficients are given by the formula 
+    \[ 
+    \begin{aligned} 
+        a_n & = \int_{-\pi}^{\pi} g(\cos \theta) \cos(n\theta)d\theta \\ 
+            & = \int_{-1}^1 \frac{g(x)T_n(x)}{\sqrt{1-x^2}}dx & \text{ with a change of variables } x = \cos(\theta), d\theta = \frac{1}{\sqrt{1-x^2}} dx
+    \end{aligned}
+    \]
+    One can also easily show that this implies the orthogonality of the \(T_n\)'s under a given inner product:
+    \[ \int_{-1}^1 \frac{T_n(x)T_m(x)}{\sqrt{1-x^2}}dx  = \begin{cases} 1 & \text{ if } n = m \\ 0 & \text{ else} \end{cases} \]
+    Are they orthonormal? No, they are not. They have the same squared norm as the trigonometric cosine functions. So when 
+    \(n = m =0\), the norm is \(\pi\), and otherwise when \(n = m \neq 0\) it is \(\pi/2\). Therefore, 
+    \[ a_n = \frac{2}{\pi} \int_{-1}^{1} \frac{g(x)T_n(x)}{\sqrt{1-x^2}}dx \]
+    provides the coefficient of \(T_n\), for \(n \geq 1\). For \(n = 0\), the two would become a one.  
+
+    <!--
+    <h4>Coefficienet Recurrence</h4>
+    Let \(a_{k,n}\) be the coefficient of \(x^k\) in \(T_n\). Then the recurrence relation implies 
+    \[ \begin{aligned} \sum_{k=0}^n a_{k,n} x^k & = T_n(x) = 2xT_{n-1}(x) - T_{n-2}(x) \\ 
+    & = \sum_{k=0}^{n-1} 2a_{k,n-1} x^{k+1} - \sum_{k=0}^{n-2}a_{k,n-2}x^k \\
+    & = \sum_{k=1}^{n} 2a_{k-1,n-1} x^{k} - \sum_{k=0}^{n-2}a_{k,n-2}x^k \\
+    & = - a_{0,n-2} + 2a_{n-2,n-1} x^{n-1} + 2a_{n-1,n-1}x^n + \sum_{k=1}^{n-2} x^k (2a_{k-1,n-1}- a_{k,n-2})
+    \end{aligned} \]
+    -->
+
+    <h4>Extensions Outside \([-1,1]\): Chebyshev Polynomials Are Huge</h4> 
+
+    Until now, we have understood polynomials purely as the polynomials for which \(T_n(\cos\theta) = \cos(n\theta)\); this provides a definition 
+    for the polynomials for \(x \in [-1,1]\), but how do the polynomials behave outside of this range? Well, for starters, we know that  
+    \(T_n\) has \(2^{n-1}\) as its leading coefficient, which should be an initial indication that the thing will become fantastically large. 
+    To begin, it will be define \(T_n(x)\) in a way which is still somewhat trigonometric. It turns out that, more generally, \(T_n\) 
+    can be understood like so:
+    \[ 
+    \begin{aligned} 
+        T_n(x) & = \begin{cases} (-1)^n \cosh(n\text{arcosh}(-x)) & x < -1 \\ \cos(n\arccos(x)) & x \in [-1,1] \\ \cosh(n\text{arcosh}(x)) & x > 1 \\  \end{cases} \\ 
+        \text{arcosh}(x) & = \ln(x + \sqrt{x^2-1b })
+    \end{aligned}
+    \]
+    In particular, this means  for \(\gamma > 0\) that \(T_n(1+\gamma)\) grows like exponentially in \(n\) for fixed \(\gamma\) and it grows like 
+    \(x^n\) for fixed \(n\):
+    \[ 
+    \begin{aligned} 
+        T_n(1 + \gamma) & = \cosh(n\text{arcosh}(1 + \gamma)) \\ 
+                        & = \frac{e^{n\text{arcosh}(1 + \gamma)} + e^{-n\text{arcosh}(1 + \gamma)} }{2} \\ 
+                        & \geq \frac{e^{n\text{arcosh}(1 + \gamma)}}{2}\\
+                        & = \frac{1}{2}  \bigg( 1 + \gamma + \sqrt{(1+\gamma)^2-1} \bigg)^n \\ 
+                        & = \frac{1}{2}  \bigg( 1 + \gamma + \sqrt{2\gamma + \gamma^2} \bigg)^n \\
+                        & \geq \frac{1}{2} (1+ \sqrt{2\gamma})^n
+    \end{aligned}
+    \]
+    One can check from the recurrence relations that Chebyshev polynomials are either completely even or completely odd. And therefore the symmetric 
+    inequality also holds:
+    \[ T_n(-(1+\gamma)) \leq - \frac{1}{2} (1+ \sqrt{2\gamma})^n. \]
+
+    <h3>Chebyshev Polynomials Over \([a,b]\)</h3>
+
+    Consider a function \(f\) defined over a range \([a,b]\) rather than \([-1,1]\). Note that the function
+    \[ \ell(x) = \frac{a+b}{2} + x \frac{b-a}{2} \]
+    maps \(-1,1\) onto \([a,b]\). Likewise, the function 
+    \[ m(x) = \frac{2}{b-a}\bigg( x - \frac{a+b}{2} \bigg) \]
+    maps the range \([a,b]\) onto \([-1,1]\). Therefore, one could approximate a function \(g\) by transforming it into the region 
+    of "understanding" to form a new function defined on \([-1,1]\)
+    \[ \tilde{g}(x) = g(\ell(x)). \]
+    Then we find the Chebyshev coefficients \(\{a_n\}\) for \(\tilde{g}\), then we transform back using 
+    \[ g(x) = \sum_{n=0}^\infty a_n T_n(m(x)). \]
+    
+    <h2>Why Care About Chebyshev Polynomials?</h2>
+
+    Thus far, I have really only argued that Chebyshev polynomials exist, and in the appropriate sense, form an orthonormal basis for 
+    \(L^2([0,1])\). But many, many families of orthogonal functions exist. So why use Chebyshev polynomials? 
+
+    <h3>The Alternation Theorem</h3> 
+
+    <h4>Necessity of Equioscillation</h4>
+
+    Consider a continuous function \(f\) over \([-1,1]\). We would like to approximate \(f\) as closely as possible by a polynomial of degree \(n\). 
+    Formally, letting \(\mathcal P_n\) be the space of polynomials of degree \(n\) (or less), we seek
+    \[ p_n^\star \in \arg\min_{p_n \in \mathcal P_n} \mathcal E(f,p_n) =  \arg\min_{p_n \in \mathcal P_n} \max_{x \in [-1,1]} |f(x) - p_n(x)| \]
+    For now, I will not concern myself with whether this minimum is unique, although it is. <br><br>
+
+    Consider any polynomial \(p_n\). It might "cross" \(f(x)\) some number of times, say at points 
+    \[ x_0, x_1 \ldots x_k \]
+    For concreteness sake, suppose that the error \(p_n(x) - f(x)\) is positive over \([-1,x_0), (x_1,x_2) \ldots \)  and 
+    negative over \( (x_0, x_1), (x_2,x_3)\ldots \). One can easily construct a polynomial which has roots at the crossings:
+    \[ q(x) \triangleq \sigma (x-x_0)\ldots (x-x_k). \]
+    Where \(\sigma \in \{-1,1\} \) is chosen so that \(q\) is negative in \([-1,x_0)\ldots\), positive in \( (x_0,x_1)\), etc. 
+    By construction, the "perturbed" polynomial \(p_n(x) + \epsilon q(x)\) is decreased where the error is positive and increased where the 
+    error is negative. Provided you take \(\epsilon\) to be sufficiently small, then you can make the overall error lower! If \(q\) just so happens to 
+    be a polynomial of degree \(n\), this would mean that \(p_n\) is sub-optimal. Said another way, <br><br>
+
+    <b>The optimal \(p_n^\star\) crosses \(f(x)\) at least \(n+1\) times </b><br><br>
+
+    My reasoning up to now has been a little hazy, I hope I have illustrated how you could rigorously prove the above via contradiction. 
+    Important is the fact that \(f\) is continuous. Otherwise, the approximator could be high in some places and low in others, without 
+    ever actually crossing \(f\), and our construction would fail! <br><br>
+
+    If one thinks very hard,  \(p_n + \epsilon q\) is an improvement for sufficiently small \(\epsilon > 0\) if 
+    <ol>
+        <li>In subintervals of \([-1,1]\) where \(q\) is positive, \(p_n(x)-f(x)\) never achieves \(+\mathcal E\). </li>
+        <li>In subintervals of \([-1,1]\) where \(q\) is negative, \(p_n(x)-f(x)\) never achieves \(-\mathcal E\). </li>
+        <li>The maximum error is not achieved at any root of \(q\).</li>
+    </ol>
+    These also imply that every time the error \(p_n(x) - f\) is \(+\mathcal E\), \(q\) is negative, and every time the 
+    error \(p_n(x) - f\) is \(-\mathcal E\), then \(q\) is positive. In lieu of this, we can see that a small perturbation 
+    \(p_n + \epsilon q\) will decrease the signed error where it is \(+\mathcal E\) and increase the signed error when it is 
+    \(-\mathcal E\). Moreover, our bullets guarantee that we can choose \(\epsilon\) small enough so that we don't accidentally 
+    increase the error back up to \(\mathcal E\) anywhere. Then, if we can identify such a polynomial \(q\) of degree \(n\), any such 
+    \(p_n\) cannot be optimal. <br><br>
+
+    This is to say that for the optimal polynomial \(p_n\), such a polynomial \(q\) does not exist. It is impossible to 
+    select \(n\) roots \(x_0 < x_1 \ldots < x_n\) between \(-1\) and \(1\) such that the bulleted properties hold. Consider a polynomial 
+    \(p_n\), and imagine enumerating from left to right the extreme values it achieves. For example,
+    \[ (x_0, +\mathcal E), (x_1,-\mathcal E), (x_2,-\mathcal E), (x_3, + \mathcal E) \ldots \]
+    means that \(p_n\) achieves \(+\mathcal E\) as its leftmost extreme \(x_1\), \(-\mathcal E\) as its second leftmost extreme \(x_2\), and so on. 
+    Between each sign change, we can imagine sticking in a candidate root \(q_i\). For example, we could have a 
+    \(q_1\) between \(x_0\) and \(x_1\) in the above example, and \(q_2\) between \(x_2\) and \(x_3\). Between any two roots, 
+    only one sign of extreme is achieved. Thus, if we place \(k\) such roots, 
+    then we can choose 
+    \[ q(x) = \pm \prod_{i=1}^k (x-q_i) \]
+    so that the bulleted properties hold. And if the resulting \(q\) is of degree \(\leq n\), then we know \(p_n\) is suboptimal. 
+    Thus, if we apply this procedure to our optimal polynomial \(p_n^\star\), then it has got to be the case that its roots change signs at least 
+    \(n+1\) times. In other words, <br><br> 
+
+    <b>For the optimal \(p_n^\star\), there exist points \(x_1 < x_1 \ldots < x_{n+2}\) which all achieve the maximum error, but with alternating signs.</b><br><br> 
+
+    This is the first half of the so called "Alternation Theorem" or "Equioscillation Theorem." 
+
+    <h4>Sufficiency of Equioscillation</h4>
+
+
+    Now suppose we have a polynomial \(p_n\) which has \(n+2\) such points \(x_1 < x_1 \ldots < x_{n+2}\), but may not necesarily be optimal. 
+    On the other hand, there is some other optimal polynomial \(p_n^\star\). For each \(x_i\), suboptimality implies that 
+    \[   |p_n(x_i) - f(x_i)|  > |p^\star_n(x_i)-f(x_i)| > 0 \] 
+    Therefore,
+    \[ p_n(x_i) - f(x_i) \hspace{0.5cm} \text{ and } \hspace{0.5cm}  p_n(x_i) - f(x_i)  - \bigg(p^\star_n(x_i)-f(x_i)\bigg)  \]
+    have the same sign. But by assumption, \(p_n(x_i) - f(x_i)\) changes sign at least \(n+1\) times, so \(p_n - p_n^\star\) must as well. 
+    On the other hand, \(p_n - p_n^\star\) is a polynomial of degree \(n\), so it can't do that! The only logical conclusion is that 
+    \(p_n\) is in fact optimal. Thus, the equioscillation condition is not only necessary, but sufficient for optimality!<br><br>
+
+    (Credit: Anthony Yeates' Lecture Notes).  
+
+    <h4>Minimality of Chebyshev Polynomials</h4>
+
+    Imagine we want to approximate the function \(x^n\) as closely as possible using a polynomial of degree \(n-1\). The equioscillation thoerem
+    says that the approximator should have \(n-1+2\) points \(x_1\ldots x_{n+1}) points where
+    \[ x^n - p_{n-1}(x) \]
+    achieves the maximum error in a fashion of oscillating sign. Note that \(T_n(x) = \cos(n\arccos(x)) \), the \(n\)th Chebyshev polynomial 
+    has \(n + 1\) extrema in \([-1,1]\). It's not of degree \(n-1\) because it has a leading term of coefficient \(2^{n-1}\). Naturally, one would try 
+    to eliminate the monic part by considering the function \(p_{n-1}(x) = x^n - 2^{1-n} T_n(x)\). Furthermore, \(x^n - p_{n-1}(x)\) is just 
+    \(2^{1-n}T_n(x)\), and thus the equioscillation property is satisfied. Thus, <br><br> 
+
+    <b> The best approximation of \(x^n\)  by a \(n-1\) degree polynomial is \(x^n - 2^{1-n}T_n(x)\).</b>
+
+    If we let \(\mathcal M_n\) denote the space of monic degree \(n\) polynomials, then
+    \[ 
+    \begin{aligned} 
+      x^n - 2^{1-n}T_n(x) & \in \arg\min_{p_{n-1} \in \mathcal P_{n-1}} \|p_{n-1}(x) - x^n\|_\infty \\ 
+            2^{1-n}T_n(x) & \in \arg\min_{p_n \in \mathcal M_n} \|(p_n - x^n) - x^n\|_\infty \\ 
+            2^{1-n}T_n(x) & \in \arg\min_{p_n \in \mathcal M_n} \|p_n\|_\infty
+    \end{aligned}
+    \]
+    which is to say that, among all the degree \(n\) monic polynomials, the Chebyshev polynomial \(2^{1-n}T_n(x)\) is as close to zero as possible.
+
+    <h4>Polynomials that Drop Very Quickly</h4>
+    Suppose we want to approximate the function 
+    \[ s(x) = \begin{cases} 1 & x = 0 \\ 0 & x = 1 \end{cases}. \]
+    We will make our requirements tangible by demanding a polynomial \(p_n\) for which 
+    <ol>
+        <li>\(p_n(0) = 1\)</li>
+        <li>\(|p_n(x)| \leq \epsilon\) for all \(x \in [a,b]\)</li>
+    </ol>
+    Where the interval \([a,b]\) does not contain \(0\). For concreteness, let's suppose \(a,b\) are both positive.
+    We learned earlier that Chebyshev polynomials are tiny inside \([-1,1]\) compared to outside. If we
+    translate the Chebyshev polynomial \(T_n\) to \([a,b]\), it will take on some enormous value at \(0\), but will be confined to 
+    \([-1,1]\) inside of \([a,b]\). If we then normalize it by dividing by its value at \(0\), we obtain a polynomial which now satisfies our 
+    desired properties! Intuitively, we would imagine that this will be hard to accomplish if \(b\) is very large compared to \(a\), since then 
+    we have to have the polynomial drop more quickly.
+    We now make this intuition quantitative. <br><br> 
+
+    So we let,
+    \[ \begin{aligned} m(x) = \frac{2}{b-a}\bigg( x - \frac{a+b}{2} \bigg)  \\ 
+    q_n(x) & = T_n(m(x))\\
+    p_n(x) & = q_n(0)^{-1}q_n(x)
+    \end{aligned} \]
+    Here, \(m\) is the linear function which translates \([a,b]\) to \([-1,1]\). And now, 
+    \[
+    \begin{aligned}
+    q_n(0) & = T_n\bigg(m(0)\bigg)\\ 
+           &  = T_n\bigg(- \frac{a + b}{b-a}\bigg)\\ 
+           & = T_n\bigg(- \bigg(1 + 2 \cdot \frac{a}{b-a} \bigg)\bigg) \\ 
+           & \leq - \frac{1}{2}\bigg( 1 + \sqrt{4\cdot  \frac{a}{b-a}} \bigg)^n \\ 
+           & \leq - \frac{1}{2}\bigg(1 + 2 \sqrt{\frac{a}{b-a}} \bigg)^n
+    \end{aligned}
+    \]
+    And thus, 
+    \[
+    \begin{aligned}
+    |p_n(x)| & \leq 2 \bigg(1 + 2 \sqrt{\frac{a}{b-a}} \bigg)^{-n} |T_n(m(x))| \\ 
+             & \leq 2 \bigg(1 + 2 \sqrt{\frac{a}{b-a}} \bigg)^{-n}  \\ 
+             & = 2 \bigg(1 + \frac{2}{\sqrt{\frac{b}{a}-1}} \bigg)^{-n} \\
+             & \leq 2 \bigg(1 + \frac{2}{\sqrt{b/a}} \bigg)^{-n}.
+    \end{aligned}
+    \]
+    To me, I find the interplay between the Chebyshev polynomials smallness and largeness very interesting!
+
+    <h4>Lagrange Interpolating Polynomial</h4>
+    Suppose we want to devise a polynomial \(p_n\) which is consistent with \(f(x)\) at \(n\) points 
+    \(x_1 \ldots x_n\). One can check that the Lagrange interpolating polynomial does the trick:
+    \[ p_{n-1}(x) = \sum_{i=1}^n f(x_i) \prod_{j \neq i} \frac{x - x_j}{x_i - x_j}. \]
+    But what is the error at more general \(x\) than the specific \(x_i\)'s?  
+    What we would really like to do is argue that the function 
+    \[ e(x) \triangleq f(x) - p_{n-1}(x) \]
+    is small. The theorem of key use here is the "Generalized Rolle's Theorem," which one can easily prove via induction 
+    <br><br> 
+
+    <b>Generalized Rolle's Theorem: If an \(n-1\)-times differentiable function \(f\) is zero \(n\) times over \([a,b]\), then \( f^{(n)}(\xi) = 0\), for some \(\xi\). </b><br><br>
+
+    This is one of those theorems where the proof is essentially equal to the insight. To get a flavor for the argument, suppose the statement was true for some \(n\). By Rolle's Theorem, there 
+    are \(n-1\) zeroes of \(f'\) which interlace the zeroes of \(f\). Application of the inductive hypothesis to \(f'\) immediately implies the theory. <br><br> 
+    
+    Note that for fixed \(x\), the function
+    \[ \phi(t) \triangleq f(t) - p_{n-1}(t) - \big(f(x)-p_{n-1}(x)\big) \prod_{i=1}^n \frac{t-x_i}{x-x_i} \]
+    is not only zero for \(t = x_1 \ldots x_n\), but is zero at \(t = x\) as well. We conclude by Rolle's theorem that for some \(\xi\),
+    \[ \phi^{{n}}(\xi) = f^{(n)}(\xi) - n! \big(f(x)-p_{n-1}(x)\big) \prod_{i=1}^n \frac{1}{x-x_i}. \]
+    And thus, 
+    \[ f(x)-p_{n-1}(x) = \frac{f^{(n)}(\xi)}{n!}  \prod_{i=1}^n (x-x_i). \]
+    This is the statement of the "Lagrange Interpolation Remainder Theorem." Essential to this proof was that Rolle's Theorem applies, which only works when \(x \in [\min_i x_i, \max_i x_i]\).
+
+    <h4>Applicability of the Chebyshev Nodes in Interpolation</h4>
+
+    Suppose now that we do not regard the points \(x_1\ldots x_n\) as fixed for the purposes of our interpolation, but rather 
+    choose them freely, with the goal of constructing an interpolating polynomial \(p_{n-1}\) of degree \(n-1\) whose error is low. 
+    Because, 
+    \[ f(x)-p_{n-1}(x) = \frac{f^{(n)}(\xi)}{n!}  \prod_{i=1}^n (x-x_i), \]
+    it's logical to minimize the term \( | \prod_{i=1}^n (x-x_i)| \). Selecting the various roots \(x_i\) is roughly equivalent to selecting 
+    a monic polynomial, so we desire a monic polynomial which is as close to zero as possible! Hence the Chebyshev polynomials: \(2^{1-n} T_n\) is 
+    as close to zero as possible among all the degree \(n\) polynomials. This does <b>not mean</b> that we should use the Chebyshev polynomials as the interpolating 
+    function. Rather, it means that if we select the points of interpolation to the zeroes of the Chebyshev polynomials, then we can ensure a low error of 
+    \(2^{1-n}\). The zeroes are called the Chebyshev nodes and are 
+    \[ x_k = \cos\bigg( \frac{(2k - 1)\pi}{2n} \bigg) \hspace{0.5cm} k = 1 \ldots n \]
+    Even if we do not bother constructing the polynomial, we still have a sort of amazing existence theorem:<br><br>
+
+    <b>If a function \(f\) is \(n+1\) times continuously differentiable with \(|f^{(n+1)}| \leq C\), then there is a 
+        degree \(n\) polynomial \(p_n\) such that \(\|f-p_n\|_\infty \leq 2^{-n} \cdot C \cdot \frac{1}{(n+1)!} \), over \([-1,1]\).
+    </b><br><br> 
+
+    If we want to approximate \(f\) over an interval other than \([-1,1]\), we can again choose to approximate the function \(g\), which is 
+    \(f\) except translated to be defined on \([-1,1]\):
+    \[ g(x) = f(\ell(x)), \hspace{1cm} \ell(x) = \frac{a+b}{2} + x \frac{b-a}{2}. \]
+    Now, the quality of our approximation is controlled by the \(n\)th derivative of \(g\), which by the chain rule and linearity of \(\ell\) is: 
+    \[ g^{(n)}(x) = f^{(n)}(\ell(x)) \bigg(\frac{b-a}{2}\bigg)^n. \]
+    The resulting existence result then becomes that there exists a degree \(n\) polynomial for which
+    \[ \|f-p_n\|_\infty \leq \frac{1}{(n+1)!}\bigg(\frac{b-a}{2}\bigg)^{n+1} \sup_{\xi \in [a,b]}|f^{(n)}(\xi)| \]
+
+    <h4>System of Linear Equations</h4>
+
+    Oftentimes, one is interested in solving a system of linear equations of the form \(Ax^\star = b\), where \(A\) is some 
+    \(n \times n\) positive definite matrix. A consequence of this is that all its eigenvalues are positive. One might seek an approximate 
+    solution which is polynomial in \(A^k\):
+    \[ x^{(k)} = p_k(A)b = \sum_{j=0}^{k} A^j b  \]
+    In which case, a reasonable metric of the error is 
+    \[  \|  A x^{(k)} - b\|  \]
+    Using properties of the operator norm, one can see that this is upper bounded by
+    \[  \|  A x^{(k)} - b\| = \| (A p_n(A) - I) b\| \leq \|Ap_n(A) - I\|_{\text{op}} \|b\|_2 = \|b\|_2 \max_i |\lambda_i p_n(\lambda_i) - 1| \]
+    Therefore, if one seeks a small error, it suffices to find a degree \(n\) polynomial \(p_n\) for which \(x p_n(x) - 1\) is very close to zero over the range 
+    \([\lambda_{\min},\lambda_{\max}]\). Note that this is completely equivalent to finding a degree \(n+1\) polynomial \(q_{n+1}\) for which 
+    \(q_{n+1}(0) = 1\) and \(|q_{n+1}| \approx 0\). <br><br>
+
+    But we know from earlier that such a polynomial exists! We have to translate the Chebyshev polynomial \(T_n\) to be defined on \([a,b]\), and then rescale it by its value at 
+    \(0\). And when we do this, we find 
+    \[ |q(x)| \leq 2 \bigg(1 + \frac{2}{\sqrt{\lambda_{\min}/\lambda_{\max}}} \bigg)^{-n} \leq 2 e^{- \frac{2n}{\sqrt{\lambda_{\max}/\lambda_{\min}}}} \]
+    The astute will recognize that \(\lambda_{\min}/\lambda_{\max}\) is the condition number \(\kappa(A)\). If we want this to be less than \(\epsilon\), we have 
+    \[ 
+    \begin{aligned}
+    2 e^{- \frac{2n}{\sqrt{\kappa}}} & \leq \epsilon \\ 
+    \frac{2n}{\sqrt{\kappa}} & \geq \log\big(\frac{2}{\epsilon}\big) \\ 
+    n & \geq \frac{1}{2}\sqrt{\kappa} \log\big(\frac{2}{\epsilon}\big)
+    \end{aligned}
+    \]
+    
+    To summarize our findings, <br><br>
+
+    <b>Given a positive definite matrix \(A\) with condition number \(\kappa\), there exists a polynomial 
+        \(p_n\) for which \( \|p_n(A)A - I\| \leq 2 (1 + \frac{2}{\sqrt{\kappa}})^{-t} \). Therefore, we can find an 
+    \(\epsilon\) approximate solution to a system of linear equations using a polynomial of degree \(\mathcal O(\sqrt{\kappa} \log \epsilon^{-1})\). </b>
+
+    At this point, we should pause to reflect on whether or not this is implementable. Our polynomial \(q_n(x) = xp_n(x) - 1\) is 
+    a shifted and rescaled version of a Chebsyhev polynomial, so it's practical to find \(q_n\). But can we easily calculate / evaluate the 
+    polynomial
+    \[ p_n(x) = \frac{1}{x}(q_n + 1)? = \frac{1}{x}\bigg( \frac{1}{T_n(m(0))} T_n(m(x)) - 1 \bigg) = \frac{1}{x T_n(m(0))} \bigg( T_n(m(x))  - T_n(m(0)) \bigg)? \]
+    Well, if we think about it, this expression is really just \( \frac{T_n(m(x))}{T_n(m(0))} \) if we deleted the constant term and then lowered the 
+    degree by one. For shorthand, let \(y = m(x)\), assume that \(m\) is of the form \(m(x) = cx + d\), and let \(\alpha_n = T_n(m(0)) \). Then,
+    \[
+    \begin{aligned} 
+    p_n(x) & = \frac{1}{x} \bigg( \frac{T_n(y)}{T_n(m(0))} + 1 \bigg) \\ 
+           & = \frac{1}{x} \bigg( \frac{2(cx + d) T_{n-1}(y) - T_{n-2}(y)}{T_n(m(0))} + 1 \bigg) \\ 
+           & =  2c \frac{T_{n-1}(y)}{T_n(m(0))}  + \frac{2dT_{n-1}(y)}{ T_n(m(0)) x } - \frac{T_{n-2}(y)}{T_n(m(0)) x } + \frac{1}{x} \\
+           & = \bigg[\frac{2c}{T_n(m(0))} \bigg] T_{n-1}(y)  + \frac{2d}{T_n(m(0))} \bigg[ \frac{T_{n-1}(y)}{x} \bigg] -  \frac{1}{T_n(m(0))} \bigg[ \frac{T_{n-2}(y)}{x} \bigg] + \frac{1}{x} \\ 
+           & \triangleq \alpha_n^{-1} c T_{n-1}(y) + \alpha_n^{-1} d \bigg[ \frac{T_{n-1}(m(0)) (p_{n-1}(x)x - 1)}{x}\bigg] - \alpha_n^{-1} \bigg[ \frac{T_{n-2}(m(0)) (p_{n-2}(x)x - 1)}{x}\bigg] + \frac{1}{x} \\ 
+           & = \alpha_n^{-1} c T_{n-1}(y)  + 2d \alpha_n^{-1} \alpha_{n-1} p_{n-1}(x) - \frac{2d \alpha_n^{-1} \alpha_{n-1}}{x} - \alpha_n^{-1} \alpha_{n-2} p_{n-2}(x) + \frac{\alpha_n^{-1}\alpha_{n-2}}{x} + \frac{1}{x} \\ 
+           & = \alpha_n^{-1} c T_{n-1}(y)  + 2d \alpha_n^{-1} \alpha_{n-1} p_{n-1}(x)- \alpha_n^{-1} \alpha_{n-2} p_{n-2}(x) + \frac{1 - 2d \alpha_n^{-1} \alpha_{n-1} + \alpha_n^{-1} \alpha_{n-2}}{x}
+    \end{aligned}
+    \]
+    As a sanity check, we would imagine that the last term vanishes so that the expression is a real polynomial. And this is in fact the case: 
+    \[ 
+    \begin{aligned} 
+    \alpha_n & = T_n(m(0)) \\ 
+            & = 2 m(0) T_{n-1}(m(0)) - T_{n-2}(m(0)) \\ 
+              & = 2d \alpha_{n-1} - \alpha_{n-2} \\ 
+            1 - 2d \alpha_n^{-1} \alpha_{n-1} + \alpha_n^{-1} \alpha_{n-2} & = 
+            1 - \alpha_n^{-1} \bigg( 2d \alpha_{n-1} - \alpha_{n-2} \bigg) \\ 
+            & = 1 - \alpha_n^{-1}\alpha_n \\ 
+            & = 0.
+    \end{aligned} \]
+    So to summarize, we have the recurrence 
+    \[ 
+    \begin{aligned}
+    p_n(x) & = \bigg[\frac{c}{T_{n}(m(0))}\bigg] T_{n-1}(m(x)) + \bigg[\frac{2d T_{n-1}(m(0))}{T_n(m(0))}\bigg] p_{n-1}(x) + \bigg[ - \frac{T_{n-2}(m(0))}{T_{n}(m(0))} \bigg] p_{n-2}(x) \\ 
+           & \triangleq \beta_1 T_{n-1}(cx + d) + \beta_2 p_{n-1}(x) + \beta_3 p_{n-2}(x)
+    \end{aligned}
+    \]
+    And for solving linear equations, we would calculate,
+    \[
+    \begin{aligned} 
+        p_n(A)b & = \beta_1 T_{n-1}(cA + dI) b + \beta_2 p_{n-1}(A)b + \beta_3 p_{n-2}(A)b
+    \end{aligned} \]
+    
+
+    I do not find these coefficients very inspiring, but importantly, they can be calculated!  
+
+    <!--
+    <h3>Rates of Convergence</h3>
+    As shown, for a given function \(g\), the Chebyshev coefficients of \(g\) are the same as the Fourier coefficients of 
+    \(f(\theta) = g(\cos\theta)\). A standard fact from Fourier Theory is that if \(f \in C^p\), then 
+    \[ |a_n| \leq \frac{\|f^p\|_{L_1}}{n^p}.  \]
+    Which implies for the approximation error due to the first \(N\) terms that 
+    \[ 
+    \begin{aligned} \int_{-\pi}^\pi \bigg(f(x) - \sum_{n=0}^N a_n T_n(x)\bigg)^2 dx &= \sum_{n=N+1}^\infty |a_n|^2 \\  
+    & \leq \|f^p\|_{L_1}^2 \sum_{n=N+1}^\infty n^{-2p}  \\ 
+    & \leq \|f^p\|_{L_1}^2 \int_{n=N}^\infty x^{-2p} dx  \\ 
+    & = \|f^p\|^2_{L_1} \cdot \frac{N^{1-2p}}{2p-1}  \\ 
+    \sqrt{\int_{-\pi}^\pi \bigg(f(x) - \sum_{n=0}^N a_n T_n(x)\bigg)^2 dx} & \leq \|f^p\|_{L_1} \cdot \frac{N^{1/2 - p}}{\sqrt{2p-1}}
+    \end{aligned} \]
+    in the \(L^2\) sense. Additionally, we have pointwise that 
+    \[ 
+    \begin{aligned}
+    \bigg|f(x) - \sum_{n=0}^N a_n T_n(x) \bigg| & = \sum_{n=N+1}^\infty |a_n T_n(x)| \\
+                                                & = \sum_{n=N+1}^\infty |a_n| \\ 
+                                                & \leq \|f^p\|_{L_1} \sum_{n=N+1}^\infty n^{-p} \\ 
+                                                & \leq \|f^p\|_{L_1} \frac{N^{1-p}}{p-1}.
+    \end{aligned}
+    \]
+    All of this is due to standard Fourier theory. But of course, 
+    \[ \|f^p\|_{L^1} = \int_{-\pi}^\pi |f^p|d\theta = \int_{-\pi}^\pi \bigg|\frac{d^p}{d\theta^p} g(\cos\theta)\bigg|d\theta \]
+    It is unclear whether this fact will be important later, but hey! Why not include it?
+    -->
+
+    <!--
+    <h4>Estimations Using Complex Analysis</h4>
+    The statement of the Cauchy Integral Formula is that for any "nice" (holomorphic) function and simple closed curve \(C\), 
+    \[ f(z) = \frac{1}{2\pi i} \int_C \frac{f(\zeta)}{\zeta - z}d\zeta \]
+    And therefore, 
+    \[ 
+    \begin{aligned} 
+        a_n & = \frac{2}{\pi} \int_{-1}^1 f(z) \frac{T_n(z)}{\sqrt{1-z^2}}   dz \\ 
+            & = \frac{2}{\pi} \int_{-1}^1 \bigg[ \frac{1}{2\pi i} \int_C \frac{f(\zeta)}{\zeta - z}d\zeta  \bigg]  \frac{T_n(z)}{\sqrt{1-z^2}}   dz \\ 
+            & = \frac{1}{\pi^2 i} \int_C f(\zeta) \bigg[\int_{-1}^1 \frac{T_n(z)}{(\zeta - z) \sqrt{1-z^2}}   dz\bigg]d\zeta
+    \end{aligned}
+    \]
+    Then if we define 
+    \[ k_n = \int_{-1}^1 \frac{T_n(z)}{(\zeta - z) \sqrt{1-z^2}}   dz,  \]
+    then one has from residue calculus that
+    \[ 
+    \begin{aligned}
+       k_0 & = \int_{-1}^1 \frac{1}{(\zeta - z)\sqrt{1-z^2}}dz & \\
+           & = \int_{-\pi}^\pi \frac{1}{\zeta - \cos(\theta)}d\theta \\ 
+           & = - \frac{2\pi}{\sqrt{\zeta^2 -1}}.
+    \end{aligned}
+    \]
+    and \[
+    \begin{aligned}
+        k_1 &=  \int_{-1}^1 \frac{z}{(\zeta - z)\sqrt{1-z^2}}dz & \\ 
+            & = - \int_{-1}^1 \frac{1}{\sqrt{1-z^2}} dz + \zeta \int_{-1}^1 \frac{1}{(\zeta - z)\sqrt{1-z^2}}dz \\ 
+            & = \arcsin(-1) - \arcsin(1) + \zeta k_0 \\ 
+            & = \zeta k_0 - \pi 
+    \end{aligned}
+    \]
+    
+    the recurrence
+    \[ 
+    \begin{aligned} 
+    k_n & = \int_{-1}^1 \frac{T_n(z)}{(\zeta - z) \sqrt{1-z^2}}   dz\\
+     & = \int_{-1}^{1} \frac{2zT_{n-1}(z) - T_{n-2}(z)}{(\zeta -z)\sqrt{1-z^2}}dz \\ 
+    & =  \int_{-1}^{1} \frac{2(z-\zeta) T_{n-1}(z) + \zeta T_{n-1}(z) - T_{n-2}(z)}{(\zeta -z)\sqrt{1-z^2}}dz \\ 
+    & = \zeta k_{n-1} - k_{n-2} - 2 \int_{-1}^1 \frac{T_{n-1}(z)}{\sqrt{1-z^2}}dz.
+    \end{aligned}
+    \]
+    And the final term is zero whenever \(n-1 > 0\) by orthogonality with \(T_0\). To summarize, 
+    \[ 
+    \begin{aligned} 
+        k_0 & = - \frac{2\pi}{\sqrt{\zeta^2 -1}} \\ 
+        k_1 & = \zeta k_0 - \pi \\
+        \ldots & \ldots \\
+        k_n & = \zeta k_{n-1} - k_{n-2} \\ 
+    \end{aligned}
+    \]
+    One can check that these recurrences are satisfied with 
+    \[ k_n = \frac{\pi}{\sqrt{\zeta^2 - 1}(\zeta \pm \sqrt{\zeta^2 - 1})^n} \]
+
+    Note this follows a paper of David Elliot.
+
+    <h4>Convergence of the Reciprocal</h4>
+    Consider a function \(f\) defined over a range \([a,b]\). Note that the function
+    \[ \ell(x) = \frac{a+b}{2} + x \frac{b-a}{2} \]
+    maps \(-1,1\) onto \([a,b]\). Likewise, the function 
+    \[ m(x) = \frac{2}{b-a}\bigg( x - \frac{a+b}{2} \bigg) \]
+    maps the range \([a,b]\) onto \([-1,1]\). Therefore, one could approximate a function \(g\) by transforming it into the region 
+    of "understanding" to form a new function defined on \([-1,1]\)
+    \[ \tilde{g}(x) = g(\ell(x)). \]
+    Then we find the Chebyshev coefficients \(\{a_n\}\) for \(\tilde{g}\), then we transform back using 
+    \[ g(x) = \sum_{n=0}^\infty a_n T_n(m(x)). \]
+    A case of special consideration will be the inverse function \(1/x\) defined on some \([a,b]\) where \(a,b\) are both 
+    positive. Then the transformed function is 
+    \[ \tilde{g}(x) = \frac{1}{\ell(x)} = \frac{1}{\frac{a+b}{2} + x \frac{b-a}{2}} \]
+    we of course then define 
+    \[ f(\theta) = \frac{1}{\frac{a+b}{2} + \frac{b-a}{2}\cos(\theta)} \]
+    One should note for the Fourier coefficients that 
+    \[ 
+    \begin{aligned} 
+        a_n &= \int_{-\pi}^\pi \frac{\cos(n\theta)}{s + r \cos(\theta)}d\theta \\ 
+            & =  \int_{-\pi}^\pi \frac{e^{in\theta} + e^{-n\theta}}{2s + r\bigg( e^{i\theta} - e^{i\theta} \bigg) }d\theta \\ 
+    \end{aligned}
+    \]
+    -->
+
+
+
+
+    </body>
+</html>

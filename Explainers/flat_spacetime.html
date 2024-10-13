@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Flat Spacetime</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+
+
+        <h3>Flat Spacetime</h3>
+
+        <h4>Metric Tensors, Generally</h4> 
+
+        I've written a bit about metric tensors already. I introduced it in <a href = "curvilinear.html">Curvilinear Coordinate Systems and Operators</a> and touched on its tensor properties in <a href = "tensors.html">Tensors</a>.
+        But to summarize, the metric tensor is the matrix \(g\) for which, 
+        \[ g_{\alpha\beta}dx^\alpha dx^\beta = \begin{pmatrix} dx^1 \\ \ldots \\ dx^n \end{pmatrix} \begin{pmatrix} g_{11} & \ldots & g_{1n} \\  \ldots  & \ldots & \ldots \\  g_{n1} & \ldots & g_{nn} \end{pmatrix} \begin{pmatrix} dx^1 \\ \ldots \\ dx^4 \end{pmatrix} \]
+        yields the length of the infinitesimal with contravariant components \(dx^\alpha\). Note that this also means that, should we like, we could define the infinitesimal with covariant components 
+        \[ dx_\beta = g_{\alpha\beta}dx^\alpha \]
+        so that \(dx^\beta dx_\alpha\) also yields the infinitesimal length.
+
+        <h4>Nice Linear Maps</h4>
+
+        In particular, we might have two coordinate systems \(\{\boldsymbol{\alpha}_1 \ldots \boldsymbol{\alpha}_n\}\) and \(\{\boldsymbol{\beta}_1 \ldots \boldsymbol{\beta}_n\}\) related by a linear transformation: 
+        \[ \boldsymbol{\beta}_b = T_b^a \boldsymbol{\alpha_a}  \]
+        \[ \boldsymbol{\alpha}_a = (T^{-1})_a^b \boldsymbol{\beta}_b \]
+        It is argued that the metric tensor, being a rank 2 covariant tensor, transforms as 
+        \[ \begin{aligned} \tilde{g}_{\alpha\beta} & = g_{\lambda\mu} (T^{-1})_\alpha^{\mu}(T^{-1})_\beta^{\lambda} \\
+           g_{\lambda\mu} & = \tilde{g}_{\alpha\beta}T_\mu^\alpha T_\lambda^\beta \end{aligned} \]
+        It could be the case that we'd like the tensor in two different coordinate systems to both be equal to the same \(g\), i.e. \(\tilde{g} = g\). 
+        One could spend a fair amount of time on what this implies for \(T\) as a matrix, but that is immaterial for our discussion now. 
+
+        <h3>Spacetime, Physical Background</h3>
+        In <a href = "special relativity.html">Special Relativity</a>, the spacetime interval is the same in every reference frame:
+        \[ s^2 = c^2t^2 - (x^1)^2-(x^2)^2-(x^3)^2 \]
+        In this equation, it is understood that the \(x\)'s and \(t\)'s are that of a "4-Position," i.e. it describes a time and a place.
+        This is what it means for the speed of light to be constant, and for space to be isotropic, in every coordinate system. The spacetime interval can also be 
+        represented as 
+        \[ s^2 = g_{\alpha\beta} x^\alpha x^\beta \hspace{1cm} g = \begin{pmatrix} 1 & 0 & 0 & 0 \\ 0 & - 1 & 0 & 0 \\ 0 & 0 & 1 & 0 \\ 0 & 0 & 0 & 1 \end{pmatrix} \]
+        The assumption of the invariance of the spacetime interval is the same as saying that the metric tensor is preserved under basis transformations. 
+        The coordinate transformations \(T\) for which this is true constitute the so-called Lorentz group, and the transformations in the Lorentz group provide matrix 
+        representations of Lorentz transforms.
+
+        <h3>What is a 4-Vector?</h3>
+        Circularly, you might say that a 4-Vector is something which transforms like a 4-Vector. Of course, any list of four numbers can be interpreted as a 4-Vector if we just 
+        insist by definition that it follow the same transformation rule as a 4-Position. But the extent to which this list would represent anything meaningful is unclear. 
+        So really, we'd reserve the term 4-Vector for any list of <b>physical objects</b> such that, was one to calculate the same physical quantity in a different reference frame, 
+        these quantities are related via the same transformations as would apply to the 4-Positions. More concretely, suppose Frames 1 and 2 are related such that the 4-Positions are relate by 
+        a Lorentz transform 
+        \[ \begin{pmatrix} c\tilde{t} \\ \tilde{x}^1 \\ \tilde{x}^2 \\ \tilde{x}^3 \end{pmatrix} = T \begin{pmatrix} ct \\ x^1 \\ x^2 \\ x^3 \end{pmatrix}. \]
+        Now suppose there are some four physical quantities such that when Person 1 measures it as \(\ell^0, \ell^1,\ell^2,\ell^3\) and Person 2 measures it as 
+        \(\tilde{\ell}^0, \tilde{\ell}^1,\tilde{\ell}^2,\tilde{\ell}^3\). If it is the case that 
+        \[ \begin{pmatrix} \tilde{\ell}^0 \\ \tilde{\ell}^1 \\ \tilde{\ell}^2 \\ \tilde{\ell}^3 \end{pmatrix} = T \begin{pmatrix} \ell^0 \\ \ell^1 \\ \ell^2 \\ \ell^3 \end{pmatrix}, \]
+        and that this would work for any two frames, then the list comprises elements of a 4-Vector. Note that this does form a vector space, since this property is linear. 
+
+        <h3>Differential Operators</h3>
+
+        The main fact I'd like to establish is that, if two 4-Vectors solve the wave equation componentwise, then their transformed versions do as well. What I mean is that if 
+        \[ \Box A = B \implies \Box A' = B' \]
+        In our case, we shall have that \(A'(y) = T A(T^{-1})y\) at a point and likewise for \(B\). Thus, it would suffice to show that 
+        \(\Box_y A(T^{-1}(y)) = B(T^{-1}(y))\). Indeed, 
+        \[ 
+        \begin{aligned} 
+            \frac{\partial}{\partial \tilde{x}^\alpha}A'    & = \frac{\partial}{\partial \tilde{x}^\alpha} \bigg[T A(T^{-1}(y))\bigg]_{\gamma} \\ 
+                & = \frac{\partial}{\partial \tilde{x}^\alpha} \sum_\beta  T_\beta^{\gamma} A_\beta(T^{-1}(y))\\ 
+                & = \sum_\beta  T_\beta^{\gamma} \frac{\partial}{\partial \tilde{x}^\alpha} A_\beta(T^{-1}(y)) \\ 
+                & = \sum_\beta \sum_{\mu}  T_\beta^{\gamma} (T^{-1})_\mu^{\alpha} \frac{\partial A_\beta}{\partial x^\mu}  \\ 
+        \end{aligned}   \]
+        For a second derivative,
+        \[
+        \begin{aligned} 
+        \frac{\partial^2}{\partial \tilde{x}^\delta \tilde{x}^\alpha }A'  &  = \sum_\beta \sum_{\mu}  T_\beta^{\gamma} (T^{-1})_\mu^{\alpha} \frac{\partial}{\partial \tilde{x}^\delta} \frac{\partial A_\beta}{\partial x^\mu} \\ 
+        &  = \sum_\beta \sum_{\mu} \sum_{\lambda}  T_\beta^{\gamma} (T^{-1})_\mu^{\alpha} (T^{-1})_\lambda^{\delta} \frac{\partial A^2_\beta}{\partial x^\mu x^\lambda}   \\ 
+        \end{aligned} \]
+        Summing over all \(\alpha,\delta\),
+        \[
+        \begin{aligned} 
+            \Box A'^\gamma & = \sum_{\alpha} \sum_\beta \sum_{\mu} \sum_{\lambda} g_{\alpha \delta}  T_\beta^{\gamma} (T^{-1})_\mu^{\delta} (T^{-1})_\lambda^{\alpha} \frac{\partial A^2_\beta}{\partial x^\mu x^\lambda} \\ 
+                    & =  \sum_\beta \sum_{\mu} \sum_{\lambda} \frac{\partial A^2_\beta}{\partial x^\mu x^\lambda}  T_\beta^{\gamma}  \sum_{\alpha \delta}  g_{\alpha \delta}  (T^{-1})_\mu^{\delta} (T^{-1})_\lambda^{\alpha} \\ 
+                    & = \sum_\beta  T_\beta^{\gamma}  \sum_{\mu,\lambda} \frac{\partial A^2_\beta}{\partial x^\mu x^\lambda}  g_{\lambda \mu} \\ 
+                    & = \sum_{\beta} T_\beta^{\gamma} \bigg[ \Box A \bigg]^{\beta} \\ 
+                    & = B'^\gamma
+        \end{aligned}
+        \]
+        So that is done!
+    </body>
+</html>

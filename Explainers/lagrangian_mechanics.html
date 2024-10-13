@@ -87,6 +87,45 @@
         \[ \frac{d}{dt} \frac{\partial T}{\partial \dot{q}} = -\frac{\partial V}{\partial q} \]
         This observation will be of greater interest later.
 
+        <h3>Hamiltonians and Hamilton's Dynamics</h3>
+
+        Recall that we showed 
+        \[ \mathcal E \triangleq \frac{\partial \mathcal L}{\partial \dot{q}} \cdot \dot{q} - \mathcal L \]
+        is conserved in time. This required the Euler-Lagrange equations to work, so this statement is limited to 
+        the path of a particle whose action is at an extremum (i.e. paths of actul particles). It is also limited to the situation in 
+        which the Lagrangian doesn't depend on time explicitly. It is natural to wonder: even if things aren't conserved, are there useful relationships between \(\mathcal E\) and the Lagrangian? 
+        The answer is: yes. First, we continue to define the canonical momentum as 
+        \[ p_i = \frac{\partial \mathcal L}{\partial \dot{q}_i} \]
+        even if it's not conserved. We then define the Hamiltonian as
+        \[ \mathcal H(\boldsymbol{p}, \boldsymbol{q},t) = \boldsymbol{p} \cdot \boldsymbol{\dot{q}} - \mathcal L(\boldsymbol{q}, \boldsymbol{\dot{q}},t) \]
+        so that 
+        \[ \mathcal H\bigg(\frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} , \boldsymbol{q},t\bigg) =   \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}}\cdot \boldsymbol{\dot{q}} - \mathcal L(\boldsymbol{q}, \boldsymbol{\dot{q}},t) = \mathcal E \]
+        in this sense, we defined the Hamiltonian as something more general than the conserved energy. Purely by definition, the Hamiltonian satisfies
+        \[ 
+        \begin{aligned} 
+        \frac{\mathcal {\partial H}}{\partial \boldsymbol{p}} & = \dot{\boldsymbol{q}} \\ 
+        \frac{\mathcal {\partial H}}{\partial \boldsymbol{q}} & = - \frac{\partial \mathcal L}{\partial \boldsymbol{q}}\\ 
+        \end{aligned}
+        \]
+        However, if we restrict our attention to "good paths," the Euler Lagrange equation is satisfied: 
+        \[ \frac{\partial \mathcal L}{\partial \boldsymbol{q}} = \frac{d}{dt} \frac{\partial \mathcal L}{\partial \boldsymbol{\dot{q}}} = \frac{d \boldsymbol{p}}{dt}. \]
+        To summarize, the paths of "good particles" should obey Hamilton's dynamics: 
+        \[ \begin{aligned} 
+        \frac{\mathcal {\partial H}}{\partial \boldsymbol{p}} & = \frac{\boldsymbol{d\boldsymbol{q}}}{dt} \\ 
+        - \frac{\mathcal {\partial H}}{\partial \boldsymbol{q}} & = \frac{d \boldsymbol{p}}{dt} \\ 
+        \end{aligned} \]
+        Note that Hamilton's dynamics allow for the case that the Lagrangian depends on time.<br><br> 
+
+        By construction, any particle obeying the principle of least action should evolve according to Hamilton's dynamics. 
+        What of the converse? If we knew about Hamilton's dynamics, it would be natural to "define" the Lagrangian as: 
+        \[ \mathcal L(\boldsymbol{q}, \boldsymbol{\dot{q}}, \boldsymbol{p}) \triangleq \boldsymbol{p} \cdot \boldsymbol{\dot{q}} -  \mathcal H(\boldsymbol{q}, \boldsymbol{p}) \]
+        Hamilton's dynamics then imply 
+        \[ \begin{aligned} 
+        \frac{\partial \mathcal L}{\partial \boldsymbol{\dot{q}}} & = \boldsymbol{p} \\
+         \frac{\partial \mathcal L}{\partial \boldsymbol{q}} & = \frac{\partial \mathcal H}{\partial \boldsymbol{q}} =  \frac{d \boldsymbol{p}}{dt} = \frac{d}{dt}\bigg(\frac{\partial \mathcal L}{\partial \boldsymbol{\dot{q}}} \bigg)
+         \end{aligned} \]
+        And therefore, Hamilton's dynamics imply the Euler-Lagrange equations, which in turn imply least action.
+
         <h3>Lagrangians in Physics</h3>
 
         <h4>Motivating Example: Conservative Forces</h4>
@@ -125,6 +164,8 @@
 
         <h3>The Following are Equivalent</h3>
 
+        For this section, we'll pretend like all forces are conservative (they aren't).
+
         Consider the following laws of physics with a fixed notion of kinetic energy \(T = \frac{1}{2}m|\dot{q}|^2\):
         \[ \begin{aligned} A: & \hspace{0.25cm} m \ddot{q} = - \nabla V, \text{ for some } V. \\
           B: & \hspace{0.25cm} \text{The principle of stationary action holds with } \mathcal L =  T(\dot{q}) - V(q), \text{ for some } V. \\
@@ -140,10 +181,34 @@
         In plain English, the conservation of energy implies Newton's second law, which is basically just the Euler-Lagrange equation 
         for the Lagrangian \(\mathcal L = T-V\). 
     
-        <h4>But What do We Gain?</h4>
-        One could say that law \(B\) is just a corollary of A and/or C and therefore brings nothing new to the table. 
-        At the same time, it greatly simplifies the problem-solving process. Energies are scalars, and calculus is 
-        easier than modeling. 
+        <h4>Non-Conservative Forces</h4>
+        The Lagrangian for conservative forces is is just \(\mathcal L = T - V\).  The story is different for non-conservative forces. 
+        We shall pick on the electromagnetic force in this section. <br><br>
+
+        The Euler-Lagrange equations say that, 
+        \[ \frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{x}}} = \frac{\partial \mathcal L}{\partial \boldsymbol{x}} \]
+        It is reasonable to ask: is it possible to map this directly to any electromagnetic phenomenon? Well, we already know that 
+        \[ \begin{aligned} 
+        m \ddot{x} & = q\bigg(-\nabla \Phi - \frac{\partial A}{\partial t} + \dot{x} \times \nabla \times A \bigg) \\
+       &  = q\bigg(-\nabla \Phi - \frac{\partial A}{\partial t} + \nabla(\dot{x} \cdot  A) - (\dot{x} \cdot \nabla)A \bigg) \end{aligned} \]
+       Using for the total derivative of the vector potential
+       \[ \frac{d}{dt} A = \frac{\partial A}{\partial t} + (\dot{x} \cdot \nabla) A, \]
+        The Lorentz Force law rearranges to
+        \[ \frac{d}{dt}\bigg( m \dot{x} + q A \bigg) = q\bigg( -\nabla \Phi +  \nabla(\dot{x} \cdot  A)  \bigg)  \]
+        Therefore, it's reasonable to seek a Lagrangian for which 
+        \[ \begin{aligned} \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{x}}} & = m \dot{x} + q A \\ 
+           \frac{\partial \mathcal L}{\partial x} & = q\big( -\nabla \Phi +  \nabla(\dot{x} \cdot  A) \big) \end{aligned} \]
+        To get the first equation to work, you'd imagine that 
+        \[ \mathcal L = m \dot{x} \cdot \dot{x} + q A \cdot \dot{x} + \text{Something}(x)  \]
+        If you take the \(x\) derivative, it thus follows that 
+        \[ q \nabla (A \cdot \dot{x}) + \nabla \text{Something} = - q \nabla \Phi +  q\nabla(\dot{x} \cdot  A)  \]
+        \[ \nabla \text{Something} = - q \nabla \Phi  \]
+        \[ \text{Something} = -q\Phi \]
+        Which leads us to the correct guess for the electromagnetic Lagrangian in SI units:
+        \[ \mathcal L =  m \dot{\boldsymbol{x}} \cdot \dot{\boldsymbol{x}} + q \boldsymbol{A} \cdot \dot{\boldsymbol{x}} - q \Phi \]
+        Note also that, 
+        \[ q \boldsymbol{A} \cdot \dot{\boldsymbol{x}} - q \Phi  = q(\frac{\Phi}{c}, \boldsymbol{A}) \cdot ()\]
+
 
     </body>
 </html>

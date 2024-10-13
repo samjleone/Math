@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Christoffel Symbols</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h3>Christoffel Symbols and Parallel Transport</h3>
+
+        The premise of metric connections is to take tangent vectors in one tangent space, and translate them to the tangent space somewhere else. 
+        This is only possible using an explicit path. 
+
+        <h4>Dirac's Approach</h4>
+        I am following Dirac's lecture notes on General Relativity, here. His suggestion is to assume that we have coordinate vectors in 
+        \(\mathbb R^d\) which map to a larger ambient space \(\mathbb R^n\); in this manner we have a function mapping \(x \in \mathbb R^d\) to 
+        points \(y \in \mathbb R^n\). The metric tensor in coordinate space is allowed to vary point to point, but 
+        it's assumed that the metric tensor is constant in the larger space.  As a matter of notation, Dirac defines by 
+        \[ y^n_{,\mu} \triangleq \frac{\partial y^n}{\partial x^\mu} \hspace{1cm} y_{n,\mu} = \frac{\partial y_n}{\partial x^\mu}, \]
+        where \(y_n\) represent the covariant coordinates of a vector in ambient space. Recall from the discussion of <a href = 'curvilienar.html'>curvilinear coordinates<a> 
+        that the coordinate-space metric tensor applied to the \(dx\)'s is the same as the ambient-space metric tensor applied to the \(y^n_{\mu}dx^{\mu}\)'s:
+        \[ d y^n dy_n = dy_m h_{mn}dy_n =  y^n_{,\mu} h_{mn}y^m_{,\nu} dx^\mu dx^\nu =   g_{\mu\nu} dx^\nu dx^\mu \]
+        And so,
+        \[ y_{n,\mu} y^{n,\nu} = g_{\mu\nu}. \]
+        <h5>Parallel Transport</h5>
+        Dirac's suggestion for parallel transport is quite simple. Take a vector \(Y\) in the tangent space at point \(y(x)\), which lives in the ambient space. 
+        We can imagine translating this vector to the point \(y(x+dx)\), leaving all its components unchanged, except now it originates from somewhere else. Although the components 
+        are the same, we can denote the resulting vector by \(Y\).
+        The problem is now that this vector no longer lives in the tangent space. And so it is necessary to project it back down to the tangent space. By definition, because this vector lives in the tangent space, it can be written as a sum of the 
+        basis tangent vectors \(y_{,\mu}\): 
+        \[ Y^n = X^\mu y^n_{,\mu}(x+dx) \]
+         Moreover, if one takes the inner product of this vector with anything in the tangent space, it will be the same as taking the inner product with \(Y\). 
+        Therefore, 
+        \[ Y^n y_{n,\nu}(x+dx) = X^\mu  y^n_{,\mu}(x+dx) y_{n,\nu}(x+dx) = X^\mu g_{\mu\nu}(x+dx) = X_\mu  \]
+        Now, we can choose to regard this \(X_\mu\) as a function of \(x\). Of course, when \(x\) is where we began, 
+        then \(X^\nu(x)\) reproduces the original \(Y^n\). And thus, 
+        \[ \begin{aligned} X_{\nu}(x+dx) & = Y^n y_{n,\nu}(x+dx) \\ 
+                                         & = Y^n \bigg[y_{n,\nu}(x) + y_{n,\nu\sigma}(x)dx^\sigma \bigg] \\ 
+                                         & = X^\mu(x)y^n_{,\mu} \bigg[y_{n,\nu}(x) + y_{n,\nu\sigma}(x)dx^\sigma \bigg]\\
+                                         & = X^\mu(x)y^n_{,\mu}y_{n,\nu} + X^\mu(x)y^n_{,\mu}y_{n,\nu\sigma}(x)dx^\sigma  \\ 
+                                         & = X^\mu(x)g_{\mu\nu} + X^\mu(x)y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma  \\ 
+                                         & = X_{\nu} + X^\mu y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma  \\ 
+        \end{aligned} \]
+        Or purely in terms of the change,
+        \[ dX_\nu = X^\mu y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma \]
+        While Dirac doesn't explicitly suggest this, one could multiply this equation by \(g^{\nu\mu}(x+dx)\) on the left and right hand side to reproduce the contravariant 
+        components: 
+        \[ 
+        \begin{aligned}
+        X^{\mu}(x+dx) & = g^{\nu\mu}(x+dx)X_{\nu}(x+dx) \\ 
+                      & = \big(g^{\nu\mu} + g^{\nu\mu}_{,\lambda} dx^\lambda \big)\big(X_{\nu} + X^\mu y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma\big) \\ 
+                      & = X^{\mu} + g^{\nu\mu} X^\mu y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma + X_{\nu} g^{\nu\mu}_{,\lambda}  dx^\lambda,
+        \end{aligned}
+        \]
+        because the second order terms vanish. One should be dissatisfied by our discussion thus far, because it relies on understanding of the ambient space. 
+        But we find Riemannian manifolds beautiful just the way they are, flat or not, so we'd like a fully intrinsic discussion. 
+
+        <h4>Christoffel Symbols</h4>
+        Given this formula, one might try to adjust to become something purely intrinsic. How to do so? Well, the most immediate thought is to use our 
+        relationship between the coordinate derivatives and the Jacobian and differentiate in an effort to get something which resembles the \( y^n_{,\mu}y_{n,\nu\sigma}\) in the parallel 
+        transport formula. For starters,
+        \[ y^n_{,\mu}y_{n,\nu} = g_{\mu\nu} \implies g_{\mu\nu,\sigma} = y^n_{,\mu\sigma}y_{n,\nu} + y^n_{,\mu}y_{n,\nu\sigma}
+        \]
+        <b>Can you see why we needed the ambient metric tensor constant?</b> The second expression on the right hand side is exactly of the form we'd like, but the first term is... less appreciated. How do 
+        we dispose of it? Well, the "good" part is symmetric in \(\sigma\) and \(\nu\), indicating we might want to play with 
+        \[ g_{\mu\sigma,\nu} =  y^n_{,\mu\nu}y_{n,\sigma} + y^n_{,\mu}y_{n,\nu\sigma} \]
+        Thus far, we've doubled the good term, but introduced two new bad terms, \(y^n_{,\mu\sigma}y_{n,\nu} + y^n_{,\mu\nu}y_{n,\sigma}\). If we 
+        jumble our covariant and contravariant indices to note
+        \[ y^n_{,\mu\sigma}y_{n,\nu} + y^n_{,\mu\nu}y_{n,\sigma} = y^n_{,\sigma\mu}y_{n,\nu}+ y^n_{,\sigma} y_{n,\mu\nu}, \]
+        then it becomes apparent that our bad expression is just \(g_{\sigma\nu,\mu}\). To summarize, 
+        \[ y^n_{,\mu}y_{n,\nu\sigma} = \frac{1}{2}\bigg(g_{\mu\nu,\sigma} + g_{\mu\sigma,\nu}- g_{\sigma\nu,\mu} \bigg) \]
+        If we denote this by \(\Gamma_{\mu\nu\sigma}\), we then have: 
+        \[ dX_\nu = X^\mu y^n_{,\mu}y_{n,\nu\sigma}dx^\sigma = X^\mu \Gamma_{\mu\nu\sigma} dx^\sigma \]
+        And most importantly, the quantities \(\Gamma_{\mu\nu\sigma} \) are <b>intrinsic to the coordinate space</b>. What this means is that we can do parallel displacement 
+        purely in coordinate space, should we choose. 
+
+        <h4>Parallel Transport as an Isometry</h4>
+
+        Parallel transport provides an isometry between nearby tangent spaces. What this means is that if I have one vector 
+        \(A_\mu\) and another vector \(B_\mu\), their inner product (according to the metric tensor) is preserved. To see this, 
+        \[ 
+        \begin{aligned} 
+            d(A^\mu B^\nu g_{\mu\nu}) & = d(A_\mu B_\nu g^{\mu\nu}) \\ 
+                                      & = g^{\mu\nu}\bigg(B_\nu  dA_\mu + A_\mu dB_\nu\bigg) + A_\mu B_\nu d g^{\mu\nu} \\
+                                      & = g^{\mu\nu}\bigg(B_\nu  dA_\mu + A_\nu dB_\mu\bigg) + A_\mu B_\nu d g^{\mu\nu} \\
+                                      & = g^{\mu\nu}\bigg(B_\nu A^\alpha \Gamma_{\alpha\mu\sigma}  + A_\nu B^\alpha \Gamma_{\alpha\mu\sigma}  \bigg)dx^\sigma + A_\mu B_\nu d g^{\mu\nu} \\
+                                      & = g^{\mu\nu}\big(B_\nu A^\alpha + A_\nu B^\alpha \big)\Gamma_{\alpha\mu\sigma} dx^\sigma + A_\mu B_\nu g^{\mu\nu}_{,\sigma}dx^\sigma \\
+        \end{aligned}
+        \]
+        Because \(g^{\mu\nu} g_{\nu \lambda}\) is constant (namely, the Kronecker delta \(\delta_{\lambda}^{\mu}\)), it must be that 
+        \[ g^{\mu\nu}_{,\sigma} g_{\nu \lambda} = - g^{\mu\nu} g_{\nu \lambda,\sigma} \] 
+        \[ g^{\mu \alpha}_{,\sigma} = g^{\mu\nu}_{,\sigma} g^\alpha_\nu =  g^{\mu\nu}_{,\sigma} g^{\alpha \lambda}g_{\nu \lambda} = - g^{\mu\nu} g_{\nu \lambda,\sigma} g^{\lambda \alpha}  \]
+        So, 
+        \[ 
+        \begin{aligned} 
+            d(A^\mu B^\nu g_{\mu\nu}) & = g^{\mu\nu}\big(B_\nu A^\alpha + A_\nu B^\alpha \big)\Gamma_{\alpha\mu\sigma} dx^\sigma + A_\mu B_\alpha g^{\mu\alpha}_{,\sigma}dx^\sigma \\
+                                      & = g^{\mu\nu}\big(B_\nu A^\alpha + A_\nu B^\alpha \big)\Gamma_{\alpha\mu\sigma} dx^\sigma - A_\mu B_\alpha  g^{\mu\nu} g^{\lambda \alpha} g_{\nu \lambda,\sigma} dx^\sigma \\
+                                      & = g^{\mu\nu}\big(B_\nu A^\alpha + A_\nu B^\alpha \big)\Gamma_{\alpha\mu\sigma} dx^\sigma - A_\mu g^{\mu\nu} B^{\lambda}  g_{\nu \lambda,\sigma} dx^\sigma \\
+                                      & = g^{\mu\nu}\big(B_\nu A^\alpha + A_\nu B^\alpha \big)\Gamma_{\alpha\mu\sigma} dx^\sigma - A_\mu g^{\mu\nu}  B^{\alpha}  g_{\nu \alpha,\sigma} dx^\sigma \\
+                                      & = \bigg[ g^{\mu\nu} B_\nu A^\alpha \Gamma_{\alpha\mu\sigma} + A_\mu B^\alpha g^{\mu\nu} \bigg(  \Gamma_{\alpha\mu\sigma} -  g_{\nu \alpha,\sigma}\bigg) \bigg] \\
+        \end{aligned}
+        \]
+        Now note, 
+        \[ 
+        \begin{aligned} 
+        \Gamma_{\alpha\mu\sigma} -  g_{\nu \alpha,\sigma} & = \frac{1}{2}  \bigg(g_{\alpha\mu,\sigma} + g_{\alpha\sigma,\mu}- g_{\sigma\mu,\alpha} \bigg) -  g_{\nu \alpha,\sigma}
+        \end{aligned}
+        \]
+    </body>
+</html>

@@ -153,13 +153,13 @@
         computes the length of the image of dx' when mapped according to the change of variables. This matrix is of considerable interest because it allows one to make statements about lengths in the 
         "post-transformation" space using "pre-transformation" objects.
     
-        <h4>The Laplace-Bertrami Operator</h4>
+        <h4>The Laplace-Beltrami Operator</h4>
         It is conceivable that we might not have a function \(u\) defined over all of space. Rather, it might be defined on a lower dimensional subspace, like the sphere. For the sphere, we know that it is just the level set of the r=1 coordinates. Thus, we could imagine constructing analagous vector operators 
         by eliminating coordinates that are no longer relevant. For instance, we might replace the matrix \(B\) for spherical coordinates with the matrix \(B_{\neq r} = [b_{\phi} b_{\theta}]\). Then defining \(g\) again as the determinant of the Gram matrix and 
         \(g^{ij}\) as the ijth entry of the inverse Gram matrix, then 
         \[ \Delta u = \frac{1}{\sqrt{g}}\frac{\partial}{\partial x_i} \bigg( \sqrt{g} g^{ij} \frac{\partial} {\partial x_j'} u \bigg)  \]
         is still a "Laplacian"-like function of u. And indeed, this works in general. For any d-dimensional smooth manifold \(M\) and \(x \in M\), it possesses a local parameterization \(\psi\) sending points 
-        \( (x_1'\ldots x_d') \in \mathbb R^d\) to \(M\). Thus, \(x_i'\) works just like any old coordinate, and we can apply the same formula for the Laplace-Bertrami operator. 
+        \( (x_1'\ldots x_d') \in \mathbb R^d\) to \(M\). Thus, \(x_i'\) works just like any old coordinate, and we can apply the same formula for the Laplace-Beltrami operator. 
         While there is much, much more to calculus on manifolds than I have let on, I hope this provides at least some intuition for the definitions that exist.
 
         <h3>Examples</h3>
@@ -186,7 +186,7 @@
         \[ \Delta u = \frac{1}{r} \frac{\partial^2}{\partial r^2}(ru) + \frac{1}{r^2}\bigg[\frac{1}{\sin \theta} \frac{\partial}{\partial \theta}\bigg( \sin\theta \frac{\partial u}{\partial \theta}  \bigg) + \frac{1}{\sin^2\theta} \frac{\partial^2 u}{\partial \phi^2}\bigg]. \]
         This equation is of great importance when one goes to derive the spherical harmonics. Inspecting the above equation, we can see that we have completely isolated the angular part of the Laplacian as the expression within the 
         brackets. Thus, that expression should give the local difference of u "along the sphere." It is then quite believable that the expression is in fact the 
-        Laplace-Bertrami operator on the sphere. 
+        Laplace-Beltrami operator on the sphere. 
 
 
 

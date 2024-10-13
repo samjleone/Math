@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Volterra Series</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>Volterra Series, the Lee-Schetzen Method, and Wiener G-Functionals</h2>
+
+        <h4>Background Facts About the Normal Distribution</h4>
+
+        Suppose we have \(n\) random variables \(\boldsymbol{X} = X_1 \ldots X_n\) and we are interested in the expected product 
+        \(\mathbb E[X_1 \ldots X_n]\). One common trick is to use their moment generating function. One can easily show that with
+        \[ \varphi(\theta) = \mathbb E\big[ e^{\boldsymbol{X} \cdot \theta} \big],\]
+        we can compute the expected product as the partial derivative 
+        \[ \mathbb E[X_1 \ldots X_n] = \bigg(\prod_{i=1}^n \partial_i \bigg) \varphi(\theta) \bigg\rvert_{\theta = 0} \]
+        A case of special consideration is the multivariate normal distribution with mean \(0\) and covariance matrix \(\Sigma\). It is well known that for this distribution, 
+        \[ \varphi(\theta) = e^{ \frac{1}{2}\theta^\top \Sigma \theta} \]
+        We would like to compute its partial derivatives. The easiest way I know to do this is to show something more general, where a pattern is more evident. If one has a function \(\varphi(\theta) = e^{f(\theta)} \), then: 
+        \[ 
+        \begin{aligned} 
+        \partial_i \varphi & = e^{f} \partial_i f \\ 
+        \partial_j \partial_{i}\varphi & = e^{f}\big[(\partial_j f )(\partial_i f) + \partial_{ij} f\big] \\ 
+        \partial_k \partial_j\partial_{i} \varphi & = e^{f}\big[\partial_{ijk} f + (\partial_{ij} f)(\partial_k f) + (\partial_{ik} f)(\partial_j f) + (\partial_{jk} f)(\partial_i f) + (\partial_j f )(\partial_i f)(\partial_k f) \big] \\ 
+        \ldots & \ldots \\
+        \bigg(\prod_{i=1}^n \partial_i\bigg) \varphi &= \varphi \sum_{\pi \text{ that parition } [n]} \prod_{S \text{ subsets of } \pi} \bigg[\bigg(\prod_{i \in S} \partial_i \bigg) f\bigg]
+        \end{aligned}
+        \]
+        This formula is advantageous in the case of the normal distribution because any first partial derivative of \(\frac{1}{2}\theta^\top \Sigma \theta\) will vanish when evaluated at zero. 
+        Moreover, all the third derivatives are zero everywhere. Therefore, the only way to get a nonzero term is to construct it only from second derivatives, which is only possible when 
+        one has a partition \(\pi\) of the set \([n]\) into pairs of numbers. Denote the set of such partitions by \(\mathcal P\). Then, 
+        \[ \mathbb E[X_1 \ldots X_n] = e^{\frac{1}{2}0^\top \Sigma 0} \sum_{\mathcal P}\prod_{(i,j) \in \pi} \bigg(\partial_i \partial_j \frac{1}{2}\theta^\top \Sigma \theta\bigg) = \sum_{\mathcal P}\prod_{(i,j) \in \pi} \Sigma_{ij} \]
+        Of course, in the event that \(n\) is odd, such partitions cannot exist, and the corresponding expected value is zero. <br><br>
+
+
+
+        <h3>Volterra Series</h3>
+
+        In the setup of Linear Time Invariant (LTI) systems, one has two functions \(x\) and \(y\) which are related via convolution with a possibly unknown 
+        function \(h\):
+        \[ y(t) = \int_{-\infty}^\infty h(s) x(t-s)ds. \]
+        It is typical that \(h\) is supported only on \( [0,\infty) \), so that integrands with \(s\), corresponding to "future values" of \(x\), vanish. We can write this as a functional equation 
+        \(y = \mathcal L\{ x\}\). Then the corresponding LTI system is said to be causal. This system is said to be linear because the functional \(\mathcal L\) is linear. One can extend the notion of convolution to \(k\) variables: 
+        \[ y(t) = \int_{\mathbb R^k} K(s_1\ldots s_k)x(t-s_1)\ldots x(t-s_k) ds_1 \ldots ds_k  \]
+        The analogous causality requirement is that \(K\)  is supported in the nonnegative orthant. Finally, one can sum these expressions to form the more general representation 
+        \[ \begin{aligned} y(t) & = \sum_{k=1}^n \int_{\mathbb R^k} K_k(s_1\ldots s_k)x(t-s_1)\ldots x(t-s_k) ds_1 \ldots ds_k  \\ 
+                                & = \sum_{k=1}^n G_k[x ; K_k]
+        \end{aligned} \]    
+        The functions \(K_k\) are called the \(k\)th order Volterra kernel. In principal, they are very difficult to estimate. 
+
+        <h4>Brownian Motions and White Noise</h4> 
+
+        Because the increments of Brownian Motion is independent and normally distributed at each time, it can be imagined that Brownian motion is the 
+        "integral of white noise." In other words, you might imagine creating some random function \(W(t)\) for which \(W(t)\) is standard normal. Then, 
+        \[ dB_t = W_t dt  \]
+        From the point of view of rigor, this is all a little murky. You can say, however, that the white noise is the distributional derivative of Brownian motion. 
+        This is important because, then, 
+        \[ \int_{-\infty}^t h(t-s) W_{s} ds = \int_{\infty}^t h(t-s)dB_s.  \]
+        Likewise,
+        \[ \int_{\mathbb R^k} K(s_1\ldots s_k)x(t-s_1)\ldots x(t-s_k) ds_1 \ldots ds_k = \int_{\mathbb R^k} K(t-s_1, \ldots t- s_k)dB_{s_1}dB_{s_2}\ldots dB_{s_k}.  \]
+        What this means is that, when white noise is inputted into such a nonlinear system, the response can be understood "formally" as a stochastic integral, which permits 
+        analysis.<br><br>
+
+        <h3>Example: Estimating an LTI System</h3>
+        White noise has the dirac delta function as its autocorrelation function, meaning \( \mathbb E[W_sW_r] = \delta(s-r) \). And therefore,
+        \[ \mathbb E\bigg[W_r \int_0^t \phi(s) dB_s \bigg] = \mathbb E\bigg[ W_r \int_0^t \phi(s)W_s ds \bigg] = \int_0^t \phi(s)\delta(s-r)ds = \phi(r). \]
+        If the delta function makes you queasy, you could also note more "rigorously" using independence of increments and Gaussian space theory that 
+        \[
+        \begin{aligned} 
+        \lim_{h \to 0}\mathbb E \bigg[ \frac{B_{r}-B_{r-h}}{h} \int_0^t \phi(s) dB_s  \bigg] & = 
+        \lim_{h \to 0} \frac{1}{h} \mathbb E \bigg[ \int_{r-h}^r dB_s \int_{r-h}^r \phi(s)dB_s  \bigg] \\ 
+        & = \lim_{h \to 0} \frac{1}{h} \int_{r-h}^r \phi(s) ds \\ 
+        & = \phi(r)
+        \end{aligned}
+        \]
+        A <b>notable</b> consequence of this is that if 
+        \[ y(t) = \int_{-\infty}^t h(t-s) x(s)ds, \]
+        then 
+        \[ \Ex\bigg[ W_{t-r} y(t) \bigg] = h(r). \]
+        In other words, if we were able to feed white noise into our LTI system to conduct \(n\) experiments, then the law of large numbers 
+        guarantees that 
+        \[ \frac{1}{n} \sum_{i=1}^n W^i_{t-r}y^i(t) \to h(r) \]
+        enabling you to determine the transfer function! The LTI system is rather silly, because you can calculate the transfer function from an impulse.
+        But it provides inspiration! 
+
+        <h3>The General Case</h3>
+        For many white noises,
+        \[ \mathbb E[W_{s_1}\ldots W_{s_k}] = \sum_{\mathcal P}\prod_{(a,b) \in \pi}\delta(s_a-s_b) \]
+        This concentrates on the case when \(s_1 = s_2 \ldots = s_k\). Therefore, 
+        \[ 
+        \begin{aligned} 
+         \mathbb E\bigg[ W_{t-r_1}\ldots W_{t-r_n}\int_0^t \ldots \int_0^t \phi_1(t-s_1)\ldots \phi_k(t-s_k) dB_{s_1}\ldots dB_{s_k}  \bigg] = & 
+         \int_0^t \phi_1(t-s_1)\ldots \phi_k(t-s_k) \mathbb E\bigg[W_{t-r_1}\ldots W_{t-r_n} W_{s_1}\ldots W_{s_k} \bigg] ds_1\ldots ds_k \\ 
+        \end{aligned}
+        \]
+        Suppose for simplicity that \(r_1, r_2 \ldots r_k\) are all distinct. Then for
+        \[ \mathbb E\bigg[W_{t-r_1}\ldots W_{t-r_n} W_{s_1}\ldots W_{s_k} \bigg] \]
+        to be nonzero, it must be the case that each \(r_i\) gets paired up with some \(s_j\). This can occur in k! possible ways. Summing over these cases, 
+        we find the integral is
+        \[ = k! \phi_1(t-r_1)\ldots \phi_k(t-r_k). \]
+
+    </body>
+</html>
