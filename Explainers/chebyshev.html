@@ -396,8 +396,11 @@
         p_n(A)b & = \beta_1 T_{n-1}(cA + dI) b + \beta_2 p_{n-1}(A)b + \beta_3 p_{n-2}(A)b
     \end{aligned} \]
     
-
-    I do not find these coefficients very inspiring, but importantly, they can be calculated!  
+    I do not find these coefficients very inspiring, but importantly, they can be calculated! I will remark, paranthetically, that such a polynomial will also work when the matrix in 
+    question is positive semi-definite as well, so long as a solution exists. We can see this either by reasoning about the null space separately, or by realizing that positive semi-definite matrices are just 
+    positive definite matrices in disguise (i.e. they act positive definitely over a subspace, and do nothing to the null space of that subspace), and matrix powers are intrinsic to the definition of the linear operator. The natural question remains: 
+    how does this error compare to that if we simply set \(p_n\) to be the Lagrange interpolating polynomial, rooted at the 
+    translated Chebyshev nodes?
 
     <!--
     <h3>Rates of Convergence</h3>

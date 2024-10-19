@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Conjugate Gradient Method</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>Good Thoughts to Have</h2>
+        <h3>Primer: \(A\) Norm and Orthonormal Bases</h3>
+        Given a positive definite matrix \(A \in \mathbb r_{n \times n}\), we can construct an inner product 
+        \[ \langle x,y\rangle_A = x^\top A y. \]
+        The corresponding norm is \(\|x\|_A = \sqrt{x^\top A x }\). An \(A\)-orthonormal basis will be a set of vectors \(\alpha_1 \ldots \alpha_n\) for which 
+        \[ \langle \alpha_i ,\alpha_j\rangle_A = \delta_{ij}. \]
+        Beginning with a set of linearly independent vectors \(\beta_1 \ldots \beta_n\), we can also turn them into such an orthonormal basis 
+        via the usual Gram-Schmidt Procedure. We would just run, 
+        \[ 
+        \begin{aligned}
+        \alpha_1 & = \frac{1}{\|\beta_1\|_A} \beta_1 \\ 
+        \gamma_2 & = \beta_2 - \langle \alpha_1, \beta_2 \rangle_A \alpha_1 \\ 
+        \alpha_2 & = \frac{1}{\|\gamma_2\|}\gamma_2 \\ 
+        \ldots & \ldots \\
+        \gamma_k & = \beta_k - \sum_{j=1}^{k-1} \langle \alpha_j, \beta_k \rangle_A \alpha_j \\ 
+        \alpha_k & = \frac{1}{\|\gamma_k\|_A} \gamma_k
+        \end{aligned}
+        \]
+        It is easy to show by induction that the resulting \(\alpha\)'s form an \(A\) orthonormal basis.
+
+        <h3>A First Algorithm</h3>
+        Given such a basis \(\alpha_1 \ldots \alpha_n\), the solution to \(Ax^\star = b\) should be realizable as a linear combination 
+        \[ x^\star = \sum_{k=1}^n a_k \alpha_k \]
+        Which, amazingly, reduces simply to
+        \[ \begin{aligned} \langle \alpha_i, x^\star \rangle_A & = \sum_{i=1}^n a_k \langle \alpha_i, \alpha_k \rangle \\
+         \alpha_i^\top A x^\star &=  \sum_{i=1}^n a_k \delta_{ik} \\ 
+        \alpha_i \cdot b &= a_k 
+        \end{aligned} \]
+        Which is nice, because it provides a formula for \(a_k\) in terms of stuff which is already known. Note that, had we used an everyday orthonormal basis and the Euclidean inner product, the corresponding equation would be 
+        \[   \alpha_i \cdot x^\star   = a_k \]
+        which is still correct, but isn't usable from an algorithmic standpoint, because we don't know \(x^\star\) yet! 
+        Therefore, a nice algorithm would be:
+        <ol>
+            <li>Pick your favorite basis \(\beta_1 \ldots \beta_n\).</li>
+            <li>Construct an \(A\)-orthormal basis \(\alpha_1 \ldots \alpha_n\) via a Gram-Schmidt Procedure from the \(\beta\) basis.</li>
+            <li>Compute \(x^\star = \sum_{k=1}^n \alpha_i (\alpha_i \cdot b)\)</li>
+            <li>Relish.</li>
+        </ol>
+        It is possible to fashion this into an approximation algorithm as well, which we will touch on later. 
+
+        <h3>A Local Minimization Algorithm</h3>
+
+        To begin, note that 
+        \[ f(x)\triangleq \frac{1}{2}x^\top A x^\top -b^\top x = \frac{1}{2}\|x-x^\star\|_A^2 + \text{Constant} \]
+        is minimized when \(x = x^\star\), via our assumption that \(A\) is positive definite. Suppose now that you have a current guess 
+        \(x_k\) at the minimizer of \(f\) which is not quite right, meaning that \(r \triangleq b - Ax_k\) is a nonzero remainder. However,  you are also convinced that moving in the direction of some 
+        \(\alpha\) will yield a substantial improvement. One can then optimize over how far you move in the direction:
+        \[ \arg\min_{s} \frac{1}{2}\|(x_k+s\alpha)-x^\star\|_A^2 \]
+        The derivative with respect to \(s\) is 
+        \[  \begin{aligned} 
+        \frac{d}{ds}f(x_k + s\alpha) & = \frac{d}{ds} \bigg( \frac{1}{2} s^2 \alpha^\top A \alpha + s\alpha^\top A(x_k-x^\star) + \text{Constant}  \bigg) \\ 
+                                   & = s \alpha^\top A \alpha + \alpha^\top A(x_k-x^\star) \\ 
+        \end{aligned} \]
+        And thus a minimum is obtained for 
+        \[ s = \frac{\alpha^\top A(x^\star - x_k)}{\alpha^\top A \alpha} = \frac{\alpha^\top r}{\alpha^\top A \alpha} \]
+        Your new guess is thus
+        \[ x_{k+1} = x_k + s \alpha \]
+        
+        <h3>Residuals Can Give Good Directions</h3>
+
+        If \(A\) is something like a multiple of the identity (\(A \approx \rho I\)), then 
+        \[
+        \begin{aligned} 
+            s &  \approx \frac{1}{\rho}  \\ 
+             A(x_k + sr) & = A(x_k + s(b-Ax_k)) \\ 
+                        & \approx A\bigg( x_k + \frac{1}{\rho}(b-Ax_k) \bigg) \\ 
+                        & \approx \rho \bigg( x_k + \frac{1}{\rho}(b-\rho x_k) \bigg) \\ 
+                        & = b
+        \end{aligned} \]
+        Therefore, in such a case, the residual is a desirable direction to move in! One can also formalize this approximation using properties of the operator norm:
+        \[ 
+        \begin{aligned} 
+             \|x^\star - x_{k+1}\|_A^2 & = \big\| x^\star - (x + s r) \big\|_A^2 \\ 
+                                    & =  \big\| (I- sA) (x-x^\star) \big\|_A^2\\  
+                                    & =  \big\| (I-sA) A^{1/2} (x-x^\star) \big\|_2^2 \\  
+                                    & \leq \big\|I-sA\|_{op}^2 \|A^{1/2} (x-x^\star)\|_2^2  \\  
+                                    & = \big\|I-sA\|_{op}^2 \|x-x^\star\|_A                      
+        \end{aligned}
+        \]
+        Because \(s = \frac{r^\top r}{r^\top A r}\) is nonnegative, we know already that the maximum eigenvalue of \(I-sA\) is no greater than \(1\). 
+        But the least eigenvalue is 
+        \[ 1 - \lambda_{\max(A)} \frac{r^\top r}{r^\top A r} \geq 1 - \frac{\lambda_{\max}}{\lambda_{\min}} = 1 - \kappa(A) \]
+        Thus,  
+        \[ \|x^\star - x_{k+1}\|_A \leq (\kappa - 1) \|x^\star - x_k\|_A  \] 
+        Which is pretty amazing. 
+        
+        <h3>A Second Algorithm</h3>
+        The above analysis implies that if we repeatedly move optimally in the direction of our residual, over and over and over again, 
+        we will obtain exponential convergence: 
+        \[ \|x^\star - x_{k}\|_A \leq (\kappa - 1)^k \|x^\star - x_0\|_A \]
+        If we'd like, we could also express this in the \(2\)-norm: 
+        \[ \|x^\star - x_k\|_2 \leq \frac{\lambda_{\max}}{\lambda_{\min}} (\kappa - 1)^k \|x^\star - x_0\|_2 = \kappa (\kappa - 1)^k \|x^\star - x_0\|_2 \]
+        Of course, we desire a small condition number for this all to go through. The question remains: can we do better? <br><br><br>
+
+        <h2>The Conjugate Gradient Method</h2>
+        
+        While the above algorithm (amazingly) obtains exponential convergence, it is possible to improve performance. The main issue is that the 
+        residuals contain some degree of redundancy. The premise of the conjugate gradient is to move not in the direction of the residual, but in a conjugate direction 
+        to the residual in an effort to do something sufficiently new. That is, if our guess \(x_k\) results in residual \(r_{k+1}\), we recommend moving in the direction of 
+        \[ \alpha_{k+1} \triangleq r_{k+1} - \frac{\langle r_k, r_{k+1} \rangle_A}{\langle r_k, r_k \rangle_A}r_k \triangleq r_{k+1} + \beta_{k+1} r_k \]
+        We still take the optimal step size as before. The resulting algorithm is thus to repeat the following: 
+        <ol>
+            <li>Update the iterate: \(x_{k+1} = x_{k} + s_{k+1} \alpha_{k+1}\) with  \(s_{k+1} =  \frac{\alpha_{k+1}^\top r_{k} }{\alpha_{k+1}^\top A \alpha_{k+1}} \)</li>
+            <li>Determine \(r_{k+1} = b-Ax_k\) </li>
+            <li>Find the new conjugate direction by applying the above equation.</li>
+        </ol>
+       The reason this method is called the conjugate gradient is because ordinary gradient descent on the function \(f\) would have us move in the direction of 
+       \( - \nabla f =  b - Ax\), but we instead move conjugate to the gradient. 
+
+       <h3>Properties of the Conjugate Gradient</h3>
+
+
+       Assume, momentarily, that all of the \(\alpha_k\)'s up to a given time are conjugate.  Note that 
+       \(x_{k}\) is the projection of \(x^\star\) onto  
+        \[ x_0 + \text{span}\{\alpha_1 \ldots \alpha_k \} \]
+        where we say projection in the sense of the 
+        \(A\) norm. So or any \(i \leq k\), 
+        it should be the case that \(\langle x^\star - x_{k}, \alpha_i \rangle_A\) is zero. It thus also follows that for all \(i \leq k\),
+       \[ 
+       \begin{aligned} 
+            r_{k+1}^\top \alpha_i  = (x^\star - x_{k})^\top A \alpha_i 
+                          = \langle x^\star - x_{k}, \alpha_i \rangle_A 
+                          = 0
+       \end{aligned}
+       \]
+       And
+       \[ 
+       \begin{aligned}
+        \alpha_{k + 1}^\top A \alpha_i = \alpha_{k+1}^\top (r_{i+1}-r_i) = 0
+       \end{aligned}
+       \]
+
+
+
+       <b>\(\alpha_1 \ldots \alpha_k\) are all conjugate directions.</b>
+
+
+
+
+    </body>
+</html>

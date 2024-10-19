@@ -1,11 +1,19 @@
 body {
-    background-color: #eeeedf;
+    background-color: #fffff5;
     color: rgb(19, 14, 20);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 20px;
-    padding-left:300px; 
-    padding-right:300px;
+    padding-left:400px; 
+    padding-right:400px;
     font-size: 15px;
+}
+
+.algorithm {
+    padding: 10px;
+    margin:30px;
+    background-color: #ffffff;;
+    color:black;
+    border: 2px solid black;
 }
 
 .theorem {
