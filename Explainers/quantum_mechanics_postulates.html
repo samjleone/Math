@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>The Postulates of Quantum Mechanics</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h1>The Postulates of Quantum Mechanics</h1>
+
+        <h2>Leveraging Hermitian Matrices</h2>
+
+        <h3>Vectors as a Means of Book Keeping</h3>
+
+        Any finite-dimensional Hermitian operator \(A\) may be diagonalized as 
+        \[ A = \sum_{i=1}^n \lambda_i \psi_i \psi_i^\star. \]
+        We shall suppose that we have some mapping such that 
+        \[ \psi_i \mapsto \lambda_i  \]
+        for some set of \(n\) orthonormal vectors \(\psi_1 \ldots \psi_n\) and numbers \(\lambda_1 \ldots \lambda_n\). 
+        In Quantum Mechanics, the \(\psi_i\)'s would be states, the \(\lambda_i\)'s would be measurements, and the mapping would be 
+        represent observation. We may encode this system in a Hermitian matrix 
+        \[ A = \sum_{i=1}^n \lambda_i \psi_i \psi_i^\star. \]
+        If the \(\lambda_i\)'s are unique, then the vectors \(\psi_i\) are uniquely recoverable from \(A\) up to rescaling. Amazingly, 
+        this form of book-keeping lends itself to useful and elegant math.
+
+        <h4>Dirac's Bra-Ket Notation</h4>
+
+        Trivially, the inner product \(\langle \phi,  \psi \rangle\) may be realized as \(f_{\phi}(\psi)\), where 
+        by \(f_{\phi}(v) = \langle \phi, v \rangle\) for any vector \(v\). Dirac's notational idea was to denote by this linear map 
+        the "bra" \( \langle \phi |\) and to write the "ket" \( |\psi\rangle\) instead of \(\psi\), so that
+        \[ \langle \phi, \psi\rangle = \langle \phi| | \psi\rangle. \]
+        Then a Hermitian matrix may be expanded as 
+        \[ A = \sum_{i=1}^n \lambda_i |\psi\rangle \langle \psi |. \]
+        Dirac tends to overload the notation and write \(|a \rangle\) for some state which would be observed as \(a\), in 
+        which case we'd have
+        \[ A = \sum_{i=1}^n a_i |a_i \rangle \langle a_i|. \]
+        This whole scheme means that we represent an <i>observable</i> by their <i>observed values</i> and corresponding <i> pure states.</i>
+
+        <h4>Commuting Matrices</h4>
+
+        If \(A\) and \(B\) are commuting Hermitian matrices, then there exists a common diagonalizing basis of \(A\) and \(B\). 
+        To see this, let \(\lambda_i\) be some eigenvalue of \(A\) and \(S_i\) be the corresponding eigenspace. Letting 
+        \(\psi_1 \ldots \psi_n\) be any set of orthonormal eigenvectors of \(A\), one then has in the \(\psi\) basis that 
+        \[ A_{\text{A Eigenbasis}} = \begin{pmatrix}  \lambda_1 I_1 & \ldots & \ldots & 0 \\ 0 & \lambda_2 I_2 &\ldots & 0 \\ 0 & \ldots & 0 & \lambda_k I_k  \end{pmatrix} \]
+        where \(I_i\) has the same dimension as \(S_i\). Because 
+        \[ A B \psi_i = BA \psi_i = B(\lambda_i \psi_i) = \lambda_i (B\psi_i), \]
+        \(B\psi_i \in S_{\lambda_i}\). Thus, \(B\) has the block structure 
+        \[ B_{\text{A Eigenbasis}} = \begin{pmatrix} B_1 & \ldots & \ldots & 0 \\ 0 & B_2 &\ldots & 0 \\ 0 & \ldots & 0 & B_k  \end{pmatrix} \]
+        Moreover, each \(B_i\) is the restriction of a Hermitian matrix and is thus itself a Hermitian matrix. Meaning that 
+        \[ B_{\text{A Eigenbasis}} = \begin{pmatrix} \Phi_1 \Lambda_1 \Phi_1^* & \ldots & \ldots & 0 \\ 0 & \Phi_2 \Lambda_2 \Phi_2^* & \ldots & 0 \\ 0 & \ldots & 0 & \Phi_k \Lambda_k \Phi_k^* \end{pmatrix} = \Phi_B \Lambda_B \Phi_B^*, \]
+        where 
+        \[ \Phi_B = \begin{pmatrix} \Phi_1 & \ldots & \ldots & 0 \\ 0 & \Phi_2 & \ldots & 0 \\ 0 & \ldots & 0 & \Phi_k \end{pmatrix} \hspace{0.5cm} \text{ and } \hspace{0.5cm} \Lambda_B =  \begin{pmatrix} \Lambda_1 & \ldots & \ldots & 0 \\ 0 & \Lambda_2 & \ldots & 0 \\ 0 & \ldots & 0 & \Lambda_k \end{pmatrix}.   \]
+        And trivially, 
+        \[ A_{\text{A Eigenbasis}} = \begin{pmatrix}  \lambda_1 \Phi_1 \Phi_1^* & \ldots & \ldots & 0 \\ 0 & \lambda_2 \Phi_2 \Phi_2^* &\ldots & 0 \\ 0 & \ldots & 0 & \lambda_k \Phi_k \Phi_k^*  \end{pmatrix} = \Phi_B \Lambda_A \Phi_B^*. \]
+        Therefore, if we compile the eigenvectors \(\psi_1 \ldots \psi_n\) into an orthogonal matrix \(\Psi_A\), we have 
+        \[ \begin{aligned} A &= \Psi_A \Phi_B \Lambda_A \Phi_B^* \Phi_A^*  \\
+                           \text{ and }\hspace{0.5cm} B &= \Psi_A \Phi_B \Lambda_B \Phi_B^* \Phi_A^*, \end{aligned} \]
+        which means that the columns of \(\Gamma \triangleq \Psi_A \Phi_B\) diagonalize both matrices. It is also  easy to see that \(A\) and \(B\) commute if they 
+        have a shared eigenbasis, so this is an if and only if.<br><br>
+
+        The use in our observable scheme is that if \(A\) and \(B\) commute, then they share a set of pure states which may correspond to different observable values. 
+
+        <h4>Probabilities</h4>
+
+        Thus far, we have stated that any if a system is in a pure state \(\psi_i\), then the measurement should be \(\lambda_i\). 
+        But what if we allow states apart from \(|\psi_i \rangle\) only? Any other state \(|\phi \rangle\) represented will satisfy
+        \[ |\phi\rangle = \sum_{i=1}^n |\psi_i \rangle \langle \psi_i| |\phi \rangle \]
+        And by the Pythagorean Thereom,
+        \[ \langle \phi, \phi\rangle = \sum_{i=1}^n | \langle \psi_i| |\phi \rangle|^2  \]
+        If \(\langle \phi, \phi\rangle\) is a unit ket, then  \(| \langle \psi_i| |\phi \rangle|^2\) are all nonnegative and sum to one. 
+        Thus, they define a probability distribution. We would then say that, when a measurement is made, the state 
+        \( |\phi\rangle\) becomes one of the \(|\psi_i\rangle\)'s, and thus a measurement of \(\lambda_i\) occurs, with  probability
+        \(P_i \triangleq | \langle \psi_i| |\phi \rangle|^2 \). It's simple to verify that when \(|\phi\rangle\) is a pure state, then 
+        this probability distribution puts all of its mass on \(\lambda_i\), so that will be a deterministic measurement. <br><br> 
+
+        For a given state \(\phi\), one then has for the observable \(A\) that 
+        \[ \begin{aligned} \mathbb E[A(\phi)] & = \sum_{i=1}^n \lambda_i |\langle \phi , \psi_i\rangle|^2 \\ 
+                                              & = \sum_{i=1}^n \lambda_i \langle \phi | | \psi_i \rangle  \langle \psi_i | | \phi \rangle \\ 
+                                              & = \langle \phi | \bigg[\sum_{i=1}^n \lambda_i  | \psi_i \rangle \langle \psi_i | \bigg] |\phi \rangle \\ 
+                                              & = \langle \phi | A | \phi \rangle.
+        \end{aligned}. \]
+
+        <h3>Example Observable</h3>
+        
+        One measurement process we'd like to represent is that of position. Suppose for now we are trying to make a measurement of 
+        \(x \in [a,b]\). If a particle is in state \(|x\rangle\), then we observe its position \(x\). If we allow \(x\) to take on only finitely 
+        many values \(x_1 \ldots x_n\), then we could use \(|x_i\rangle = e_i \). Then the matrix representation of \(X\) is 
+        \[ X = \sum_{i=1}^n x_i e_i e_i^\top = \begin{pmatrix} x_1 & 0 & \ldots & 0 \\ 0 & x_2 & \ldots & 0 \\ 0 & \ldots & 0 & x_n \end{pmatrix}. \]
+
+        \(|x_i\rangle\) correspond to the pure states in which we are fully confident that a particle is located at position \(x\). 
+        If we are unsure of the particle's position, this would correspond to a more general state
+        \[ \phi = \sum_{i=1}^n \big(\langle x_i | | x_i \rangle\big) \langle \phi| \]
+        And the expected position given a particle is state \(\phi\) is then 
+        \[ \mathbb E[x] = \langle \phi | \underbrace{\bigg[\sum_{i=1}^n x_i |x_i\rangle\langle x_i | \bigg]}_{\triangleq A} |\phi \rangle. \]
+
+        <h4>Infinite Dimensions, and Two Important Operators</h4>
+
+        Moving onto an infinite dimensional space, we shall represent our probabilities by functions 
+        \(\phi\) over an interval \([a,b]\), we can view these functions as 
+        \[ \phi(x) = \int \phi(x')\delta_{x'}dx', \text{ where } \delta_{x'}(z) = \delta(x' - z). \]
+        If we let \(\langle x| = \delta_x\), we then have that \(\langle x| |f \rangle = f(x)\). And because 
+        we would like 
+        \[ f(x) = \langle x | | f \rangle = \int_{x'} \langle x | |x'\rangle \langle x'| |f \rangle = \int_{x'} \langle x | |x'\rangle, f(x') \]
+        we shall take \(\langle x, x' \rangle = \delta(x-x')\).
+        More generally, we would like for the position operator that when a particle is in state \(x\) with certainty, then 
+        we observe \(x\). In other words,
+        \[ X |x\rangle = x |x\rangle. \]
+        Thus, 
+        \[ \langle x' | X | x \rangle = x \langle x', x \rangle = x \delta(x-x'). \]
+
+        Now, consider the operator \(K = -i \frac{d}{dx} \). Among the functions \(f,g\) whose values on 
+        \([a,b]\) are identical, we have that 
+        \[
+        \begin{aligned}
+            \langle f | K | g \rangle & = \int_a^b f^*(z) \big(- i g'(z) \big)dz \\ 
+                                      & = i \int_a^b (f'(z))^* g(z)dz & \text{ integrating by parts} \\ 
+                                      & = \int_a^b (-if'(z))^* g(z)dz \\ 
+                                      & = \langle g | K | f\rangle,
+        \end{aligned}
+        \]
+        so the operator \(K\) is Hermitian. Multiplying \(K\) by a constant \(\hslash\) called the reduced Planck constant 
+        yields the operator \(P\): 
+        \[ P = - i \hslash \frac{d}{dx}. \]
+
+        <h3>The Hamilton-Jacobi Equation</h3>
+
+        <h2>The Postulates</h2>
+
+    </body>
+</html>

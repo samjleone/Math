@@ -69,7 +69,7 @@
                                                                                                             \\ \ldots & \ldots  \\ (T^{-1})_1^n & (T^{-1})_2^n \ldots (T^{-1})_n^n \end{pmatrix}                                           
         \end{aligned}
         \]
-        but this is completely uninspiring, and quite confusing always to write. An idea which is more constructive is to realize that the column indices correspond to the "from" and row indices correspond to the "two." 
+        but this is completely uninspiring, and quite confusing always to write. An idea which is more constructive is to realize that the column indices correspond to the "from" and row indices correspond to the "to." 
         Likewise, when you invert a matrix, the from-to relationship inverts, and thus the indices must as well. Much of what makes tensors challenging is the index juggling, but if you think about the from-to relationships, 
         then things become more obvious. <br><br> 
         
@@ -132,7 +132,7 @@
         For a given \({\alpha}_{a'}\), we can consider the linear map in its dual when "extracts" coordinates:
         \[ \sum_a u^{a'} \boldsymbol{\alpha}_{a'} \mapsto u^a \]
         we shall denote this map by \(\bar{\boldsymbol{\alpha}}^a \). It has the nice property of "orthogonalization," in that 
-        \[ \bar{\boldsymbol{\alpha}}^a \boldsymbol{\alpha}_a = \delta_{aa'} \]
+        \[ \bar{\boldsymbol{\alpha}}^{a'} \boldsymbol{\alpha}_a = \delta_{aa'} \]
         I shall call the set of \(\bar{\boldsymbol{\alpha}_a}\)'s the "natural dual basis." I caution that this is not standard terminology, to the 
         best of my knoweldge. As for the transformation properties, if 
         \[ \begin{aligned}

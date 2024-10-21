@@ -19,8 +19,20 @@
 
         <img class = 'graphic' src="graphics/star_decomp.png" width = "100%">
 
-        <h2>Concentric Systems and Ball Growth</h2>
+        <h3>Notation</h3>
 
+        Given a weighted graph, we define
+        <ol>
+            <li>\(d(e) = w(e)^{-1}\) for any edge.</li>
+            <li>\(B(x,r)\) the set of vertices distance \(r\) or less than \(x\).</li>
+            <li>For a set \(F \subseteq E\), \(\text{cost}(F) = \sum_{e \in F} w(f)\).</li>
+            <li>For a set \(U \subseteq V\) \(\partial U\) are edges from \(U\) to \(V-U\).</li>
+            <li>For a partition \(V_0 \ldots V_k\) of the vertex set, \(\partial (V_0 \ldots V_k)\) are those 
+                edges \(e = (a,b) \) for which \(a \in V_i, b \in V_j\) for \(i \neq j\).
+            </li>
+            <li>All logs are base \(2\).</li> 
+        </ol>
+        <h2>Concentric Systems and Ball Growth</h2>
 
         <h2>Concentric Systems</h2>
         
@@ -307,6 +319,8 @@
 
         <img class = 'graphic' src="graphics/cone_visualization.png" width = "100%">
 
+        There actually is such a thing as a petal decomposition algorithm, so I would like to emphasize that this is separate.
+
         <div class = 'algorithm'>
             <h3>Star Decomposition\( (G,x_0,\epsilon) \)</h3>
             <ol>
@@ -358,12 +372,114 @@
         Similarly, the fact that 
         \[ \max_{v \in V'}d_{V'}(v,S') \leq \max_{v \in V}d_V(v,S) \]
         (the output of Proposition 4.9) is not quite enough to guarantee that the radius of the graph does not grow when a cone is removed. Rather, we rely on the stronger statement that 
-        \(d_{V'}(v,S') \leq d_{V}(v,S)\) for each individual \(v \in V'\).
+        \(d_{V'}(v,S') \leq d_{V}(v,S)\) for each individual \(v \in V'\).<br><br>
+
+        I believe the authors would have us use Proposition 4.8 to write
+        \[ \text{rad}_{C_S}(r_i, x_1)(x_1) \leq \rho - \text{dist}_G(x_0, x_i) + 2r_i \leq \rho - r_0 + 2r_i  \leq \rho + 2\Delta - r_0  \]
+        Thus, 
+        \[ \text{rad}_{V_i}(x_i) \leq \rho + 2r_i \leq \psi + 2\Delta = \rho - \text{dist}(x_0, x_i) + 2\Delta \]
+        \[ \]
+        \[ r_0 + d(x_i,y_i) + \text{rad}_{V_i}(x_i) \leq r_0 - \big(\text{dist}(x_0, x_i) - d(x_i,y_i) \big) + \rho + 2\Delta = r_0 - \text{dist}(x_0,y_i) + \rho + 2\Delta \]
+        But unless \(\text{dist}(x_0,y_i) = r_0\) exactly, then this inequality goes in the wrong direction. One workaround would be to simply take \(y_i\) so that it always achieves 
+        \(r_0\), but it's unlikely for that to be possible in general.
 
         <h4>Cheap Edge Deletions</h4>
         
+        The second feature of the star decomposition is that the weight of all discarded edges is relatively small. 
+        From the analysis of <b>BallCut</b> and <b>ConeCut</b>, we have that 
+        \[
+        \begin{aligned}  
+         \text{cost}(\partial V_0) & \leq \frac{3}{\rho} \cdot \big(\text{vol}(V_0) + 1\big) \cdot \log_2(m+1)  
+        \end{aligned} \] 
+        For <b>ConeCut</b>, if we denote by \(U_j\) the set \(V - \cup_{k=0}^j V_k\) of vertices complementary to \(V_j\) in the graph \(G_{j-1}\), then 
+        we have the inequality
+        \[ \begin{aligned}
+        \text{cost}\bigg( E(V_j, U_j) \bigg) & \leq \frac{2}{\epsilon \rho} \cdot \big(\text{vol}(V_j) + 1\big) \cdot \log(m+1).
+        \end{aligned}
+        \]
+        Summed, this implies
+        \[ \begin{aligned} \partial (V_0\ldots V_k)  & \leq \text{cost}(\partial B(r,x_0)) + \sum_{j=1}^k \text{cost}\bigg( E(V_j, U_j) \bigg)  \\ 
+                                                    & \leq \log_2(m+1)\bigg[ \frac{3}{\rho} \text{vol}(V_0) + \frac{2}{\rho\epsilon} \sum_{j=1}^k \big(\text{vol}(V_j) + 1 \big) \bigg] \\ 
+                                                    & \leq \frac{3 \log_2(m+1)}{\epsilon \rho} \bigg[ \sum_{j=0}^k \text{vol}(V_j) + 1 \bigg]
+        \end{aligned} \]
+        Of course, \(\sum_{j=0}^k \text{vol}(V_j) + 1\) counts each edge fully inside of a \(V_i\) once and each edge connecting a 
+        \(V_i\) to a different \(V_j\) twice. But all in all, each edge is summed no more than twice. Assuming each \(V_j\) contains 
+        at least one internal edge, \(\sum_{j=0}^k \text{vol}(V_j) + 1 \leq 2m\). And thus
+        \[ \star\star\star\star \hspace{0.25cm} \partial (V_0\ldots V_k)  \leq \frac{6m \log_2(m+1)}{\epsilon\rho}. \]
+        To the best of my knowledge, this bound requires \(\epsilon\) to be small.
 
+        <h2>Killer Application: Low Stretch Spanning Trees</h2>
 
+        To recap our findings, we have found a Star Decomposition satisfying
+        \[  \begin{aligned}
+        \text{rad}_{G_{\text{Star}}}(x_0) & \leq (1+\epsilon) \cdot \text{rad}_G(x_0) \\ 
+        \text{cost}\big( \partial(V_0 \ldots V_k) \big) & \leq \frac{6m \log_2(m+1)}{\epsilon\rho}.
+        \end{aligned} \]
+        The fascinating idea is now to recursively compute a Star Decomposition of each \(V_0 \ldots V_k\), then recurse again and again. 
+        At some level of recursive depth, each component of the Star Decomposition will be a single vertex, and the induced subgraph of all bridge 
+        edges will be a tree.  <br><br> 
+
+        <h3>The Unweighted Case</h3>
+
+        Let's see how the radius of \(x_0\) evolves as we throw out edges. For simplicity, let's suppose we are in the second stage of recursion, and we have 
+        just performed a Star Decomposition of a Star Decomposition. If \(x_i\) is the root of the Star Decomposition of \(V_i\), then 
+        \[ \text{rad}_{G_{\text{Star}}(V_i)}(x_i) \leq (1+\epsilon) \text{rad}_{V_i}(x_i). \]
+        Now, consider the distance from \(x_0\) to any other vertex \(u\). If \(u \in V_i \), then there is a path from
+        \(x_0\) to \(u\) which takes the bridge \((y_i,x_i)\). We now have 
+        \[ \begin{aligned} \text{dist}_{G_{2 \times \text{Star}}} (x_0, u) & = \text{dist}_{G_{\text{Star}}(V_0)}(x_0, y_i) + \text{d}(y_i,x_i) + \text{dist}_{G_{\text{Star}}(V_i)}(x_i,u) \\ 
+                                               & \leq (1+\epsilon) \text{rad}_{V_0}(x_0) + \text{d}(y_i,x_i) + (1+\epsilon) \text{rad}_{V_i}(x_i)  \\ 
+                                               & \leq (1 + \epsilon) \bigg[\text{rad}_{V_0}(x_0) + \text{d}(y_i,x_i) + \text{rad}_{V_i}(x_i) \bigg]
+        \end{aligned} \]
+        Therefore, 
+        \[ \text{rad}_{G_{2 \times \text{Star}}}(x_0) \leq (1+\epsilon) \max_i\bigg( \text{rad}_{V_0}(x_0) + \text{d}(y_i,x_i) + \text{rad}_{V_i}(x_i)  \bigg) \]
+        Possibly, the right hand side of this expression is \( (1 + \epsilon) \cdot \text{rad}_{G_{\text{Star}}}(x_0) \), but that will not necessarily be the case. 
+        The problem is similar to that we faced before: <b>it is not enough to bound the radius doesn't change. We need every shortest path to go up by no more than a factor of 
+            \(1 + \epsilon\). </b> <br><br> 
+
+        But at this point, I have a greater appreciation for the author's definition of an \(\epsilon\) Star Decomposition as something which satisfies 
+        \[ \text{rad}_{V_0}(x_0) + \text{d}(y_i,x_i) + \text{rad}_{V_i}(x_i) \leq (1+\epsilon)\text{rad}_G(x_0). \]
+        I remain skeptical that the proposed Star Decomposition algorithm achieves this bound. However, suppose that it does. Then the distance from 
+        \(x_0\) to any \(u\) in the second iteration of the Star Decomposition is upper bounded by
+        \[ \begin{aligned}
+        \text{dist}_{2 \times \text{Star}}(x_0, u) & = \text{dist}_{\text{Star}(V_0)}(x_0, y_i) + d(y_i,x_i) + \text{dist}_{\text{Star}(V_i)}(x_i,u) \\
+        & \leq \text{rad}_{\text{Star}(V_0)}(x_0) + d(y_i,x_i) + \text{rad}_{\text{Star}(V_i)}(x_i) \\
+        & \leq (1+\epsilon) \bigg[ \text{rad}_{V_0}(x_0) + d(y_i,x_i) + \text{rad}_{V_i}(x_i) \bigg] \\ 
+        & \leq (1+\epsilon)^2  \text{rad}_G(x_0) \end{aligned} \]
+        Therefore, 
+        \[ \text{rad}_{2 \times \text{Star}}(x_0) \leq (1 + \epsilon)^2 \text{rad}_G(x_0). \]
+        And so on. Denote by \(S_t\) the graph at the time of the \(t\)th Star Decomposition. By induction,
+        \[ \text{rad}_{S_t}(x_0) \leq (1+\epsilon)^t \text{rad}_{G}(x_0). \]
+        Because we assume everything is unweighted, the Star Decomposition satisfies \(r_0 + r_i \leq (1+\epsilon)r - 1 \). 
+        Then using \(r_0 \geq r/3\), we have in particular that \(r_i \leq (2/3 + \epsilon)r\). So for any \(\epsilon\), this procedure must 
+        determine after \(\log_{2/3 + \epsilon}(n)\) iterations, since the original radius is \(\leq n\), also by the unweighted assumption. 
+        So at the time the algorithm terminates, 
+        \[ \text{rad}_{S_t}(x_0) \leq (1+\epsilon)^{\log_{2/3 + \epsilon}(n)} \text{rad}_{G}(x_0)=  n^{\frac{1}{\log_{1+\epsilon}(2/3 + \epsilon)}}\text{rad}_{G}(x_0) \leq \gamma \text{rad}_{G}(x_0) \]
+        Assume for now that \(\gamma\) is a universal constant not depending on the size of the problemm.
+        Suppose that some edge \( (u,v)\) is discarded at the first Star Decomposition. Then one has that 
+        \[  \begin{aligned} \text{dist}_T(u,v)  \leq \text{dist}_T(x_0,u) + \text{dist}_T(x_0, v) 
+                                                \leq 2 \gamma \text{rad}_G(x_0)
+        \end{aligned} \]
+        Summing this over all the edges discarded in the first step, we find 
+        \[ \sum_{e \in \partial(V_0 \ldots V_k)} \text{dist}_T(u,v) \leq 2 \gamma \text{rad}_G(x_0) \frac{6m\log_2(m + 1)}{\epsilon \text{rad}_G(x_0)} =  \epsilon^{-1} 12 m \log_2(m + 1) \]
+        More generally, \(e\) might be discarded in the Star Decomposition \(S_t\). At this time, it will be included in the 
+        \(V_j\) from a previous Star Decomposition with center \(x_j\). The relevant inequality is then 
+        \[ \text{dist}_{T}(u,v) \leq \text{dist}_T(u,x_j) + \text{dist}_T(v,x_j) \leq 2 \gamma \text{rad}_{V_j}(x_j) \]
+        And if we let \(\partial^t\) be those edges discarded on the \(t\)th iteration,
+        \[ \sum_{e \in \partial^t} \text{dist}_T(u,v) \leq \sum_{(V_i,x_i) \text{ of } S_{t-1}} 12 \epsilon^{-1} \gamma  m_{V_j} \log_2(m_{\text{original}} + 1) = 12 \epsilon^{-1} \gamma \log_2(m_{\text{original}} + 1)\sum_{j} m_{V_j}, \]
+        where \(m_{V_j}\) is the number of edges \(V_j\) as inputted to its Star Decomposition. So we finally sum over all \(t\) to calculate 
+        \[ \sum_{e \not \in T} \text{dist}_T(u,v) \leq 12 \epsilon^{-1} \gamma \log_2(m_{\text{original}} + 1)  \sum_t \sum_{j \text{ of time } t} m_{V_j}  \]
+        The final sum counts each edge, each time it is fed into a Star Decomposition. This is of course \(\leq m\) times the number of iterations: 
+        \[ \sum_{e \not \in T} \text{dist}_T(u,v) \leq 12 \epsilon^{-1} \gamma m \log_2(m_{\text{original}} + 1) \log_{2/3 + \epsilon}(n) \]
+        To get the total stretch, we have to include those edges in \(T\) as well. Certainly, the result of this will be upper bounded by double the above. 
+        It remains to set up \(\epsilon\) possibly depending on \(n\) so that 
+        \[ n^{\frac{1}{\log_{1+\epsilon}(2/3 + \epsilon)}}. \] 
+        Interestingly, the paper selects 
+        \[ \epsilon = \bigg(2\log_{4/3}(n + 6)\bigg)^{-1}, \]
+        which is always \(\leq 1/12\). Given this, \(\log_{2/3 + \epsilon}(n) \leq \log_{3/4}(n) \) provides an upper limit on the recursion. 
+        And, 
+        \[ (1 + \epsilon)^{\log_{4/3}(n)}  \leq (1 + \epsilon)^{\log_{4/3}(n + 6)} = \big[(1+\epsilon)^{1/\epsilon}\big]^{1/2} \leq \sqrt{e} \]
+        as required. This means that the total stretch as calculated by this algorithm is on the order of 
+        \[ \mathcal O(m \log^3 m). \]
 
     </body>
 </html>

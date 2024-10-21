@@ -126,6 +126,44 @@
          \end{aligned} \]
         And therefore, Hamilton's dynamics imply the Euler-Lagrange equations, which in turn imply least action.
 
+        <h4>The Hamilton-Jacobi Equation</h4> 
+
+        Suppose that a particle is obeying a trajectory \(\boldsymbol{q}(t)\) such that the principle of least 
+        action always holds. As usual, we shall hold the starting and ending locations \(\boldsymbol{q}_i, \boldsymbol{q}_f\) fixed. 
+        In one scenario, we might allow the particle to travel from start to finish over an interval \([t_i,t_f]\). If we 
+        allow this interval to grow to \([t_i, t_f + h] \), then the least action could change. The particle now takes a new path 
+        \[ \boldsymbol{q}_{\text{New}}(t ; h) = \boldsymbol{q}(t) + \xi(t, h). \]
+        Where we define \(\boldsymbol{q}(t) = \boldsymbol{q}(t_f)\) for \(t > t_f\), just so that we have something defined for more time. And now,
+        \[ 
+        \begin{aligned}
+            \frac{d}{dh} \int_{t_i}^{t_f + h} \mathcal L dt & = \int_{t_i}^{t_f} \mathcal L(\boldsymbol{q} + \xi, \dot{\boldsymbol{q}} + \dot{\xi}, t) dt + \frac{d}{dh} \int_{t_f}^{t_f +  h} \mathcal L dt \\ 
+                                                      & = \int_{t_i}^{t_f} \frac{\partial \mathcal L}{\partial \boldsymbol{q}} \cdot \frac{d \xi(t)}{dh} + \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d \dot{\xi}(t)}{dh} dt + \frac{d}{dh}\int_{t_f}^{t_f +  h} \mathcal L dt \\ 
+                                                      & = \int_{t_i}^{t_f} \frac{d\xi}{dh} \cdot \bigg(\frac{\partial \mathcal L}{\partial \boldsymbol{q}}  - \frac{d}{dt} \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \bigg) dt + \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d\xi}{dh} \rvert_{t_i}^{t_f} + \frac{d}{dh}\int_{t_f}^{t_f +  h} \mathcal L dt \\ 
+                                                      & = 0 + \bigg(\frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d\xi}{dh}\bigg)(t_f) 
+        \end{aligned}
+        \]
+        By the chain rule and integration by parts,
+        \[  \frac{d}{dh}\int_{t_f}^{t_f +  h} \mathcal L dt = 0 + \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d\xi}{dh} \rvert_{t_f}^{t_f + h} + \mathcal L(\boldsymbol{q}_{\text{New}}, \dot{\boldsymbol{q}_{\text{New}}}, t)  \] 
+        Thus, evaluating the derivative at \(h = 0\),
+        \[\begin{aligned} \frac{d}{dh}S & =  \mathcal L + \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d\xi}{dh} \rvert_{t_i}^{t_f} \\ 
+                                        & = \mathcal L + \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \frac{d}{dh} \big( \boldsymbol{q}_{\text{New}} - \boldsymbol{q} \big)\rvert_{t_i}^{t_f}  \\ 
+                                        \end{aligned}
+        \]
+        At \(t_f\), we have that \(\xi(t_f,h) = \boldsymbol{q}_f - \boldsymbol{q}_{\text{New}}(t_f,h)\). Thus, the derivative with respect to \(h\) is 
+        \( - \frac{d}{dh}\boldsymbol{q}_{\text{New}}\). If we assume that the shape of \(\boldsymbol{q}\) does not change 
+        drastically, then this should be the same as \(-\dot{\boldsymbol{q}}(t_f)\). Plugging this in, we have 
+        \[ \frac{dS}{dt} = \mathcal L - \frac{\partial \mathcal L}{\partial \dot{\boldsymbol{q}}} \cdot \dot{\boldsymbol{q}} = - \mathcal H \]
+
+        Wikipedia offers a more simple (and different looking) version of the Hamilton-Jacobi Equation. The idea is as follows: we may consider the minimal action 
+        \(S\) to be a function of \(\boldsymbol{q}_i, \boldsymbol{q}_f, t_i, t_f\). Moreover, by the definition of the action 
+        \[ \frac{d}{dt}S = \mathcal L \]
+        On the other hand, if we have some curve in mind described by \(\boldsymbol{q}(t)\), we can let 
+        \(\boldsymbol{q}_f = \boldsymbol{q}(t)\). In which case, we have 
+        \[ \frac{d}{dt}S = \frac{\partial S}{\partial \boldsymbol{q}_f} \cdot \dot{q} + \frac{\partial S}{\partial t} \]
+        Equating these and recalling that \(\mathcal H = \boldsymbol{p} \cdot \dot{\boldsymbol{q}} - \mathcal L\),
+        \[ \begin{aligned}  \frac{\partial S}{\partial t} = - \bigg( \frac{\partial S}{\partial \boldsymbol{q}_f} \cdot \dot{q} - \mathcal L\bigg)  = \mathcal H\big( \boldsymbol{q}, \frac{\partial S}{\partial \boldsymbol{q}_f}, t \big), \end{aligned} \] 
+        which is the so called Hamilton Jacobi equation. 
+
         <h3>Lagrangians in Physics</h3>
 
         <h4>Motivating Example: Conservative Forces</h4>

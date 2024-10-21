@@ -1,5 +1,5 @@
 body {
-    background-color: #fffff5;
+    background-color: #fbfbec;
     color: rgb(19, 14, 20);
     font-family: Verdana, Geneva, Tahoma, sans-serif;
     padding: 20px;
@@ -35,5 +35,6 @@ body {
 
 .graphic {
     width: 80%;
-    padding:10%;
+    margin:10%;
+    border: 2px solid black;
 }

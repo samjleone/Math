@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Laplacians</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>Who Cares About Laplacians?</h2>
+
+        <h3>The Laplacian and Laplace-Beltrami Operator</h3>
+
+        Motivations for Laplacian matrices are rich in computer science, so rich that I will dedicate whole other explainers to the topic. 
+        But another motivation for Laplacian matrices are as approximations of the (negative) Laplace Beltrami Operator on a manifold. 
+        Informally, given a manifold \(\mathcal M\), \(\Delta\) is the operator which, applied to some \(f\) measures how much less \(f(x)\) is than 
+        nearby points. For example, what's a good definition of \(\Delta\) over the manifold \(\mathbb R^n\)? Well, a good candidate for the "difference" between 
+        \(f\) and its neighbors is how quickly the average value of \(f\) changes in a neighborhood as a function of the radius. <br><br>
+
+        For example, consider the function \(x^2\). At a given point, thaverage value of \(x^2\) centered at some \(x_0\) with radius \(\epsilon\) minus the 
+        value at that \(x_0\) is \( (x_0+\epsilon)^2 + (x_0-\epsilon)^2 - x_0^2 = 2 \epsilon^2 \), which is zero to the first order in \(\epsilon\), but is nonzero to the second order. 
+        Intuitively, the first order behavior of a function is flat, so we would not expect it to be involved. Therefore, the Laplacian should be
+
+        \[ \begin{aligned} \Delta f (x) 
+                        & = \lim_{\epsilon \to 0} \frac{1}{\epsilon^2} \bigg(  \frac{1}{\partial B(x,\epsilon)} \int_{u \in \partial B(x,\epsilon)} f(u) da - f(x) \bigg)\\
+                        & =  \lim_{\epsilon \to 0}  \frac{1}{\epsilon \partial B(x,\epsilon)} \int_{u \in \partial B(0,\epsilon)} \bigg( \frac{f(x) - f(x + u)}{\epsilon} \bigg)da  \\ 
+                        & = \lim_{\epsilon \to 0}    \frac{1}{\epsilon \cdot \epsilon^{n-1} B(x,1)}  \int_{u \in \partial B(0,1)} \epsilon^{-1} \big( f(x) - f(x + \epsilon u) \big) \epsilon^{n-1} da \\ 
+                        & =  \frac{1}{\epsilon^2 B(x,1)} \int_{u \in \partial B(0,1)} \bigg(\epsilon u \cdot \nabla f(x) + \frac{1}{2} \epsilon^2 u^\top \nabla^2 f u \bigg)  da \\ 
+                        & =  \frac{1}{B(x,1)}  \nabla^2 f \cdot \int_{u \in \partial B(0,1)} uu^\top da & \text{by symmetry} \\ 
+                        & = \frac{1}{2nB(x,1)} \nabla^2 f \cdot B(0,1) I & \text{ isotropicity}  \\ 
+                        & = \frac{1}{2n} \text{trace}(\nabla^2 f) \\ 
+                        & =  \frac{1}{2n} \sum_{i=1}^n \frac{\partial^2}{\partial x_i^2}f
+                        \end{aligned} \]
+        By isotropicity, I mean that the integral of \( uu^\top\) has got to be a multiple of the identity, since the off-diagonals are uncorrelated and no one coordinate 
+        is special. Moreover, 
+        \[ \text{trace}\bigg( \int uu^\top \bigg) da = \int \text{trace}(uu^\top) da = \int da = B(0,1), \]
+        but since each \( \int u_i^2 da \) contributes equally to the trace, \(\frac{1}{n}I\). Had we normalized by \(\epsilon^{-1}\) rather than \(\epsilon^{-2}\), the Hessian term would have made no appearance and thus we would have calculated zero. 
+        We see that the Laplacian can be approximated at each point by the formula
+        \[ \star \hspace{0.5cm} \Delta f = \sum_{i=1}^n \sum_{\sigma \in \{-1,1\}} h^{-2} (f(x + h \sigma e_i) - f(x)). \]
+        
+        Similar definitions and approximations for \(\Delta\) hold on arbitrary Riemannian manifolds, and they tend to take similar forms. As demonstrated in <a href = 'curvilinear.html'>this explainer</a>, 
+        the most reasonable candidate for this operator is 
+        \[ \Delta u = \frac{1}{\sqrt{g}}\frac{\partial}{\partial x_i} \bigg( \sqrt{g} g^{ij} \frac{\partial} {\partial x_j'} u \bigg), \]
+        where \(g\) is the associated metric tensor, and the Einstein sum convention is implicit. These operators are ubiquitous in the field of partial differential 
+        equations. <br><br> 
+
+        For instance, the heat equation assumes that \(\psi\) models the distribution of heat on a surface. Intuitively, if a point is much cooler than its surrounding points, 
+        then it will tend to warm up, and vice versa. Therefore, 
+        \[ \frac{\partial}{\partial t} \psi = \kappa \Delta \psi, \]
+        where \(\kappa\) is some proportionality constant. Similarly, if we imagine that \(\psi(x,t)\) gives the height of some bendy surface (like a violin string) at different 
+        places and times, the evolution of the height is governed by the wave equation:
+        \[ \frac{\partial^2}{\partial t^2} \psi = v^2 \Delta \psi, \]
+        the idea being that infinitesimally, the surface looks like a spring. Therefore, differences in height correspond to a "force," so the height of the surface has that acceleration.
+        The constant of proportionality is \(v\) is the wave velocity, and represents how quickly the effect happens. <br><br> 
+
+        In electrostatics, the potential energy \(\Phi\) at each point in space due to a charge distribution \(\rho\) satisfies
+        \[ \nabla^2 \Phi \propto \rho, \]
+        which is called the Poisson equation; solving it means to solve the Poisson problem. In a vacuum, the constant of proportionality is \((4\pi \epsilon_0)^{-1}\), but 
+        it may be different in a medium.
+
+        <h2>Laplacian Matrices</h2>
+
+        Suppose we are given a finite, connected, undirected, weighted graph \(G = (V,E,w)\). Each edge \(e = (a,b)\) with weight 
+        \(e\) is associated to a rank 1 matrix \(L_e\) for which 
+        \[ L_e = w(e) (\delta_a - \delta_b)^{\otimes 2}. \]
+        Summing over all edges, we obtain the Laplacian matrix \(\boldsymbol{L}\). Importantly, \(\boldsymbol{L}\) is the matrix for 
+        which 
+        \[ \big( \boldsymbol{L} \boldsymbol{x} \big)(a) = \sum_{(b,a) \in E} w(a,b) \big( \boldsymbol{x}(a) - \boldsymbol{x}(b)  \big). \]
+        Note the resemblance to \(\star\). One can easily verify that \(\boldsymbol{L}\) is also the weighted degree matrix minus the weighted adjacency matrix, although this 
+        definition is rarely useful. This definition makes it more clear that the Laplacian matrix is also a measure of local difference, but with 
+        a different sign convention as \(-\Delta\); the matrix version is positive when a function is more than at its neighbors, while the continuous 
+        version is negative. It is trivial to show that such a Laplacian is positive semidefinite, and its null space is precisely the span of the all ones vector. <br><br> 
+
+        The corresponding Poisson problem is
+        \[ \boldsymbol{L}\boldsymbol{x} = \boldsymbol{b}, \]
+        and arises frequently in finite element analysis to solve the actual continuous Poisson problem. So here, could be \(\boldsymbol{x}\) would be electrostatic potential and 
+        \(\boldsymbol{b}\) the charge density. I will remark, parenthetically, that the solution of this equation is also applicable to 
+        <ol>
+            <li>The min-cut max-flow problem</li>
+            <li>Graph partitioning</li>
+            <li>Fielder vector approximation</li>
+            <li>Effective resistance calculation</li>
+            <li>Much more.</li>
+        </ol>
+        Algorithms for solving this equation are so good that, simply by recasting an existing problem into this language, one achieves a huge 
+        speedup in other problems which are seemingly unrelated. The business of doing so is called the "Laplacian Paradigm." For this reason, the subject is one of my favorite areas of math.
+
+        <h3>Naive Strategies</h3>
+        
+        Off the bat, Gaussian elimination or a naive Cholesky decomposition would solve this problem in time \(\mathcal O(n^3)\), where \(n\) are the number of nodes 
+        of the graph. This is considered "far too slow." Moreover, the conjugate gradient algorithm would have runtime equal to \(\mathcal O(m \sqrt{\kappa} \log \epsilon^{-1})\); since the 
+        Laplacian has at most 4 entries for every edge of the graph, matrix-vector multiplications are \(\mathcal O(m)\). Here, \(\kappa\) is not the every day condition number (since the matrix has a null space), but 
+        rather the generalized condition number, which is simply the ratio of the greatest eigenvalue to the lowest nonzero eigenvalue of \(\boldsymbol{L}\). Some graphs are both sparse and have 
+        a terrificly small condition number, namely the expander graphs. But others are terrible. For instance, it is possible to verify for a path graph with an even number of nodes that 
+        \[ \lambda_{\min}(\boldsymbol{L}) \leq \frac{2}{n}, \]
+        since the Courant Fisher guarantees that this eigenvalue is less than \(\frac{x^\top L x}{x^\top x}\) for any vector orthogonal to the all ones vector; 
+        simply plugging in the vector which is \(-1\) for the first half of the nodes and \(1\) for the second half demonstrates this. If now we consider the signal which 
+        alternates every vertex, we see that 
+        \[ \lambda_{\max}(\boldsymbol{L}) \geq \frac{2(n-1)}{n} \geq 1, \]
+        and hence the condition number is at least \(\mathcal O(n)\). Thus, the Conjugate Gradient algorithm would take time \(\mathcal O(n^{3/2}\log \epsilon^{-1})\).<br><br> 
+
+
+        <h3>Basic Tricks</h3>
+
+        There are two tricks which are frequently employed in the business. Suppose that we have a partition of the graph into vertices \(A\) and \(B\), such that 
+        there is only one edge \((a,b)\) going from \(A\) to \(B\). In this very special case, there is a simple recursive algorithm for solving the problem. First, you solve the problem 
+        \(\boldsymbol{L}_A \boldsymbol{x}_A = \boldsymbol{b}_A', \boldsymbol{L}_B \boldsymbol{x}_B = \boldsymbol{b}_B' \), where 
+        \(\boldsymbol{b}_A', \boldsymbol{b}_B'\) are reshifted to have mean zero. By simply concatenating the solutions, the Poisson equation holds 
+        at every vertex, except possibly at the endpoints of the edge connecting \(A\) and \(B\). Naively, you might simply shift \(\boldsymbol{x}_B\) by some constant value to get the values 
+        right at \(a\), \(b\). And this works, because constant shifts don't affect anything but \(a\) or \(b\). The only thing left to check is that if we make \(a\) happy to product a \(\boldsymbol{x}^\star\), we must make \(b\) happy as well. 
+        And this is true for the following reason: if a solution exists, \(\boldsymbol{b}\) sums to zero. Moreover, \(\boldsymbol{L}\boldsymbol{x}^\star\) sums to zero in general, and thus the error 
+        \(\boldsymbol{b} -\boldsymbol{L}\boldsymbol{x}^\star\) sums to zero. We are only unsure about one entry of the error; the \(n-1\) of the \(n\) entries of the error are all zero. But to sum to zero, this 
+        means that the remaining entry has to be zero as well. Because you can do the merging quickly, this can be done in time 
+        \(\mathcal O(T_A + T_B + |B|)\), where \(T_A, T_B\) are the times to solve each half, and we allow an extra time of \(n\) in case 
+        we need to override values for a mean shift. A dumb example of when you can do this is if there is a degree one vertex \(v\), so then you'd just set \(A = \{v\}\) and 
+        \(B = V-\{v\}\). For trees, this gives a linear time algorithm: first do a DFS order to start, then perform successive recursions 
+        by choosing a leaf. <br><br> 
+
+        A second trick is a little more algebraic, and applies to vertices of degree 2. Here's the idea: suppose \((a,b),(b,c)\) are edges, and \(b\) only has neighbors 
+        \(b\) and \(c\). Defining
+        \[ \Delta_a = \boldsymbol{x}(b) - \boldsymbol{x}(a), \Delta_c = \boldsymbol{x}(b) - \boldsymbol{x}(c), \]
+        the system of equations necessitates at \(a,c,b\) respectively that 
+        \[ 
+        \begin{aligned}
+            \sum_{(a,s) \in E : s \neq b} w(a,s) (\boldsymbol{x}(a) - \boldsymbol{x}(s)) - w(a,b)\Delta_a &= \boldsymbol{b}(a) \\ 
+            \sum_{(c,t) \in E : t \neq b} w(c,t) (\boldsymbol{x}(c) - \boldsymbol{x}(t)) - w(b,c)\Delta_c &= \boldsymbol{b}(c) \\ 
+            w(a,b) \Delta_a + w(b,c) \Delta_c & = \boldsymbol{b}(b)
+        \end{aligned}
+        \]
+        The final of these equations implies 
+        \[ \begin{aligned}
+        \boldsymbol{x}(a) - \boldsymbol{x}(c)  &=  \Delta_c - \Delta_a \\
+                                               &= - \Delta_a \bigg(1 + \frac{w(a,b)}{w(b,c)} \bigg)+ \frac{1}{w(b,c)} \boldsymbol{b}(b) \\ 
+        \implies \Delta_a & = - \bigg(1 + \frac{w(a,b)}{w(b,c)} \bigg)^{-1} \bigg[(\boldsymbol{x}(a) - \boldsymbol{x}(c)) + \frac{1}{w(b,c)} \boldsymbol{b}(b)\bigg]
+        \end{aligned} \]
+
+        But then 
+        \[ \begin{aligned}
+        \boldsymbol{b}(a) & = \sum_{(a,s) \in E : s \neq b} w(a,s) (\boldsymbol{x}(a) - \boldsymbol{x}(s)) - w(a,b)\Delta_a  \\ 
+            & = \sum_{(a,s) \in E : s \neq b} w(a,s)(\boldsymbol{x}(a) - \boldsymbol{x}(s)) + w(a,b)\bigg(1 + \frac{w(a,b)}{w(b,c)} \bigg)^{-1} \bigg[ (\boldsymbol{x}(a) - \boldsymbol{x}(c)) + \frac{1}{w(b,c)} \boldsymbol{b}(b)\bigg] \\ 
+            & = \sum_{(a,s) \in E : s \neq c} w(a,s)(\boldsymbol{x}(a) - \boldsymbol{x}(s)) + \frac{w(a,b)w(b,c)}{ w(a,b) + w(b,c) } (\boldsymbol{x}(a) - \boldsymbol{x}(c)) - \frac{1}{w(a,b) + w(b,c)} \boldsymbol{b}(b)
+        \end{aligned} \]
+        Which is similar to replacing the edge from \(a\) to \(b\) with an edge from \(a\) to \(c\) of weight
+        \[ w(a,c) = \frac{w(a,b)w(b,c)}{ w(a,b) + w(b,c) } \]
+        and requiring that 
+        \[ \sum_{(a,s) \in E} w(a,s)(\boldsymbol{x}(a) - \boldsymbol{x}(s)) = \boldsymbol{b}(a)+  \frac{1}{w(a,b) + w(b,c)} \boldsymbol{b}(b). \]
+        Likewise, we would demand at \(c\) that 
+        \[ \sum_{(c,t) \in E} w(c,t)(\boldsymbol{x}(c) - \boldsymbol{x}(t)) = \boldsymbol{b}(c) + \frac{1}{w(a,b) + w(b,c)} \boldsymbol{b}(b). \]
+        While the analysis was a little cumbersome, this is suggestive of a way to delete any degree 2 vertex, by "contracting" it and connecting its endpoints with a 
+        new edge. In the event that \(a,c\) are already adjacent, then we simply add to the weight of the edge. After \(\boldsymbol{x}\) has been calculated, we then 
+        know that 
+        \[ \boldsymbol{x}(b)\bigg( w(a,b) + w(b,c) \bigg) = \boldsymbol{b}(b) + w(a,b)\boldsymbol{b}(a) + w(b,c)\boldsymbol{b}(c), \]
+        so we can solve for \(\boldsymbol{x}(b) \) instantly. <br><br> 
+
+        We conclude that we can reduce the size of the problem by deleting degree one and degree two vertices. Deleting a degree one vertex might create a new 
+        degree two vertex. But if there are no degree one vertices, contracting a degree two vertex will not create a new degree one vertex. Which is to say, we should 
+        delete the leaves first, and then contract the degree two vertices. Intuitively, for graphs which are sparse, this should  make for a significant reduction. 
+
+        <h3>Low Stretch Spanning Trees</h3>
+
+        From <a href = 'conjugate_gradient.html'>the conjugate gradient method</a>, we see that if we precondition a matrix \(A\) by some \(M\) for which 
+        \(M \preceq A\), then there is an algorithm which runs in time \(\mathcal O(\min(m,T_M) \sqrt{\kappa(A,M)} \epsilon^{-1})\), where \(T_M\) is the time required 
+        to do compute \(M^{-1} b\) to some desired precision. As we have seen, the most obvious way to keep \(T_M\) low is when \(M\) is the Laplacian of a tree, in which case 
+        \(T_M = \mathcal O(n)\). Moreover, we have the upper bound 
+        \[ \kappa(A,M) \leq \text{trace}(AM^{-1}). \]
+        when \(M\) is the Laplacian of a tree \(H\), it is indeed the case that \(M \preceq \boldsymbol{L}\). Thus, 
+        \[
+        \begin{aligned} 
+                       \kappa(A,M)     & \leq \text{trace}(AM^{-1})\\
+                                 &= \text{trace}\bigg( M^{-1}  \sum_{(a,b) \in T} w(a,b) (\delta_a - \delta_b)^{\otimes 2}\bigg) \\ 
+                                  & = \sum_{(a,b) \in T} w(a,b) (\delta_a - \delta_b)^\top M^{-1} (\delta_a - \delta_b) \\ 
+                                  & \triangleq \sum_{(a,b) \in T} w(a,b) \text{Re}_H(a,b)
+        \end{aligned} \]
+        The quantity \(\text{Re}_H(a,b)\) is called the "effective resistance" of \(a,b\) in \(H\). We must calculate it. To do so, we must first solve 
+        \[ M\boldsymbol{x} = (\delta_a - \delta_b) \]
+        on the tree. This is a bit easier to do. Let \(P = (v_0 \ldots v_k) \) be the unique path from \(a = v_0\) to \(b = v_k\), including \(a\) and \(b\). Because \(H\) is a tree, the vertices of \(G\) can be partitioned into 
+        different connected components \(C_1 \ldots C_k\) according to which vertex of \(P\) they are closest to. We make the ansatz that \(\boldsymbol{x}\) is constant in 
+        \(C_i\), and is equal to \(\boldsymbol{x}\) of its neighbor in \(P\). One may also argue that the solution would have to take such a form, by inducting on the leaves.  
+        Any such \(\boldsymbol{x}\) solves the required equations outside of \(P\) for free. Moreover, for any vertex \(v_j\) in \(P\), only its neighbors in the path \(v_{j-1}, v_{j+1}\) contribute 
+        to 
+        \[ \sum_{(t,v_j) \in E(H)} w(t,v_j) \big( \boldsymbol{x}(v_j) - \boldsymbol{x}(t) \big)= w(v_{j-1}, v_j)\big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j+1}) \big) + w(v_{j-1}, v_j)\big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j-1}) \big). \]
+        Moreover, when \(v_j\) is in the "middle" of the path, i.e. it is not one of \(a,b\), the above must be zero. This is wonderful, because it tells us how to propagate the solution: 
+        \[ w(v_{j+1}, v_j)\big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j+1}) \big) + w(v_{j-1}, v_j)\big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j-1}) \big) = 0\]
+        \[ \implies \boldsymbol{x}(v_{j+1}) = \boldsymbol{x}(v_j) + \frac{w(v_{j-1}, v_j)}{w(v_j, v_{j+1})}  \big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j-1}) \big). \]
+        In lieu of this, we define: 
+        \[ \Delta_j \triangleq  \big( \boldsymbol{x}(v_j) - \boldsymbol{x}(v_{j-1}) \big) \hspace{1cm} w_j = w(v_j, v_{j-1}), \]
+        so that we simply have \(\Delta_{j+1} = \frac{w_{j}}{w_{j+1}} \Delta_j\). So by induction,
+        \[ \Delta_{j} = \frac{w_{j-1}}{w_{j}} \frac{w_{j-2}}{w_{j-1}}\ldots \frac{w_1}{w_2}\Delta_1 = \frac{w_1}{w_j}\Delta_1.  \] 
+        Therefore, 
+        \[ \boldsymbol{x}(b) - \boldsymbol{x}(a) =  \sum_{j=1}^{k}  \Delta_j = w_1 \Delta_1 \sum_{j=1}^k \frac{1}{w_j}. \]
+        Moreover, at \(a\), we have that 
+        \[ - w_1 \Delta_1 = w(a,b)(\boldsymbol{x}(a)-\boldsymbol{x}(v_1)) = (\delta_a - \delta_b)(a) = 1, \]
+        so we conclude 
+        \[ \boldsymbol{x}(b) - \boldsymbol{x}(a) = - \sum_{j=1}^k \frac{1}{w_j}. \]
+        And therefore, 
+        \[ \text{Re}_H(a,b) = (\delta_a -\delta_b)^\top M^{-1}(\delta_a -\delta_b) = \boldsymbol{x}(a) - \boldsymbol{x}(b) = \sum_{j=1}^k \frac{1}{w_j}. \]
+        It is instructive to think of each edge in the tree as having a "distance" \(d(e) = w(e)^{-1}\). With this definition, the \(\text{Re}_H(a,b)\) is simply the distance \(d_H(a,b)\) from 
+        \(a\) to \(b\). To return to our preconditioning discussion, we thus have the bound 
+        \[ \kappa(A,M) \leq \sum_{e \in E} w(e) d_H(a,b) = (n - 1) + \sum_{e \not \in E(H)} w(e)d_H(a,b), \]
+        since each edge in \(H\) has distance \(w(e)\) in \(H\). The value on the right hand side is called the "stretch" of \(H\). 
+        Putting together the pieces, we have that the Preconditioned Conjugate Gradient method should run in time
+        \[ \mathcal O\bigg( m \log \epsilon^{-1} \sqrt{\text{Stretch}(H)} \bigg). \]
+        Through the use of <a href = 'star_decompositions'>star decompositions,</a> it is possible to find a tree with stretch 
+        \(\mathcal O(m (\log(n)\log\log(n))^2)\), which ends up looking like a runtime of \( \mathcal \tilde{O}(m^{3/2} \log(n) \log \epsilon^{-1}) \). 
+        Note, however, that this strategy is never going to give near linear time algorithms. For one, even if \(M\) was \(A\) exactly 
+        (making for a wonderful preconditioner), the trace upper bound gives 
+        \[ \kappa(A,M) = \text{trace}(I) = n, \]
+        which tells us that, without a more sophisticated bound on the condition number, we should not hope to 
+        do better than like \(\mathcal O(m \sqrt{n} \log \epsilon^{-1})\). I should note, however, that it's possible to reason about the conjugate gradient 
+        algorithm in a more sophisticated way.
+
+
+        <h3>Spielman and Teng's Solver</h3>
+
+        Spielman and Teng used this trick to their advantage. Their strategy was to recognize that there are two ways to speed up a linear system solver:
+        <ol>
+            <li>Reduce the degree one and two vertices.</li>
+            <li>Find a good preconditioner.</li>
+        </ol>
+        Individually, neither of these are a silver bullet. Some sparse graphs would not shrink all that much upon reduction. For example, a grid graph 
+        would eliminate only 4 of its vertices. Of course, some graphs can't be reduced, like the mesh of a torus or cylinder. Moreover, while preconditioning 
+        enjoyed some success (see Vaidya), condition numbers are hard to estimate, so upper bounds remained somewhat large. But what <b>does work</b> is 
+        to alternate these steps. One seeks an "ultrasparsifier" of a graph, which is a subgraph which (1) has many fewer edges and 
+        (2) whose Laplacian is a good preconditioner of the original Laplacian. Because there are many fewer edges, it is possible to 
+        reduce the graph substantially to a graph of much smaller degree. Then rinse and repeat. <br><br> 
+
+        The results are dazzling: the theoretical runtime bound is of the form \(\mathcal O(m\log^c n)\), which is 
+        better than \( \mathcal O(m^{1 + \epsilon})\) for any \(\epsilon\).  This algorithm, while dazzling, requires quite literally hundreds of pages of math. 
+        Moreover, the constant \(c\) is enormous, too big for practice. For this reason, I will not go into depth on this historic algorithm. 
+
+        <h3>Low Stretch Spanning Trees</h3>
+
+
+    </body>
+</html>

@@ -12,7 +12,7 @@
 
         <h2>Good Thoughts to Have</h2>
         <h3>Primer: \(A\) Norm and Orthonormal Bases</h3>
-        Given a positive definite matrix \(A \in \mathbb r_{n \times n}\), we can construct an inner product 
+        Given a positive definite matrix \(A \in \mathbb R_{n \times n}\), we can construct an inner product 
         \[ \langle x,y\rangle_A = x^\top A y. \]
         The corresponding norm is \(\|x\|_A = \sqrt{x^\top A x }\). An \(A\)-orthonormal basis will be a set of vectors \(\alpha_1 \ldots \alpha_n\) for which 
         \[ \langle \alpha_i ,\alpha_j\rangle_A = \delta_{ij}. \]
@@ -109,45 +109,294 @@
         While the above algorithm (amazingly) obtains exponential convergence, it is possible to improve performance. The main issue is that the 
         residuals contain some degree of redundancy. The premise of the conjugate gradient is to move not in the direction of the residual, but in a conjugate direction 
         to the residual in an effort to do something sufficiently new. That is, if our guess \(x_k\) results in residual \(r_{k+1}\), we recommend moving in the direction of 
-        \[ \alpha_{k+1} \triangleq r_{k+1} - \frac{\langle r_k, r_{k+1} \rangle_A}{\langle r_k, r_k \rangle_A}r_k \triangleq r_{k+1} + \beta_{k+1} r_k \]
+        \[ \alpha_{k+1} \triangleq r_{k+1} - \frac{\langle r_k, r_{k+1} \rangle_A}{\langle r_k, r_k \rangle_A}r_k \triangleq r_{k+1} - \beta_{k+1} r_k \]
         We still take the optimal step size as before. The resulting algorithm is thus to repeat the following: 
-        <ol>
-            <li>Update the iterate: \(x_{k+1} = x_{k} + s_{k+1} \alpha_{k+1}\) with  \(s_{k+1} =  \frac{\alpha_{k+1}^\top r_{k} }{\alpha_{k+1}^\top A \alpha_{k+1}} \)</li>
-            <li>Determine \(r_{k+1} = b-Ax_k\) </li>
-            <li>Find the new conjugate direction by applying the above equation.</li>
-        </ol>
+
+        <div class = 'algorithm'>
+            <h3>PrimitiveConjugateGradient\( (x_0, A) \)</h3>
+            <ol>
+                <li>Set \(r_0 = b - Ax_0\)</li>
+                <li>Set \(\alpha_0 = r_0\)</li>
+                <li>While \(r_k \neq 0\), </li>
+                <li>\(k = 0\)</li>
+                <ol>
+                    <li>\(a_k = \frac{r_k^\top \alpha_k}{\alpha_k^\top A \alpha_k} \) </li>
+                    <li>\(x_{k+1} = x_{k} + a_k \alpha_k \)</li>
+                    <li>\(r_{k+1} = b - Ax_{k+1}\)</li>
+                    <li>\(\beta_{k+1} = \frac{ r_{k+1}^\top A \alpha_k }{\alpha_k^\top A \alpha_k} \)</li>
+                    <li>\(\alpha_{k+1} = r_{k+1} - \beta_{k+1} \alpha_k \)</li>
+                    <li>\(k \gets k + 1\)</li>
+                </ol>
+            </ol>
+        </div>
+
        The reason this method is called the conjugate gradient is because ordinary gradient descent on the function \(f\) would have us move in the direction of 
        \( - \nabla f =  b - Ax\), but we instead move conjugate to the gradient. 
 
-       <h3>Properties of the Conjugate Gradient</h3>
+       <h2>Properties of the Conjugate Gradient</h2>
+       <h3>Conjugacy of Directions, Orthogonality of Residuals</h3>
+
+       <!--
+       We first show that \(x_{k+1}\) is the minimizer of 
+       \[ \frac{1}{2} x^\top A x + b^\top x = \frac{1}{2} \|x - x^\star\|_A^2 + \text{Constant} \]
+       among all the points in \(S_{k+1} \triangleq x_0 + \text{span}\{\alpha_0 \ldots \alpha_{k}\}\). To see this, 
+       observe that -->
 
 
-       Assume, momentarily, that all of the \(\alpha_k\)'s up to a given time are conjugate.  Note that 
-       \(x_{k}\) is the projection of \(x^\star\) onto  
-        \[ x_0 + \text{span}\{\alpha_1 \ldots \alpha_k \} \]
-        where we say projection in the sense of the 
-        \(A\) norm. So or any \(i \leq k\), 
-        it should be the case that \(\langle x^\star - x_{k}, \alpha_i \rangle_A\) is zero. It thus also follows that for all \(i \leq k\),
-       \[ 
-       \begin{aligned} 
-            r_{k+1}^\top \alpha_i  = (x^\star - x_{k})^\top A \alpha_i 
-                          = \langle x^\star - x_{k}, \alpha_i \rangle_A 
-                          = 0
-       \end{aligned}
-       \]
-       And
+        Define the following spaces 
+        \[ \begin{aligned}
+        C_k& = \text{span}\{ \alpha_0 \ldots \alpha_k \} \\
+        R_k& = \text{span}\{ r_0 \ldots r_k \} \\
+        K_k &= \text{span}\{ A^0 r_0 \ldots A^k r_0 \} 
+        \end{aligned} \]
+
+       We shall prove the following properties of the conjugate gradient method via induction. 
+       So long as \(x_{k-1}\) does not solve the equations perfectly, then
+       <ol>
+        <li>\(r_k \cdot r_j = 0\) for all \(j < k\) </li>
+        <li>\(\langle \alpha_k, \alpha_j \rangle_A\) for all \(j < k\)</li>
+        <li>\( C_k = R_k = K_k \).</li>
+       </ol>
+
+       <b>Base Case:</b> \(k = 0\) holds vacuously, so we shall consider the case \(k = 1\). Note that 
+       \[ \begin{aligned}
+       r_0^\top r_1 & = r_0^\top (b - Ax_1) \\ 
+                    & = r_0^\top (b - A(x_0 + a_0 \alpha_0)  )\\
+                    & = r_0^\top (b - Ax_0 - a_0 A \alpha_0) \\ 
+                    & = r_0^\top (b-Ax_0) - a_0 r_0^\top A r_0 \\ 
+                    & = r_0^\top r_0 - a_0 r_0^\top A r_0 \\
+                    & = r_0^\top r_0 -\frac{r_0^\top r_0}{r_0^\top A r_0} r_0^\top A r_0 \\ 
+                    & = 0
+       \end{aligned} \]
+       Criteria (2) holds by construction, since we applied the Gram-Schmidt algorithm to product \(\alpha_1\). 
+       As for point \(1\), we shall check the equality of
+       \[ \begin{aligned}
+       C_1& = \text{span}\{ r_0, \alpha_1 \} \\
+       R_1& = \text{span}\{ r_0, r_1 \} \\
+       K_1 &= \text{span}\{ r_0, Ar_0 \} .
+       \end{aligned} \]
+       By construction of \(\alpha_1\), we have that \( C_1 \subseteq R_1\). And because, 
+       \[ r_1 = (b - A(x_0 + a_0 \alpha_0)  ) = r_0 - a_0 A r_0, \]
+       we thus have that \(R_1 \subseteq K_1\). Finally, so long as \(a_0 \neq 0\), \(K_1 \subseteq R_1\) because 
+       \[ Ar_0 = \frac{r_0 - r_1}{a_0}. \]
+       And the only way for \(a_0 = 0\) is if \(\|r_0\|^2 = 0\).<br><br>
+
+       <b>Inductive Step:</b> The same recipe applies to show that \(C_{k+1} = R_{k+1}= K_{k+1}\). To see this, note that we 
+       write \(\alpha_{k+1}\) as a multiple \(\alpha_k\), which is in \(R_k\) by induction, and 
+       \( r_{k+1} \), which is obviously in \(R_{k+1}\). Hence \(\alpha_{k+1} \in R_{k+1}\). And as 
+       \( C_k = R_k \subseteq R_{k+1} \), we continue to have that \(C_{k+1} \subseteq R_{k+1}\). <br><br> 
+
+       Likewise, because 
+       \[ r_{k+1} = b - Ax_{k+1} = b - (Ax_k + a_k \alpha_k) = r_{k} + a_k A \alpha_k, \]
+       we see that \(r_{k+1}\) is a linear combination of \(r_k\), which is in in \(K_k\). 
+       And since \(\alpha_k \in K_k\), \(A\alpha_k \in K_{k+1}\). So \(r_{k+1} \in K_{k+1}\). 
+       It thus follows that \( R_{k+1} \subseteq K_{k+1} \). It remains to show that \(K_{k+1} \subseteq 
+       C_{k+1}\). Obviously, \(K_k = C_k \subseteq C_{k+1}\) so we just need that \(A^{k+1} r_0 \in C_{k+1}\).
+        Of course, the residual recurrence also yields 
+       \[ - \frac{\big(r_{k+1} - r_k\big)}{a_k} = A \alpha_k \]
+       By induction, there exists a linear combination so that
+       \[ A^k r_0 = \sum_{j=0}^k \gamma_j \alpha_j, \]
+       applying the recurrence relation,
+       \[ \begin{aligned} A^{k+1} r_0 & = \sum_{j=0}^k \gamma_j A \alpha_j \\ 
+                                      & = - \sum_{j=0}^k \gamma_j \frac{\big(r_{j+1} - r_j\big)}{a_j}   \\
+                                      & = - \sum_{j=0}^k \gamma_j \frac{\big(\alpha_{j+1} + \beta_k \alpha_j - r_j\big)}{a_j}   \\
+                                      \end{aligned} \]
+       Everything in this sum is either (1) a residual in \(C_k\) or (2) a conjugate direction in \(C_{k+1}\). Hence, 
+       \(A^{k+1} \in r_0\). We conclude \(C_k = R_k = K_k\). <br><br> 
+
+       We now show conjugacy. For any \(i \leq k + 1\), if \(i = k\), conjugacy is immediate by construction. Otherwise, for 
+       \(i \leq k - 1\), we'd have by induction that 
+       \[ \begin{aligned}    & = \alpha_i^\top A \alpha_{k+1} & = \alpha_i^\top A (r_{k+1} - \beta_{k+1} \alpha_k) & = \alpha_i^\top A r_{k+1} \\ 
+                           0 & = \alpha_i^\top A \alpha_{k}   & =  \alpha_i^\top A (r_{k} - \beta_{k} \alpha_{k-1}) & = \alpha_i^\top A r_k\\
+       \end{aligned} \]
+       by induction. But \(r_{k+1} - r_k = - a_k A \alpha_k \) implies 
+       \[ \alpha_i^\top A r_{k+1} - \alpha_i^\top A r_k = -a_k \alpha_i^\top A \alpha_k = 0. \]
+       So \( \alpha_i^\top A r_{k+1} = \alpha_i^\top A r_k = 0\). Thus, conjugacy is proved. <br><br> 
+
+       It remains finally to check that \(r_{k+1}^\top r_j = 0\) for any \(j \leq k\). Of course, 
+       \[ r_j^\top r_{k+1} = r_j^\top (r_{k+1} - r_k) = -a_k r_j^\top A \alpha_k. \]
+       But by the same logic as earlier, the above quantity should be zero. This concludes the proof. <br><br> 
+
+       Because, 
        \[ 
        \begin{aligned}
-        \alpha_{k + 1}^\top A \alpha_i = \alpha_{k+1}^\top (r_{i+1}-r_i) = 0
+        r_k^\top \alpha_k & = r_k^\top (r_k - \beta_k \alpha_{k-1}) \\ 
+                          & = r_k^\top r_k - \beta_k r_k^\top \alpha_{k-1} \\ 
+                          & = 0,
        \end{aligned}
        \]
+       we also have 
+       \[  
+       \begin{aligned} 
+            \beta_{k+1} & = \frac{\alpha_k^\top A r_{k+1}}{\alpha_k^\top A \alpha_k}  \\ 
+                        & = \frac{r_{k+1}^\top (r_{k+1} - r_k)}{a_k \alpha_k^\top A \alpha_k} \\ 
+                        & = \frac{r_{k+1}^\top r_{k+1}}{\alpha_k^\top A \alpha_k} \cdot \frac{\alpha_k^\top A \alpha_k}{r_{k}^\top \alpha_k} \\ 
+                        & = \frac{r_{k+1}^\top r_{k+1}}{r_k^\top r_k} \\ 
+            a_{k} & = \frac{r_k^\top r_k}{\alpha_k^\top A \alpha_k}.
+       \end{aligned}
+       \] 
+       With a modest simplification, the newest version of the conjugate gradient algorithm becomes 
+       <div class = 'algorithm'>
+        <h3>ConjugateGradient\( (x_0, A) \)</h3>
+        <ol>
+            <li>Set \(r_0 = b - Ax_0\)</li>
+            <li>Set \(\alpha_0 = r_0\)</li>
+            <li>While \(r_k \neq 0\), </li>
+            <li>\(k = 0\)</li>
+            <ol>
+                <li>\(a_k = \frac{r_k^\top r_k}{\alpha_k^\top A \alpha_k}\) </li>
+                <li>\(x_{k+1} = x_{k} + a_k \alpha_k \)</li>
+                <li>\(r_{k+1} = b - Ax_{k+1}\)</li>
+                <li>\(\beta_{k+1} = \frac{r_{k+1}^\top r_{k+1}}{r_k^\top r_k} \)</li>
+                <li>\(\alpha_{k+1} = r_{k+1} - \beta_{k+1} \alpha_k \)</li>
+                <li>\(k \gets k + 1\)</li>
+            </ol>
+        </ol>
+    </div>
 
+       <h3>Krylov Space Minimzation</h3>
 
+       Consider the following minimization problem 
+       \[ \min_{x \in S_k} \|x^\star - x\|_A^2  \]
+       over the space \(S_k =x_0 + \text{span}\{ \alpha_0 \ldots \alpha_k \} \). 
+       Visually, this corresponds to finding the projection of \(x^\star\) onto a given affine space. 
+       It is well known that if \(z\) is the corresponding minimum, then the error should be orthogonal to the free directions in the 
+       suitable Hilbert space:
+       \[ \langle z - x^\star , \alpha_i \rangle_A = 0 \text{ for all } 0 \in \{1\ldots k\} \]
+       Letting 
+       \[ z = x_0 + \sum_{j=0}^k \gamma_j \alpha_j, \]
+       one may use the conjugacy of the \(\alpha\)'s to write
+       \[ 0 = \langle x_0 - x^\star, \alpha_i \rangle_A + \sum_{j=0}^k \gamma_j \langle \alpha_j, \alpha_i \rangle_A =  \langle x_0 - x^\star, \alpha_i \rangle_A + \gamma_i \|\alpha_i\|_A^2.  \]
+       Therefore, 
+       \[ \gamma_i = - \frac{\langle x_0 - x^\star, \alpha_i \rangle_A}{\langle \alpha, \alpha \rangle_A} = - \frac{ \alpha_i^\top A (x_0 - x^\star) }{\alpha_i^\top A \alpha_i } = \frac{\alpha_i^\top r_0}{\alpha_i^\top A \alpha_i}. \]
+       And also, 
+       \[ \alpha_i^\top(r_{i-1} - r_0) = \alpha_i^\top\bigg(\sum_{k=0}^{i-2} a_k A \alpha_k\bigg) = 0.  \]
+       Therefore, 
+       \[ \gamma_i = \frac{\alpha_i^\top r_{i-1}}{\alpha_{i}^\top A \alpha_i}, \]
+       which is the <b>same</b> \(\alpha_i\) as calculated in the Conjugate Gradient Algorithm. Hence, we find that 
+       <b>The Conjugate Gradient Method minimizes the error over the first \(k\) conjugate directions.</b> <br><br> 
 
-       <b>\(\alpha_1 \ldots \alpha_k\) are all conjugate directions.</b>
+       The thing that is absolutely remarkable, however, is that 
+       \[ S_k = x_0 + C_k = x_0 + K_k = K_k. \]
+       Therefore, the conjugate gradient algorithm also minimizes the error over all vectors \(z\) can be written as 
+       \(p_k(A)r_0\) for some degree \(k\) polynomial. This fact is so significant that \(K_k\) has a name; it is called a Krylov subspace of 
+       degree \(k\), and is sometimes denoted by \(\mathcal K(A;r_0)\). 
 
+       <h3>Polynomial Existence</h3>
+       We have shown that among all polynomials \(p_k\) of degree \(k\), the Conjugate Gradient Algorithm will minimize 
+       \[ \|p_k(A)r_0 - x^\star\|_A   \]
+       Assume that we start the conjugate gradient with \(x_0 = 0\) so that then \(r_0 = b\). Then this simplifies to 
+       \[ \|p_k(A)r_0 - x^\star\|_A = \|(p_k(A)A - I)x^\star\|_A = \|(p_k(A)A - I) A^{1/2}x^\star\|_2 \leq \|p_k(A)A-I\| \|x^\star\|_A. \]
+       But recall that the <a href="chebyshev.html">Chebyshev Polynomials</a> may be used to create a polynomial for which \( \|p_k(A)A - I\| \leq \epsilon\) of degree
+       \[ k \geq \frac{1}{2}\sqrt{\kappa} \log\big(\frac{2}{\epsilon}\big). \]
+       Therefore, the conjugate gradient algorithm requires \(\mathcal O(\sqrt{\kappa} \log \epsilon^{-1}) \) steps so that the error becomes \(\leq \epsilon\). 
+       If the matrix \(A\) contains \(d \geq n\) nonzero entries, then this means that a solution to \(Ax = b\) can be found in time 
+       \( \mathcal O(d \sqrt{\kappa} \log \epsilon^{-1})\), since we may compute products like \(Ax\) in time \(\mathcal O(d)\). 
 
+       <h2>The Preconditioned Conjugate Gradient Method</h2>
+       We have demonstrated that the rate of convergence of the conjugate gradient method is intimately related to the 
+       condition number of the matrix. Now, we shall do something very silly. Suppose that instead of solving \(Ax = b\),
+       we chose to solve 
+       \[ E  A x = E  b. \]
+       for an invertible \(E\). We could of course do this by first solving
+       \[ (E A E^\top) \hat{x} = E b,  \]
+       and then setting \(x = E^\top \hat{x}\). The reason to introduce this manipulation is so that the matrix 
+       \(A' = EAE^\top\) remains symmetric so that we may apply the conjugate gradient algorithm to this. For simplicities sake, 
+       we shall assume that \(E = M^{-1/2}\) for some symmeteric matrix \(M\). So then the algorithm takes the form 
+              
+       <div class = 'algorithm'>
+        <h3>PreconditionedConjugateGradient\( (x_0, A, M) \)</h3>
+        <ol>
+            <li>Set \(r_0 = b - M^{-1/2}AM^{-1/2}x_0\)</li>
+            <li>Set \(\alpha_0 = r_0\)</li>
+            <li>While \(r_k \neq 0\), </li>
+            <li>\(k = 0\)</li>
+            <ol>
+                <li>\(a_k = \frac{r_k^\top r_k}{\alpha_k^\top M^{-1/2}AM^{-1/2} \alpha_k}\) </li>
+                <li>\(x_{k+1} = x_{k} + a_k \alpha_k \)</li>
+                <li>\(r_{k+1} = r_k - a_k M^{-1/2}AM^{-1/2} \alpha_k \)</li>
+                <li>\(\beta_{k+1} = \frac{r_{k+1}^\top r_{k+1}}{r_k^\top r_k} \)</li>
+                <li>\(\alpha_{k+1} = r_{k+1} - \beta_{k+1} \alpha_k \)</li>
+                <li>\(k \gets k + 1\)</li>
+            </ol>
+        </ol>
+    </div>
 
+    With the substitutions
+    \[ \begin{aligned}
+    r^{+}_k &= M^{1/2} r_k \\
+    r^{-}_k &= M^{-1/2}r_k \\ 
+     \rho_k &= M^{-1/2}\alpha_k  \\ 
+      \xi_k &= M^{-1/2} x_k \end{aligned},  \]
+    the algorithm is equivalent to 
+    <div class = 'algorithm'>
+        <h3>Solve \(A'\)\( (x_0, A, M) \)</h3>
+        <ol>
+            <li>Set \(r_0^+ = M^{1/2} b - A \xi_0\)</li>
+            <li>Set \(r^{-}_{0} = M^{-1} r_0^+\) </li>
+            <li>Set \(\rho_0 = r_0\)</li>
+            <li>While \(r_k \neq 0\), </li>
+            <li>\(k = 0\)</li>
+            <ol>
+                <li>\(a_k = \frac{(r^+_k)^\top (r^-_k)}{\rho_k^\top A \rho_k }\) </li>
+                <li>\( \xi_{k+1} = \xi_k + a_k  \rho_k \)</li>
+                <li>\( r^+_{k+1} = r^+_k - a_k A \rho_k \)</li>
+                <li> Set \(r^{-}_{k+1} = M^{-1} r_k^+\) </li>
+                <li>\(\beta_{k+1} = \frac{(r_{k+1}^+)\top r^-_{k+1}}{(r_k^+)^\top r^-_k} \)</li>
+                <li>\( \rho_{k+1} = r^-_{k+1} - \beta_{k+1} \rho_k \)</li>
+                <li>\(k \gets k + 1\)</li>
+            </ol>
+            <li>Return \(x_k = M^{1/2}\xi_k\)</li>
+        </ol>
+    </div> 
+    This is an algorithm which enables us to solve the system \(M^{-1/2}AM^{-1/2}x = b\). But if our original 
+    goal is to solve the system \(Ax = b\), then we can leverage
+    \[ Ax = b \implies M^{-1/2} A M^{-1/2} (M^{1/2} x) = M^{-1/2} b  \]
+    at the beginning and end of our algorithm. That is, the first step of our algorithm would be to compute 
+    \(M^{1/2}M^{-1/2} b = b\). The algorithm would return \(M^{1/2}\xi_k\), which is also \(M^{1/2}x\), and thus 
+    \(\xi_k = x\).
+
+    <div class = 'algorithm'>
+        <h3>PreconditionedConjugateGradient\( (x_0, A, M) \)</h3>
+        <ol>
+            <li>Set \(r_0 = b - A x_0\)</li>
+            <li>Set \(z_0 = M^{-1} r_0\) </li>
+            <li>Set \(\rho_0 = r_0\)</li>
+            <li>While \(r_k \neq 0\), </li>
+            <li>\(k = 0\)</li>
+            <ol>
+                <li>\(a_k = \frac{r_k^\top z_k }{\rho_k^\top A \rho_k }\) </li>
+                <li>\( x_{k+1} = x_k + a_k  \rho_k \)</li>
+                <li>\( r_{k+1} = r_k - a_k A \rho_k \)</li>
+                <li> Set \(z_{k+1} = M^{-1} r_k\) </li>
+                <li>\(\beta_{k+1} = \frac{r_k \top z_{k+1}}{r_k^\top z_k} \)</li>
+                <li>\( \rho_{k+1} = z_{k+1} - \beta_{k+1} \rho_k \)</li>
+                <li>\(k \gets k + 1\)</li>
+            </ol>
+            <li>Return \(x_k\)</li>
+        </ol>
+    </div> 
+
+    This is a usable algorithm, and it completely bypasses the need to deal with square roots of \(M\) or its inverse. 
+    But the question remains: <b>Why do this in the first place?</b> You would do so when the matrix \(A'\) is better conditioned than 
+    \(A\). Hence we define the relative condition number as 
+    \[  
+    \begin{aligned} \kappa(A,M) = \kappa(AM^{-1})  = \kappa(M^{-1/2} A M^{-1/2}). \]
+    And then the Preconditioned Conjugate Gradient runs in time \(\mathcal O (\sqrt{\kappa(A,M)} T \log \epsilon^{-1})\), where 
+    \(T\) is the time to conduct one iteration of the loop. Critically,  you must have the ability to apply \(M^{-1}\) to vectors; equivalently, it should be drastically easier to solve systems in 
+    \(M\) compared to \(M^{-1}\). Otherwise, \(T\) is large, and there's no real reason to carry out this procedure.
+
+    <h4>A "Recipe" for Preconditioning</h4>
+
+    Sometimes, we shall assume that \(M\) is "smaller" than \(A\), in the sense that 
+    \[ x^\top M x \leq x^\top A x, \]
+    for any vector \(x\). This relationship is occasionally denoted by \(M \preceq A\). In particular, this implies 
+    that 
+    \[ x^\top M^{-1/2} A M^{-1/2} x \geq x^\top M^{-1/2} M M^{-1/2} x = \|x\|^2,  \]
+    and so every eigenvalue of \(M^{-1}A\) is at least \(1\). Thus, the relative condition number is 
+    no more than simply \(\lambda_{\max}(M^{-1} A) \), which itself is upper bounded by \( \text{tr}(M^{-1}A) \), 
+    since all matrices involved are positive semidefinite.
+    
 
     </body>
 </html>
