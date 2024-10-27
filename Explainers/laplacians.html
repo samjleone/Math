@@ -22,10 +22,10 @@
 
         For example, consider the function \(x^2\). At a given point, thaverage value of \(x^2\) centered at some \(x_0\) with radius \(\epsilon\) minus the 
         value at that \(x_0\) is \( (x_0+\epsilon)^2 + (x_0-\epsilon)^2 - x_0^2 = 2 \epsilon^2 \), which is zero to the first order in \(\epsilon\), but is nonzero to the second order. 
-        Intuitively, the first order behavior of a function is flat, so we would not expect it to be involved. Therefore, the Laplacian should be
+        Intuitively, the first order behavior of a function is flat, so we would not expect it to be involved. Therefore, the Laplacian should be proportional to 
 
         \[ \begin{aligned} \Delta f (x) 
-                        & = \lim_{\epsilon \to 0} \frac{1}{\epsilon^2} \bigg(  \frac{1}{\partial B(x,\epsilon)} \int_{u \in \partial B(x,\epsilon)} f(u) da - f(x) \bigg)\\
+                        & \propto \lim_{\epsilon \to 0} \frac{1}{\epsilon^2} \bigg(  \frac{1}{\partial B(x,\epsilon)} \int_{u \in \partial B(x,\epsilon)} f(u) da - f(x) \bigg)\\
                         & =  \lim_{\epsilon \to 0}  \frac{1}{\epsilon \partial B(x,\epsilon)} \int_{u \in \partial B(0,\epsilon)} \bigg( \frac{f(x) - f(x + u)}{\epsilon} \bigg)da  \\ 
                         & = \lim_{\epsilon \to 0}    \frac{1}{\epsilon \cdot \epsilon^{n-1} B(x,1)}  \int_{u \in \partial B(0,1)} \epsilon^{-1} \big( f(x) - f(x + \epsilon u) \big) \epsilon^{n-1} da \\ 
                         & =  \frac{1}{\epsilon^2 B(x,1)} \int_{u \in \partial B(0,1)} \bigg(\epsilon u \cdot \nabla f(x) + \frac{1}{2} \epsilon^2 u^\top \nabla^2 f u \bigg)  da \\ 
@@ -34,7 +34,7 @@
                         & = \frac{1}{2n} \text{trace}(\nabla^2 f) \\ 
                         & =  \frac{1}{2n} \sum_{i=1}^n \frac{\partial^2}{\partial x_i^2}f
                         \end{aligned} \]
-        By isotropicity, I mean that the integral of \( uu^\top\) has got to be a multiple of the identity, since the off-diagonals are uncorrelated and no one coordinate 
+        The Laplacian is thus defined as the sum \(\sum_{i=1}^n \frac{\partial^2}{\partial x_i^2}f\). By isotropicity, I mean that the integral of \( uu^\top\) has got to be a multiple of the identity, since the off-diagonals are uncorrelated and no one coordinate 
         is special. Moreover, 
         \[ \text{trace}\bigg( \int uu^\top \bigg) da = \int \text{trace}(uu^\top) da = \int da = B(0,1), \]
         but since each \( \int u_i^2 da \) contributes equally to the trace, \(\frac{1}{n}I\). Had we normalized by \(\epsilon^{-1}\) rather than \(\epsilon^{-2}\), the Hessian term would have made no appearance and thus we would have calculated zero. 
