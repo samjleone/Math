@@ -116,7 +116,48 @@
         \[ Z = \frac{1}{\frac{1}{Z_1} + \frac{1}{Z_2}} \]
         it is not hard to see that, had we done this for \(n\) components instead, 
         \[ Z = \frac{1}{\sum_{i=1}^n \frac{1}{Z_n}} \]
-        <h4></h4>
+         
+        <h4>Power Phasors</h4>
+
+        Suppose that one has two elements 1,2 with voltage phasors \(V_1, V_2\) connected by some element such that there is a phasor 
+        \(I_{12}\) of current flowing from element 1 to element 2. Let \(V_{12} = V_1 - V_2\) and
+        \[ 
+        \begin{aligned}
+            v(t) & = \Re\bigg[e^{2\pi i \omega t} V_{12}\bigg]\\
+            i(t) & = \Re\bigg[e^{2\pi i \omega t} I_{12}\bigg]
+        \end{aligned}
+        \]
+        be the actual time domain voltage and frequency. We are interested in the average power flowing through the element. As \(v(t)i(t)\) 
+        repeats itself every \(\frac{1}{\omega}\) seconds, it suffices to take an average over the 
+        time \([0,\frac{1}{\omega}]\). The corresponding average value is
+        \[ 
+        \begin{aligned} 
+            p &= \frac{1}{1/\omega} \int_0^{1/\omega} v(t)i(t)dt \\ 
+              & = \omega \int_0^{1/\omega} \Re\bigg[e^{2\pi i \omega t} V_{12}\bigg]\Re\bigg[e^{2\pi i \omega t} I_{12}\bigg] dt \\ 
+              & =  \omega \int_0^{1/\omega} \frac{1}{2} \bigg[e^{-2\pi i \omega t} V_{12}^* + e^{2\pi i \omega t} V_{12} \bigg]  \cdot \frac{1}{2} \bigg[e^{-2\pi i \omega t} I_{12}^* + e^{2\pi i \omega t} I_{12} \bigg] dt \\ 
+              & = \frac{\omega}{4} \int_0^{1/\omega} (V_{12}I_{12}e^{4\pi i \omega t} + V_{12}^*I_{12}^*e^{-4\pi i \omega t} + V_{12}I_{12}^* + V_{12}^* I_{12}) dt \\ 
+              & = \frac{\omega}{4} \cdot \frac{1}{\omega} \bigg( V_{12}I_{12}^* + V_{12}^* I_{12} \bigg) \\ 
+              & = \frac{1}{4}\bigg( V_{12}I_{12}^* + V_{12}^* I_{12} \bigg)  \\ 
+              & = \frac{1}{2}\Re\bigg[ V_{12}I_{12}^* \bigg]
+        \end{aligned}.
+        \]
+        Once more, we know that the "physical thing" is just the real part of some complex number. 
+        So we will define the power phasor to be what we'd get if we kept the imaginary part: \(P = \frac{1}{2} V_{12}I_{12}^*\). 
+        The magnitude of \(P\) is called the apparent power \(S\), the real part is of course the real power, and the imaginary part is called the 
+        reactive power.
+
+        <h3>Different Conventions</h3>
+
+        Thus far, we have phasors in the form
+        \[ v(t) = V e^{2\pi i \omega t}, \]
+        so that the amplitude of \(v\) is the same as the magnitude of \(V\). And likewise for the current. If instead 
+        we wrote 
+        \[ \frac{v(t)}{\sqrt{2}} =  \tilde{V} e^{2\pi i \omega t}, \]
+        with \(\tilde{V} = V/\sqrt{2}\), then the magnitude of \(\tilde{V} \) is now the RMS value of the voltage. 
+        Of course, Ohm's Law \(\tilde{I} = Z \tilde{V}\) would continue to hold with this change of variables. The power law would now become 
+        \[ S = \frac{1}{2}VI^\star = \tilde{V}\tilde{I}^\star. \]
+        Which is a bit cleaner, since we can omit the 1/2. It's important to know which scenario you are in.
+
 
     </body>
 </html>

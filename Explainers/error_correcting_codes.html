@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Error Correcting Codes</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h1>Error Correcting Codes</h1>
+       
+        <h3>Channels</h3>
+        <h4>Introduction</h4>
+
+        Among the core premises of information theory is the idea of a "channel." Loosely speaking, a channel is a 
+        black box which, given an input \( x \in \mathcal X \), outputs some <b>random</b> output \(y \in \mathcal Y\). 
+        A typical example is \(\mathcal X = \mathbb F_2^n, \mathcal Y = \mathbb F_2^m\).
+        Here are some example channels:
+        <ol>
+            <li>Trivial Channel: \(m = n\), and \(y = x\)</li>
+            <li>Random Bit Flip: \(m=n\), and \(y_i = x_i\) with probability \(p\) and \(1-x_i\) with probability \(1-p\).</li>
+        </ol>
+        Other examples of channels exist, but hopefully that provides a sufficient flavor. Of course, some channels are "better" than others, in the sense that 
+        the output is more or less correlated with the input. For instance, the Trivial Channel is amazing, and the Random Bit Flip Channel is horrendous for \(p\) close to 
+        \(1/2\). In fact, for \(p=1/2\), the input is unrelated to the output. <br><br> 
+
+        To begin a discussion of channel capacity, it's necessary to quantify what we mean when we say the input is "related" to the output. 
+        The formal measure of this is Mutual Information \(I(X;Y)\). I would like to dedicate another explainer to mutual information, but in short, mutual 
+        information is given by the formula,
+        \[ I(X;Y) = H(X) - H(X|Y)\]
+        which is the difference in the entropy of \(X\), and the entropy of \(X\) were you to know \(Y\). Thus, this quantity is higher when 
+        \(Y\) tells you quite a bit about \(X\), and lower when they are unrelated. For instance, if \(X\) and \(Y\) are independent, \(H(X|Y) = H(X)\), so the 
+        mutual information is zero. For a particular distribution on random input to the channel, \(I(X;Y)\) is a measure of how much information is preserved on average. 
+        But we allow any random input to the channel, and the name of the game is to preserve as much information as possible. 
+        Different distributions on the input will allow for different capacities, and the overall "Channel Capacity" is equal to the highest 
+        achievable mutual information among input distributions: 
+        \[ C = \max_{P_X} I(X;Y) \]
+
+        For example, suppose you had \(m = n = 2\), and \(y_1 = x_1\) always, but \(y_2 = x_2\) with probability 1/2 and \(1-x_2\) with probability 
+        \(1/2\). Then you shouldn't even bother trying to transmit anything in your second bit, but you can easily transmit your first bit, so the Channel Capacity would 
+        be \(C = 1\) bit. Of course, the more complicated the channel, the harder it is to determine the best \(P_X\) and thus the Channel Capacity. 
+
+        <h4>Channel Capacity</h4>
+
+        We ask: how many messages, essentially, can we transmit across the channel? We know that there is a distribution on \(X\) for which 
+        \(I(X;Y) = C\). This means that of the \( H(Y)\) bits of information that come out the other side, \(I(X;Y)\) of them have something to do with 
+        the input. So with this many bits of information at our disposal, we could transmit roughly \(2^{C}\) bits of information across the channel. If we 
+        were to allow ourselves \(N\) transmissions, we would have roughly \(2^{NC}\) bits of information at our disposal. We do not necessarily assume that 
+        we try to transmit the same message \(N\) times. <br><br> 
+
+        We can make this more concrete through an example: suppose we have \(n\) input bits and \(n\) output bits, but the last \(r\) of them get scrambled to be totally random. 
+        Then really we only have \(n-r\) usable bits. And to maximize the entropy of those usable bits, we'd let each bit of \(X\) be 0 or 1, independently and each with probability 1/2. 
+        Then in this case, \(H(Y) = n\) but \(H(Y|X) = r\), so \(I(X;Y) = n-r\), which is consistent with our understanding. Then we could transmit 
+        roughly \(2^{n-r}\) unique messages. And with \(N\) different transmissions, we now have \(N(n-r)\) free bits.
+
+
+        <h4>Codebooks and Code Rate</h4>
+
+        Assume that you want to transmit one of \(M\) messages. You must do so using the channel. For a fixed \(k\), a reasonable strategy would be
+        <ol>
+            <li>Map each \(\{1\ldots M\}\) to \(k\) inputs to the channel. Formally, this is a map \(x : \{1\ldots M\} \to \mathcal X^k\). </li>
+            <li>When you want to transmit message \(i\), transmit \(x_1(i)\) through the channel, then \(x_2(i)\), all the way up to 
+                \(x_k(i)\). </li>
+            <li>Have your receiver decode the \(k\) received messages in some intelligent way. </li>
+        </ol>
+        Inherently, your message has \(\log_2 M\) bits of information. And you use the channel \(k\) times, so it's as if you're transmitting 
+        \[ R \triangleq \frac{\log_2 M}{k} \]
+        bits of information per use. The mapping \(x\) is called a Code Book, and \(R\) is its rate. As the rate is a measure of the number of "useful" bits 
+        per transmission, we would expect intuitively that a good code rate is close to \(I(X;Y)\). We've demonstrated in the example that we could transmit 
+        \(n-r\) good bits perfectly per transmission, so after 
+        \[ k = \bigg\lceil \frac{ \lceil \log_2 M \rceil }{n-r} \bigg\rceil \]
+        transmissions, we could send all \(\log_2 M\) and know the receiver can recover our message with certainty. So there exists a code of rate 
+        \[ \frac{\lceil \log_2 M \rceil}{\big\lceil \frac{ \lceil \log_2 M \rceil }{n-r} \big\rceil} \approx C. \]
+        Our example just now was pretty easy, since it's easy to single out some of the transmission bits as wholly usable and the others as completely worthless. 
+        More generally, we may not assume that any of the bits get preserved. The output bits can depend on the input bits totally arbitrarily. So 
+        is there a good code of rate \(\approx C\), such that we can reconstruct the transmission with arbitrarily good probability? <br><br> 
+
+
+        This effort is pretty futile if we have a fixed \(M\) in mind. In general, to get the error probability arbitrarily low, it requires arbitrarily many uses of the channel. 
+        That is, it would be necessary to take \(k \to \infty\), and thus the rate would tend to zero. Things get interesting if we assume that we're trying to send a bigger message. 
+        For instance, we might want to send \(t\) different, consecutive, messages.Note that the \(M^t\) messages corresponds to \( t\log_2 M\) bits of information. Whereas before we used the channel \(k\) times for one message, we might imagine using
+        the channel \(kt\) times for \(t\) messages, and we'd still have an overall rate of 
+       about \(R\). So we are trying to transmit about \(2^{(tk)R}\) bits of information using the channel \(tk\) times. <br><br> 
+        
+        So given a specific rate \(R\), is it possible to transmit a whole bunch of information 
+        at a rate \(R\) with arbitrarily low error probability? We allow the amount of information we send to go up to infinity if necessary, just in case 
+        that buys us some additional strategic leverage. But importantly, we're trying to send \(R\) bits of high quality information per use of the channel. 
+        Of course, with \(k\) uses, this would correspond to about \(2^{kR}\) total messages. What we would like to do is find a sequence of code books 
+        \(x^1, x^2 \ldots \) such that 
+        <ol>
+            <li>Each \(x^k\) is a \(k\) use transmission strategy for at least \(2^{kR}\) messages.</li>
+            <li>For each \(k\), there is a decoding strategy \(g^k : \mathcal Y^k \to \{1 \ldots 2^{kR} \}\). </li>
+            <li>The maximal probability of decoding error, i.e. \(\max_{i \in \{1 \ldots 2^{kR}\} } \mathbb P\{g^k(Y(x^k(i))) \neq i\} \), goes to zero as 
+                \(k \to \infty\). </li>
+        </ol>
+        
+
+        <!--
+        <h4>Code Rate</h4>
+
+        The old fashioned strategy for transmission was to send the same message a handful of times, so that the receiver would know where the anomalies lie. 
+        That is, you might send an \(n\) bit message \(t\) times, for \(tn\) total bits. So \(t\) is a measure of redundancy, and you would quite like to keep 
+        \(k\) small for efficient communication. More generally, if you have to send \(m\) bits total to represent a message which is really \(n\) bits, then your code rate is 
+        \(R = m/n\). <br><br> 
+
+        Of course, the lurking question is how small can your code rate be? Obviously, if your channel doesn't harm your input, then the rate is 1; you need only transmit your message once. 
+        On the other hand, if you consider our Channel from earlier which had \(n-r\) good bits and \(r\) junk bits, a reasonable strategy to transmit \(n\) bits would be to just use the channel a few times and 
+        to store your message in the good bits, so the rate would be \(n/(n-r)\). Again, so far, the discussion has been about trivial channels. What about for general channels?
+
+        Assume that you want to transmit one of \(M\) messages. Of course, you'll need at least \(\approx \log_2 M\) bits of information to do so, even if your channel is perfect, just to represent your message. 
+
+
+        <h4>Codebooks</h4>
+
+        A codebook is a set of messages you will try to send through your channel. It can be regarded as a collection of vectors in \(\mathbb F_2^n\). It could also be conceptualized as a matrix  in 
+        \(\mathbb F_2^{n \times t}\), for some \(t\). Now, if you have a code rate of \(R\), this means that you will need to use your channel about \(R\) times, so you'll send 
+        \(nR\) bits across the channel-->
+
+        <h2>Shannon's Coding Theorem</h2>
+
+
+
+
+    </body>
+</html>

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Graph Theory and Vector Calculus</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>Vector Calculus and Graph Theory</h2>
+        <h3>Purpose</h3>
+
+        There are some 'cute' connections between the kinds of matrices which pop up in algebraic graph theory 
+        and the kinds of operators one studies in linear algebra. Some of these parallels are incredibly well known, and 
+        some are less talked about, at least as far as I can tell. To preview,
+        <ol>
+            <li>The incidence matrix is analagous to the negative gradient</li>
+            <li>The incidence matrix transpose is analagous to the divergence</li>
+            <li>The fundamental loop matrix is analagous to the curl</li>
+            <li>The Laplacian is analagous to the Laplacian.</li>
+        </ol>
+
+        <h4>Definitions</h4>
+
+        To set things up, we will consider an undirected, connected, weighted graph \(G = (V,E)\). I'll say now that 
+        we can extend our results for weighted graphs, but it gets a little clunkier. Although the Graph is "naturally" understood 
+        as undirected, it is helpful to assign an arbitrary orientation to each edge. Let \(\mathcal N_a^- = \{ b : \{a,b\} \in E\}\) be those 
+        vertices for which there is an edge going from \(a\) to \(b\) and \(\mathcal N_a^+ = \{b : \{b,a\} \in E\}\). And \(\mathcal N_a = \mathcal N_a^+ \cup \mathcal N_b^+\) are the usual 
+        undirected neighbors of \(a\).
+        So each edge \(e = \{a,b\}\) now has a head vertex \(b\) and a tail 
+        vertex \(a\). Let \(\mathcal V\) be the set of vertex functions \(\phi : V \to \mathbb R\), and let \(\mathcal E\) be the set of 
+        edge functions \(f : E \to \mathbb R\). Each \(\phi \in \mathcal V\) can be understood as a vector in \(\mathbb R^n\), where 
+        \(n\) is the number of vertices of the graph, and each \(f \in \mathcal E\) can be understood as a vector in \(\mathbb R^m\), where 
+        \(m\) is the number of edges of the graph. <br><br>
+
+        The incidence matrix is a linear map \(B : \mathcal V \to \mathcal E\). When \(g = B\phi\), \(g\) is the edge function such that for each 
+        \(e \in \{a,b\}, g(e) = \phi(a)-\phi(b)\). That is, \(B\phi\) takes the difference in \(\phi\) across each edge, by subtracting the head value from the tail value. 
+        We might be pedantic, however, and note that the way we've defined our gradient, it's positive if a function "decreases" when traversing an edge. So 
+        it would be more accurate to say that \(D \triangleq - B\) is the best candidate for the gradient.
+        If one likes, one can represent \(B\) as an \(m \times n\) matrix for which 
+        \[ B_{e,a} = \begin{cases} 1 & \text{ if a is the tail vertex of e}
+                              \\ - 1 & \text{ if a is the head vertex of e}  \\
+                                  0  &\text{ otherwise} \end{cases}. \]
+        
+        The map \(B\) takes a \(\phi\) and computes a set of differences in different "directions," where by directions we mean edges. Thus, it is analagous to the gradient. 
+        Note that for any \(f \in \mathcal E, \phi \in \mathcal V\),
+        \[
+        \begin{aligned}
+         \phi^\top B^\top f & = f^\top B \phi \\
+                        & = \sum_{e = \{a,b\}} f(e) \big(\phi(a) - \phi(b)\big) \\
+                       & = \sum_{a \in V} \sum_{b \in \mathcal N_a^+} f(\{a,b\})  \big(\phi(a) - \phi(b)\big) \\
+                       & = \sum_{a \in V} \sum_{b \in \mathcal N_a^+} f(\{a,b\}) \phi(a) - \sum_{a \in V} \sum_{b \in \mathcal N_a^+} f(\{a,b\}) \phi(b) \\
+                       & = \sum_{a \in V} \sum_{b \in \mathcal N_a^+} f(\{a,b\}) \phi(a) - \sum_{b \in V} \sum_{a \in \mathcal N_b^-} f(\{a,b\}) \phi(b) \\
+                       & = \sum_{a \in V} \sum_{b \in \mathcal N_a^+} f(\{a,b\}) \phi(a) - \sum_{a \in V} \sum_{b \in \mathcal N_a^-} f(\{a,b\}) \phi(a) \\
+                       & = \sum_{a \in V}  \phi(a) \bigg[ \sum_{b \in \mathcal N_a^+} f(\{a,b\}) -  \sum_{b \in \mathcal N_a^-} f(\{a,b\}) \bigg] \\ 
+         \end{aligned}
+        \]
+        Comparing the first and last, equations, it must be the case that 
+        \[ \big( B^\top f \big)(a) = \sum_{b \in \mathcal N_a^+} f(\{a,b\}) -  \sum_{b \in \mathcal N_a^-} f(\{a,b\}).  \]
+        If one thinks of \(f\) as the flow of some fluid, \(B^\top f\) computes, for each vertex, the "net flow" through each vertex. 
+        Thus, it is analagous to the divergence. <br><br> 
+
+        Finally, just as the ordinary Laplacian is the divergence of the gradient, we will set 
+        \[ L =  B^\top D = -B^\top B \]
+        to be the combinatorial Laplacian, which is  \(\mathcal V \to \mathcal V\). Given these definitions, 
+        \[ \begin{aligned}
+        \big( L \phi \big)(a) & = - (B^\top B)(a) \\ 
+                              & = \sum_{b \in \mathcal N_a^-} (B\phi)(\{a,b\}) -  \sum_{b \in \mathcal N_a^+} (B\phi)(\{a,b\}) \\ 
+                              & = \sum_{b \in \mathcal N_a^-} \big(\phi(b) - \phi(a)\big) -  \sum_{b \in \mathcal N_a^+} \big(\phi(a) - \phi(b)\big) \\ 
+                              & = \sum_{b \in \mathcal N_a} \big( \phi(b) - \phi(a) \big)
+        \end{aligned}
+        \]
+        
+        At each vertex \(a\), \(L\phi\) is a measure of how much larger \(\phi\) is at the neighbors of \(a\) than \(\phi\) at \(a\). I will caution that the typical 
+        definition of the combinatorial Laplacian is the negative of mine. I chose the negative convention to make the parallels as clean as possible.
+
+        <h3>Theorems</h3>
+
+        <h4>The Fundamental Theorem of Calculus</h4>
+
+        Suppose we have a path \(P = \{a_0 \ldots a_k\}\) from \(a = a_0\) to \(b = a_k\). Let \(\sigma_i\) be equal to 
+        \(1\) if \( \{a_{i}, a_{i+1}\} \in E\) and \(-1\) if \(\{a_{i+1}, a_i\} \in E\); that is, \(\sigma\) is positive when the path 
+        edge is properly oriented and negative otherwise. With this definition, one has 
+        \[ \phi(b) - \phi(a) = \sum_{i=0}^{k-1} \big(D \phi\big)(\{a_i, a_{i+1}\}) \sigma_i. \]
+        This identity is analagous to the fundamental theorem of calculus 
+        \[ \phi(b) - \phi(a) = \int_a^b \nabla \phi(x)dx. \]
+
+
+        <h4>Green's Identities</h4>
+
+        For a given \(\phi, \psi\), consider  \(\psi = \\psi L \phi \). Moreover, let \(S \subseteq V\) be a subset of the vertices. There will be some edges 
+        \(E(S,S)\) for which both endpoints are in \(S\) and some edges \(E(S,S^c)\) for which only one endpoint is in \(S\). We define \(n\) to be the function of 
+        \(E(S,S^c)\) such that \(n(\{a,b\}) = 1\) if \(a \in S, b \in S^c\) and \(n(\{b,a\}) = -1\) if \(a \in S^c, b \in S\). That is, \(n\) is positive for each edge 
+        "leaving" \(S\) and negative otherwise. We then have 
+        \[
+        \begin{aligned} 
+            \sum_{a \in S} \psi L \phi & = \sum_{a \in S} \bigg[ \psi(a) \sum_{b \in \mathcal N_a} \big( \phi(b)-\phi(a) \big) \bigg] \\ 
+                                   & = \sum_{a \in S} \bigg[ \psi(a) \sum_{b \in \mathcal N_a \cap S} \big( \phi(b)-\phi(a) \big) + \psi(a) \sum_{b \in \mathcal N_a \cap S^c} \big( \phi(b)-\phi(a) \big) \bigg] \\ 
+                                   & = \sum_{a \in S}\sum_{b \in \mathcal N_a \cap S}  \psi(a) \big( \phi(b)-\phi(a) \big) + \sum_{a \in S} \sum_{b \in \mathcal N_a \cap S^c}  \psi(a) \big( \phi(b)-\phi(a) \big) \\
+                                   & =  \sum_{(a,b) \in E(S,S)} (\psi(a) - \psi(b))(\phi(b)-\phi(a)) + \sum_{(a,b) \in E(S,S^c) }  \phi(a) \big(D\phi\big)(e) n(e) \\
+                                   & = - \sum_{(a,b) \in E(S,S)} (D\psi)(D\phi)(\{a,b\}) + \sum_{(a,b) \in E(S,S^c) }  \phi(a) \big(D\phi\big)(e) n(e) \\
+        \end{aligned}
+        \]
+        Therefore, 
+        \[ \sum_{a \in S} \psi L \phi(a) + \sum_{(a,b) \in E(S,S)} (D\psi)(D\phi)(\{a,b\}) = \sum_{(a,b) \in E(S,S^c)} \phi(a) \big(D\phi\big)(e) n(e). \]
+        This should be interpreted as a combinatorial analog of Green's First Identity:
+        \[ \int_S \psi\Delta \phi +\nabla \phi \cdot \nabla \psi dV = \int_{\partial S} \psi \nabla \phi \cdot n dA. \]
+        Note that Green's First Identity also holds on manifolds, with the appropriate notion of gradient and divergence. 
+        When the manifold is closed (resp. \(S = V\)), the equations are 
+        \[ 
+        \begin{aligned} 
+            \int_M \psi \Delta \phi dV & = - \int_{M} \nabla \psi \cdot \nabla \phi dV\\
+            \sum_{V} \psi L \phi & = - \sum_{e} (D\psi)(D\phi)(e).
+        \end{aligned}
+        \]
+        There's more information to glean from the first of these equations too. When the manifold \(M\) is closed, or \(\psi, \phi\) are both smooth with compact support, 
+        then one has 
+        \[ \int_M \psi \nabla \cdot (\nabla \phi) dV = - \int_M \nabla \psi \cdot (\nabla \phi) dV  \]
+        which means that whenever \(F\) is the gradient of some function,
+        \[ \int_M \psi \nabla \cdot F dV = \int_M \nabla \psi \cdot F dV. \]
+        This actually holds true for any \(F\) which has a Helmholz decomposition. To see this, by linearity, it is enough to verify that for any 
+        \(\varphi\) with \(\nabla \cdot \varphi = 0\) that 
+        \[   \int_M \nabla \psi \cdot \varphi dV = 0. \]
+        Indeed, this is the case, because 
+        \[ \nabla \cdot (\psi \varphi) = \nabla \psi \cdot \varphi + \psi \nabla \cdot \varphi = \nabla \psi \cdot \varphi,  \]
+        and as long as the manifold is boundaryless / all functions decay, the divergence theorem implies the integral of the left hand side vanishes. 
+        This all means that, subject to appropriate conditions, that the adjoint of the gradient is the negative divergence. Which is 
+        analagous to our construction of the divergence as \(-D^\top\).
+
+        <h3>The Divergence Theorem</h3>
+        
+        A similar combinatorial argument to the above section also gives
+        \[ \sum_{a \in S} (B^\top f)(a) = \sum_{(a,b) \in E(S,S^c) : a \in S} n(e) f(e)   \]
+        which is the analog of the divergence theorem 
+        \[ \int_S \nabla \cdot f dV = \int_{\partial S} f \cdot n dA. \]
+
+        <h3>Helmholz Decomposition</h3>
+
+        It is a basic theorem in linear algebra that any \(f \in \mathbb R^m\) can be written as 
+        \[ f = B\phi + g, \] 
+        where \(\phi\) is some vertex function, and \(g\) is some function in the left null space of \(B\). 
+        A way to see this is that \(B \phi\) is the projection of \(f\) onto the column space of \(B\). Projection 
+        optimality implies that the error \(g = f-B\phi\) is orthogonal to anything else in the column space, i.e. 
+        \(g^\top B\psi = 0\) for all \(\psi\); thus, \(g^\top B = 0\). So what is the left null space of \(B\)? <br><br> 
+
+        Any such \(g\) must satisfy \(B^\top g = 0\), meaning that \(g\) is "divergenceless." Interpreting \(g\) as the flow of some fluid, that 
+        means that for every vertex, as much fluid is flowing in as flowing out. A trivial way to construct such a flow is to pick some cycle in the graph and 
+        flowing 1 unit of fluid along each edge going "along" the cycle and -1 unit of fluid along each edge going "with" the cycle. The set of 
+        such flows, and their linear combinations, form the <i>cycle space</i> of the graph.
+        The question remains: are we missing anything, or is the null space equal to the cycle space? Certainly, it would suffice to identify a limited number of cycles, and check that 
+        their span is a basis of the null space. It turns out, the right set of cycles are the <i>fundamental cycles</i>, obtained by (1) creating a spanning tree \(T\) of the Graph and 
+        (2) considering the unique cycle induced by each edge not in the tree; by doing so, we obtain \(m-n+1\) cycles.
+        Note that if these fundamental cycles were insufficient, then there would be some nonzero element \(g\) of the null space of \(B^\top\) which is orthogonal to every cycle, meaning if you sum the values of
+         \(g\) along any (oriented) fundamental cycle, then the result would be zero. <br><br> 
+         
+         To see why this can't happen, note that such a \(g\) couldn't be supported only on \(T\), or else the graph induced by 
+         edges of nonzero \(g\) would have a leaf, and such a leaf would have nonzero divergence. But this is a problem for the following reason: 
+         we can construct a \(g'\) by the following procedure: for each fundamental cycle \(C\) induced by \(e \not \in T\) subtract \(g(e)\) from every 
+         edge \(\tilde{e} \in C\), appropriately oriented. Obviously, \(B^\top g' = 0\) still, except now \(g'\) clearly violates the assumption we made 
+         at the beginning of the paragraph. A second reason this can't be the case is that, if \(g\) sums to zero in every oriented cycle, then 
+         that's a sufficient condition for it to be the gradient of something. <br><br> 
+
+         To conclude, we have argued that any \(f \in \mathcal E\) is expressible as 
+         \[ f = B\phi + g, \]
+        where \(g\) is divergenceless. This is analagous to the Helmholz decomposition. 
+
+        <h3>Stokes Theorem</h3>
+
+        In 3D, if \(S\) is a two dimensional surface enclosed by a curve \(\ell\),
+        \[ \int_{\ell} F \cdot dx = \int_{S} (\nabla \times F) \cdot n dA \]
+        Of course, if \(F = \nabla \phi\) for some \(\phi\), then this implies that the left hand side is zero for any closed curve, and thus 
+        \(\nabla \times F = \nabla \times \nabla g = 0\). This is a good way to remember that the curl of a divergence is zero. 
+        As advertised in the above section, it is possible to create a spanning tree \(T\) of the graph, and for each of the \(m-n+1\) edges \(e \not \in T\) 
+        to make note of the oriented cycle \(C_e\) which consists of \(e\) and the unique path in \(T\) connecting the endpoints of \(e\). Likewise, 
+        if we create an \(f_e\) which is \(+1\) for each positively oriented edge of \(C_e\) and \(-1\) for each negatively oriented edge, 
+        these \(f_e\)'s form a basis for the null space of \(B^\top\), called the cycle space of \(G\). By concenating these as rows in a matrix 
+        \(N\), one thus has for any \(\phi\) that 
+        \[ NB\phi = 0. \]
+        Moreover, we argued above that any \(g\) not in the span of \(B\) that \(f_e^\top g \neq 0\) for at least one fundamental cycle, and thus 
+        \(Ng = 0\) is also a sufficient condition for \(g\) to be the gradient of something. For all these reasons, it is reasonable to think of the \(N\) operator 
+        as computing the curl. There is not really a good one-to-one with Stokes Theorem itself, since \(N\) has \(m-n+1\) rows, so it's not possible to associate a value to 
+        each edge or to each vertex. Really, it's more natural to index the loops by faces of the graph. If the graph is planar, then this can be made to work, as each 
+        cycle encloses some number of phases.
+
+    </body>
+</html>

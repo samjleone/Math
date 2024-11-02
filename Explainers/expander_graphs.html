@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Expander Graphs</title>
+        <link rel="stylesheet" href = '../styles.css'>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.css" integrity="sha384-zB1R0rpPzHqg7Kpt0Aljp8JPLqbXI3bhnPWROx27a9N0Ll6ZP/+DiW/UqRcLbRjq" crossorigin="anonymous">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/katex.min.js" integrity="sha384-y23I5Q6l+B6vatafAwxRu/0oK/79VlbSz7Q9aiSZUvyWYIYsd+qj+o24G5ZU2zJz" crossorigin="anonymous"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.11.1/dist/contrib/auto-render.min.js" integrity="sha384-kWPLUVMOks5AQFrykwIup5lo0m3iMkkHrD0uJ4H5cjeGihAutqP0yW0J6dpFiVkI" crossorigin="anonymous" onload="renderMathInElement(document.body);"></script>
+    </head>
+    <body>
+        <a href= '../index.html'>Home</a><br><br>
+
+        <h2>Expander Graphs</h2>
+        <h3>What is an Expander Graph?</h3>
+
+        An expander graph is a graph which is simultaneously 
+        <ol>
+            <li>Sparse. Expanders are usually studied with a fixed constant degree \(d\) as the number of vertices \(n\) gets large. </li>
+            <li>Well connected. There are many good candidates for how to define connectedness, but the most common is that its Adjacency matrix 
+                looks an awful lot like \(\frac{d}{n} A_{K_n}\), where \( A_{K_n}\) is the Adjacency matrix of the complete graph on \(n\) vertices. </li>
+        </ol>
+        
+        <h3>The Complete Graph, Expander Definition</h3>
+
+        Consider the complete graph on \(n\) vertices and let \(A\) be its adjacency matrix. Its fairly simple to see that
+        \[ A = 11^\top - I. \]
+        Of course, \(11^\top\) has the all ones vector as an eigenvector of eigenvalue \(n\), as well as \(n-1\) eigenvectors all of eigenvalue 0. 
+        Thus, the adjacency matrix has eigenvalues \(n-1\) and \(-1\), with multiplicities \(1\) and \(n-1\), respectively. Note also that the complete graph 
+        has a Laplacian matrix 
+        \[ L = (n-1)I - A, \]
+        and thus it has \(0\) and \(n\) as eigenvalues, with multiplicities \(1\) and \(n-1\). Therefore, a typical definition of an expander is that it is a graph whose nonzero
+        Laplacian eigenvalues are all very nearly \(d/n\). <br><br> 
+
+        <b>Definition: An \(\epsilon\) Expander has nonzero eigenvalues all in \( d[1-\epsilon, 1 + \epsilon]\).</b>
+
+        This is also equivalent to insisting that, in the Loewner order on positive semi-definite matrices,
+        \[ (1-\epsilon) \frac{d}{n} L_{K_n} \preceq L \preceq (1+\epsilon) \frac{d}{n} L_{K_n}  \]
+        which also implies 
+        \[ - \frac{\epsilon d}{n} L_{K_n} \preceq L - \frac{d}{n} L_{K_n} \preceq  \frac{\epsilon d}{n} L_{K_n}   \]
+        And thus,
+        \[ \|L - \frac{d}{n} L_{K_n}\|_{\text{op}} \leq  \frac{\epsilon d}{n} \|L_{K_n} \| = \epsilon d. \]
+        The above definitions are all quite useful in characterizing the properties of expander graphs. It means that, as a quadratic form and linear operator, 
+        the two Laplacians behave about the same way.<br>
+
+        <h3>Combinatorial Properties of Expanders</h3>
+
+        <h4>Edges Between Sets</h4>
+
+        Let's see why the above definition is a fruitful one. Consider a subset \(S\) of the vertices and let \(\chi_S\) be the indicator vector of that vertex set. 
+        It is easy to see that for any graph \(G\),
+        \[ \chi_S^\top L_G \chi_S = \sum_{(a,b) \in E} (\chi_S(a) - \chi_S(b))^2 = |\partial_G S|. \]
+        Thus, if \(G\) is an expander, we compare to the complete graph, in which this boundary has trivial size \(|S|(n-|S|)\):
+        \[ |\partial_G S| \in  [1-\epsilon, 1+\epsilon] \frac{d |S|(n-|S|) }{n} . \]
+        This means, essentially, that vertex subsets have large boundary in expanders! <br><br> 
+
+        One can generalize this a bit more too. If \(S\) and \(T\) are disjoint subsets of the vertices, one of 
+        course has
+        \[ \chi_S^\top L_{G} \chi_T = \sum_{e \in (a,b)} (\chi_S(a) - \chi_S(b))(\chi_T(a) - \chi_T(b)). \]
+        Each summand is nonnegative only if an edge \(e\) is simultaneously on the boundary of \(S\) and on the boundary of 
+        \(T\). But we assumed \(S\) and \(T\) are disjoint, so this can only happen if \(e\) connects \(S\) to \(T\). Thus, \(\chi_S^\top L_{G} \chi_T  = E(S,T)\). When 
+        \(G\) is the complete graph, \(E(S,T) = |S||T|\). And in an expander graph, 
+        \[ \begin{aligned} \bigg|\chi_S^\top L_G \chi_T - \frac{d}{n}|S||T|\bigg|  &= \bigg|\chi_S^\top L_G \chi_T - \frac{d}{n}  \chi_S^\top L_{K_n}\chi_T\bigg|\\
+                    & = |\chi_S^\top (L_G \chi_T  - \frac{d}{n} L_{K_n}) \chi_T| \\ 
+                    & \leq |\chi_S| |\chi_T| \|L_G - \frac{d}{n}  L_{K_n}\| \\ 
+                    & \leq \epsilon d |\chi_S| |\chi_T| \\ 
+                    & = \epsilon d \sqrt{ |S||T| }.
+        \end{aligned}  \]
+        It's actually possible to improve the above a bit. We can freely add multiples of \(1\) to \(\chi_S, \chi_T\) without altering the quadratic form, and thus the 
+        same analysis would hold. That is, for all \(\alpha,\beta\),
+        \[ \begin{aligned} \bigg|\chi_S^\top L_G \chi_T - \frac{d}{n}|S||T|\bigg|  \leq \epsilon d |\chi_S + \alpha 1| |\chi_T + \beta 1| 
+        \end{aligned}  \]
+        Clearly, the thing to do to minimize the right hand side, by the Pythagorean theorem, is to select \(\alpha = - \frac{1}{n}1^\top \chi_S = - \frac{|S|}{n} \) and 
+        \(\beta = - \frac{|T|}{n}\). So then, 
+        \[ \|\chi_S - \frac{|S|}{n}\| = \sqrt{ (n-|S|)\frac{|S|}{n} + |S|\big(1-\frac{|S|}{n}\big) } = \sqrt{2 |S| \big(1 - \frac{|S|}{n}\big)} \]
+        and likewise for \(T\), so 
+        \[ \begin{aligned} \big|E_G(S,T) - \frac{d}{n} |S||T| \big| & =   \bigg|\chi_S^\top L_G \chi_T - \frac{d}{n}|S||T|\bigg|\\ 
+                            &  \leq \epsilon d \sqrt{  |S||T|\big(1 - \frac{|S|}{n}\big)\big(1 - \frac{|T|}{n}\big)  }  \\ 
+                                    & = \epsilon d n \sqrt{ \frac{|S|}{n} (1- \frac{|S|}{n}) \frac{|T|}{n} (1- \frac{|T|}{n})  } \\ 
+                                    & \triangleq \epsilon d n \sqrt{\alpha(1-\alpha)\beta(1-\beta)},
+        \end{aligned} \]
+        where \(\alpha = |S|/n, \beta = |T|/n\) are the proportion of the vertices in \(S\), \(T\) respectively. To summarize, 
+        \[ \big|E_G(S,T) - \alpha\beta d n \big| \leq d n \sqrt{\alpha(1-\alpha)\beta(1-\beta)} \]
+
+        On one hand, this is a statement about how large an edge set is, given the size of two vertex sets. But this can also be used to show that if 
+        two vertex sets have no edges between them, then they can't be large. That is, if \(E_G(S,T) = 0\), then 
+        \[  \alpha\beta d n \leq \epsilon  d n \sqrt{\alpha(1-\alpha)\beta(1-\beta)} \]
+        which rearranges to 
+        \[ \begin{aligned} \alpha^2 \beta^2 & \leq \epsilon^2 \alpha(1-\alpha)\beta(1-\beta) \\
+         \frac{\beta}{1-\beta} & \leq \epsilon^2 \frac{1-\alpha}{\alpha} \\ 
+         \frac{\beta}{1-\beta} & \leq \epsilon^2 \frac{1-\alpha}{\alpha} \\ 
+         \frac{1}{\beta} - 1 & \geq \epsilon^2 \frac{\alpha}{1- \alpha} \\ 
+         \beta & \leq  \bigg[\frac{1}{\epsilon^2 \alpha + (1-\alpha)}\bigg] (1- \alpha) \\ 
+         \end{aligned} \]
+        Which basically means that \(\beta\) cannot be too large a fraction of \(1-\alpha\). Note that when \(\epsilon = 0\), we recover 
+        \(\beta \leq 1\), which is fairly tight. Note that this analysis also shows that 
+        \[ 1 - \beta \geq \frac{\alpha}{\epsilon^2 (1-\alpha) + \alpha}. \]
+        
+        <br><br> 
+
+        <h4>Tanner's Theorem</h4>
+        Let \(T\) be the vertices adjacent to something in \(S\), denoted by \(N(S)\). Then the above analysis reduces to what is 
+        called Tanner's Theorem. We use the fact that \(S\) has no edges going to \( T \triangleq V \setminus N(S)\). And thus, 
+        \[ \frac{|T|}{n} \leq \bigg[\frac{1}{\epsilon^2 \alpha + (1-\alpha)}\bigg] (1- \alpha)  \]
+        Meaning, 
+        \[ \begin{aligned} |N(S)| & = |V| - |T|   \\
+                                  & = n(1 - \frac{|T|}{n}) \\ 
+                                  & \geq n  \frac{\alpha}{\epsilon^2 (1-\alpha) + \alpha} \\ 
+                                  & = \frac{|S|}{\epsilon^2 (1-\alpha) + \alpha}
+        \end{aligned} \]
+
+    </body>
+</html>
